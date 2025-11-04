@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://www.joyhopelifes.com.tw/sitemap.xml

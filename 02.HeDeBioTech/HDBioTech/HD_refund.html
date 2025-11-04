@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>賀得生醫 - 35天無效退費保證政策解析</title>
+    <script type="text/javascript" nonce="2774e5808fef4ea6ab578e625a1" src="//local.adguard.org?ts=1760005881476&amp;type=content-script&amp;dmn=bqan77z618wdqdm7.canva-hosted-embed.com&amp;url=https%3A%2F%2Fbqan77z618wdqdm7.canva-hosted-embed.com%2Fcodelet%2FAAEAEGJxYW43N3o2MTh3ZHFkbTcAAAAAAZnN4lcK3UU4zm7QyPAGnPBRgSdbqkY37rlMugUyy--PVyEbMgo%2Findex.html&amp;app=com.google.Chrome&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script><script type="text/javascript" nonce="2774e5808fef4ea6ab578e625a1" src="//local.adguard.org?ts=1760005881476&amp;name=AdGuard%20Extra&amp;type=user-script"></script><script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .professional-gradient {
+            background: #2d5016;
+        }
+        .section-card {
+            transition: transform 220ms ease, box-shadow 220ms ease;
+            border-left: none !important;
+            background: var(--ycc-surface) !important;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+        }
+        .section-card:hover {
+            transform: translateY(-6px) !important;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.06) !important;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--ycc-primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px rgba(2,129,171,0.08);
+        }
+        /* 移除前兩個步驟（聯繫客服、提出申請）左側的裝飾圓點，但保留步驟內的數字圓圈 */
+        .timeline-item:first-of-type::before,
+        .timeline-item:nth-of-type(2)::before {
+            display: none !important;
+        }
+        /* 申請流程左側圓圈：底色 90% 黑，數字 20% 黑 (針對 .w-10.h-10.rounded-full 使用) */
+        .timeline-item .w-10.h-10.rounded-full {
+            background-color: rgba(0,0,0,0.9) !important;
+            color: #ffffff !important; /* 數字改為白色 */
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* neutral, borderless card variants (use %黑色分層) */
+        .highlight-box,
+        .warning-box,
+        .danger-box {
+            background: linear-gradient(135deg, #ffffff 0%, #f7f7f7 100%) !important;
+            border: 1px solid rgba(0,0,0,0.06) !important;
+            border-left: none !important;
+        }
+        /* --- index-like palette & hero styles (copied / adapted from index.html) --- */
+        :root{
+            /* 改為淺色漸層，整體使用黑灰色階以 *% 黑色區隔 */
+            --ycc-bg: #fafafa;
+            --ycc-bg-end: #ffffff;
+            --ycc-surface: #ffffff;
+            --ycc-primary: rgba(0,0,0,0.65);
+            --ycc-accent: rgba(0,0,0,0.85);
+        }
+
+        .hero-bg {
+            /* 改為純白底，移除漸層以符合設計要求 */
+            background: var(--ycc-surface) !important;
+            color: inherit;
+            position: relative;
+        }
+
+        .hero-copy {
+            max-width: 56rem;
+            margin: 0 auto;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-radius: 18px;
+            /* 改為淺色卡片 overlay，避免黑色 */
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 8px 24px rgba(6,30,40,0.06);
+        }
+
+        /* 全部 hero 內的文字改為 85% 黑。
+           因 Tailwind utility (e.g. text-white, text-white/90) 可能覆寫，
+           所以針對這些在 hero-copy 裡的常見 utility 類別強制覆蓋為 85% 黑。 */
+        .hero-copy { color: rgba(0,0,0,0.85) !important; }
+        .hero-copy .text-white,
+        .hero-copy .text-white\/90,
+        .hero-copy .text-white\/80,
+        .hero-copy .text-white\/70 {
+            color: rgba(0,0,0,0.85) !important;
+        }
+
+        .hero-title {
+            font-weight: 800 !important;
+            line-height: 1.05;
+            font-size: clamp(2rem, 6vw + 0.5rem, 4.2rem);
+            margin-bottom: 0.5rem;
+            color: inherit; /* 繼承 hero-copy 的 85% 黑 */
+        }
+
+            /* 重要提醒：置中、細字、放大、85% 黑 */
+            .reminder-declaration {
+                text-align: center;
+                font-weight: 300 !important;
+                font-size: clamp(1.25rem, 2.2vw, 1.5rem) !important; /* 放大且響應式 */
+                color: rgba(0,0,0,0.85) !important;
+                margin: 0.5rem auto 0.75rem auto;
+                display: block;
+            }
+
+    /* 讓 hero 內的 svg icon 使用主色（黑灰色階） */
+    .hero-copy svg { color: var(--ycc-primary) !important; stroke: currentColor !important; }
+
+        /* match index.html apple-button (shape & hover) */
+        .apple-button {
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 980px;
+            background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+            border: 2px solid #ddd;
+            color: #111;
+            padding: 0.6rem 1rem;
+            font-weight: 600;
+            box-shadow: none;
+        }
+
+        .apple-button:hover {
+            transform: scale(1.02);
+            /* 90% 黑色底，文字白色 - 使用 background 短寫以覆蓋原本的漸層 (background-image) */
+            background: rgba(0,0,0,0.9) !important;
+            color: #ffffff !important;
+            /* 同步更新邊框顏色以避免與深色背景衝突 */
+            border-color: rgba(0,0,0,0.9) !important;
+        }
+
+    /* Links and headings: use black/gray scale */
+    a { color: var(--ycc-primary) !important; text-decoration: none; transition: color 180ms ease; }
+    a:hover { color: var(--ycc-accent) !important; }
+    main h2, main h3, main h4 { color: rgba(0,0,0,0.9) !important; }
+
+    /* --- 全站邊框標準化：所有有邊框的部分改為 50% 黑 --- */
+    /* 選取常見 Tailwind border 類別、inline border，以及 border-left 類型，並以高優先度覆寫顏色 */
+    *[class*="border-"] , *[class*="borderl-"] , *[class*="border-l"],
+    *[style*="border"], *[style*="border-left"] {
+        border-color: rgba(0,0,0,0.5) !important;
+    }
+
+    /* 特別覆寫常見元件（按鈕 / highlight boxes）以確保一致性 */
+    .highlight-box, .warning-box, .danger-box {
+        border-color: rgba(0,0,0,0.5) !important;
+    }
+    .apple-button {
+        border-color: rgba(0,0,0,0.5) !important;
+    }
+
+    /* override colored gradients to use gray gradients */
+    .bg-gradient-to-r.from-indigo-600.to-purple-700 { background: linear-gradient(90deg, var(--ycc-bg), var(--ycc-bg-end)) !important; }
+
+    /* small helpers to keep icon circles consistent - neutral gray */
+    .w-16.h-16.bg-blue-500,
+    .w-16.h-16.bg-green-500,
+    .w-16.h-16.bg-red-500,
+    .w-16.h-16.bg-purple-500 { background: rgba(0,0,0,0.06) !important; }
+
+    /* 限制條件區塊上方三個圓圈：背景 70% 黑，svg 線條/填色為白色 */
+    .limits-grid .w-16.h-16.rounded-full {
+        background-color: rgba(0,0,0,0.7) !important;
+    }
+    .limits-grid .w-16.h-16.rounded-full svg {
+        color: #ffffff !important;
+        stroke: currentColor !important;
+        fill: currentColor !important;
+    }
+
+    /* --- 統一所有 SVG icon 樣式 ---
+       1) 預設 icon 使用 var(--ycc-primary)
+       2) 所有 svg 使用 currentColor 作為 stroke / fill
+       3) 位於圓形容器 (w-8/w-10/w-16/w-20/w-24) 的 svg 強制為白色 (確保在深色圓圈可見)
+    */
+    svg {
+        color: var(--ycc-primary) !important;
+        stroke: currentColor !important;
+        fill: currentColor !important;
+    }
+
+    /* 常見圓形容器內的圖示改為白色 */
+    .w-8.rounded-full svg,
+    .w-8.h-8.rounded-full svg,
+    .w-10.rounded-full svg,
+    .w-10.h-10.rounded-full svg,
+    .w-16.rounded-full svg,
+    .w-16.h-16.rounded-full svg,
+    .w-20.rounded-full svg,
+    .w-20.h-20.rounded-full svg,
+    .w-24.rounded-full svg,
+    .w-24.h-24.rounded-full svg {
+        color: #ffffff !important;
+        stroke: currentColor !important;
+        fill: currentColor !important;
+    }
+
+    /* 可重用的圓形深色 icon 容器（給特定左側圖示使用） */
+    .icon-circle-dark {
+        background-color: rgba(0,0,0,0.7) !important;
+        color: #ffffff !important;
+    }
+    .icon-circle-dark svg {
+        color: #ffffff !important;
+        stroke: currentColor !important;
+        fill: currentColor !important;
+    }
+
+    /* callout / feature card thin dark border (所有 p-4 rounded-lg 的資訊提示方框) */
+    .bg-green-50.rounded-lg,
+    .bg-blue-50.rounded-lg,
+    .bg-red-50.rounded-lg,
+    .bg-purple-50.rounded-lg,
+    .bg-gray-50.rounded-lg,
+    .bg-indigo-100.rounded-lg {
+        border: 1px solid rgba(0,0,0,0.7) !important;
+    }
+
+    /* 也包含提醒用的白色半透明容器（小型面板） */
+    .bg-white.bg-opacity-20.p-6.rounded-xl {
+        border: 1px solid rgba(0,0,0,0.7) !important;
+    }
+
+    /* adapt existing highlight / box accents to gray palette */
+    .highlight-box { border-color: rgba(0,0,0,0.06) !important; }
+    .warning-box { border-color: rgba(0,0,0,0.06) !important; }
+    .danger-box { border-color: rgba(0,0,0,0.06) !important; }
+
+    /* neutralize any inline background- or color: styles to enforce grayscale */
+    *[style*="background-color"] { background-color: var(--ycc-surface) !important; }
+    *[style*="color:"] { color: rgba(0,0,0,0.85) !important; }
+
+    /* colored Tailwind utility overrides -> convert to grayscale */
+    .bg-blue-50, .bg-green-50, .bg-red-50, .bg-purple-50, .bg-indigo-100, .bg-green-100 { background-color: #fbfbfb !important; }
+    .text-blue-600, .text-green-600, .text-red-600, .text-purple-600, .text-indigo-600 { color: rgba(0,0,0,0.7) !important; }
+
+    /* 每個區塊間加入 70% 黑 1px 虛線（只在 section 之間顯示，不包含最後一個） */
+    main > section:not(:last-child) {
+        border-bottom: 1px dashed rgba(0,0,0,0.7) !important;
+        padding-bottom: 1.5rem !important; /* 留出線與下方內容的間距 */
+        margin-bottom: 1.5rem !important;  /* 與現有 margin 做微調使視覺一致 */
+    }
+    /* 特定需要白底的 icon 容器（使用 class 而非 inline background-color，以避開全域 style 覆寫規則） */
+    .icon-white {
+        background-color: #ffffff !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    .icon-white svg {
+        color: rgba(0,0,0,0.85) !important;
+        stroke: currentColor !important;
+        fill: none !important;
+    }
+    /* 強制特定提醒句為純黑色，以避開全域中和規則 */
+    .reminder-sentence {
+        color: #000000 !important;
+    }
+    /* 使提醒句與 reminder-declaration 同樣細體與大小，並消除過大間距，使其呈現像換行的效果 */
+    .reminder-line {
+        font-weight: 300 !important;
+        font-size: clamp(1.25rem, 2.2vw, 1.5rem) !important; /* 同 reminder-declaration */
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: center !important;
+        opacity: 0.95 !important;
+    }
+    /* 拉近 reminder-declaration 的上方間距，使兩者更貼近 */
+    .reminder-declaration {
+        margin-top: 0.1rem !important;
+    }
+    /* 將所有相似的 callout 方框改為 1px dashed 50% 黑色外框，並覆蓋原先的左側粗邊 */
+    .bg-purple-50.p-4.rounded-lg,
+    .bg-red-50.p-4.rounded-lg,
+    .bg-gray-50.p-4.rounded-lg,
+    .bg-green-50.p-4.rounded-lg,
+    .bg-blue-50.p-4.rounded-lg,
+    .bg-indigo-100.p-4.rounded-lg {
+        border: 1px dashed rgba(0,0,0,0.5) !important;
+        border-left-width: 1px !important; /* 覆蓋 border-l-4 */
+        border-left-color: rgba(0,0,0,0.5) !important;
+        background-color: #fbfbfb !important; /* 保持淡底 */
+        padding: 1rem !important; /* 確保原本 p-4 行為一致 */
+    }
+    /* 語意化 callout 樣式，供統一管理與可重用性 */
+    .callout {
+        border: 1px dashed rgba(0,0,0,0.5) !important;
+        background-color: #fbfbfb !important;
+        padding: 1rem !important;
+        border-left-width: 1px !important;
+        border-left-color: rgba(0,0,0,0.5) !important;
+        border-radius: 0.5rem !important;
+    }
+    /* 變體類別（保留以便未來針對色彩做微調） */
+    </style>
+</head>
+<body class="bg-gray-50 min-h-full">
+    <!-- 參照 index.html 風格的 HERO 區塊 -->
+    <header class="hero-bg">
+        <div class="container mx-auto px-6 py-28">
+            <div class="hero-copy">
+
+                <h1 class="hero-title text-white mb-4">
+                    賀得生醫安心體驗計畫<br>
+                    30天無感退費35天內申請<br>
+                    退費不退貨
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 max-w-3xl mx-auto leading-relaxed text-white/90 mb-6">
+                    35天無效退費保證條款詳細說明，協助您了解完整權益與限制
+                </p>
+                <div class="flex justify-center">
+                    <button onclick="window.open('https://lin.ee/QYe2KQK', '_blank', 'noopener,noreferrer')" class="apple-button border-4 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white font-medium py-3 px-8 text-sm tracking-wide">立即申請 / 聯絡客服</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要內容區域 -->
+    <main class="container mx-auto px-6 py-16 max-w-7xl">
+        <!-- 政策概覽 -->
+        <section class="mb-16 fade-in">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="text-white p-8" style="background-color: #8fbc8f;">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-3xl font-bold mb-2" style="color: #2d5016;">35天無效退費保證</h2>
+                            <p class="text-lg" style="color: #2d5016;">賀得生醫官方退費服務</p>
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="highlight-box p-6 rounded-xl border-4 border-solid border-blue-500">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-blue-600 mb-2">35天</div>
+                                <p class="text-gray-700">退費申請期限</p>
+                            </div>
+                        </div>
+                        <div class="highlight-box p-6 rounded-xl border-4 border-solid border-green-500">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-green-600 mb-2">100%</div>
+                                <p class="text-gray-700">全額退費保證</p>
+                            </div>
+                        </div>
+                        <div class="highlight-box p-6 rounded-xl border-4 border-solid border-purple-500">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-purple-600 mb-2">免退貨</div>
+                                <p class="text-gray-700">無需寄回商品</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 申請流程 -->
+        <section class="mb-16">
+            <div class="bg-white rounded-2xl shadow-xl p-8 section-card">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">申請流程說明</h2>
+                    <p class="text-gray-600 text-lg">簡單兩步驟，輕鬆完成退費申請</p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- 步驟一 -->
+                        <div class="timeline-item">
+                            <div class="bg-blue-50 p-6 rounded-xl">
+                                <div class="flex items-center mb-4">
+                                    <span class="bg-blue-600 text-white text-xl font-bold w-10 h-10 rounded-full flex items-center justify-center mr-4" style="background-color: rgba(0,0,0,0.9) !important; color: #ffffff !important;">1</span>
+                                    <h3 class="text-xl font-bold text-gray-800">聯繫客服</h3>
+                                </div>
+                                <div class="space-y-3 text-gray-700">
+                                    <div class="flex items-center">
+                                        <span class="icon-white w-6 h-6 rounded-full flex items-center justify-center mr-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                            </svg>
+                                        </span>
+                                        <span>撥打客服專線</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="icon-white w-6 h-6 rounded-full flex items-center justify-center mr-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                            </svg>
+                                        </span>
+                                        <span>或透過官方LINE</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 步驟二 -->
+                        <div class="timeline-item">
+                            <div class="bg-green-50 p-6 rounded-xl">
+                                <div class="flex items-center mb-4">
+                                    <span class="bg-green-600 text-white text-xl font-bold w-10 h-10 rounded-full flex items-center justify-center mr-4" style="background-color: rgba(0,0,0,0.9) !important; color: #ffffff !important;">2</span>
+                                    <h3 class="text-xl font-bold text-gray-800">提出申請</h3>
+                                </div>
+                                <div class="space-y-3 text-gray-700">
+                                    <div class="flex items-center">
+                                        <span class="icon-white w-6 h-6 rounded-full flex items-center justify-center mr-2">
+<svg height="14" width="14" viewBox="0 0 512 512"><path fill="#1e1e1e" d="M51.9 384.9C19.3 344.6 0 294.4 0 240 0 107.5 114.6 0 256 0S512 107.5 512 240 397.4 480 256 480c-36.5 0-71.2-7.2-102.6-20L37 509.9c-3.7 1.6-7.5 2.1-11.5 2.1-14.1 0-25.5-11.4-25.5-25.5 0-4.3 1.1-8.5 3.1-12.2l48.8-89.4zm37.3-30.2c12.2 15.1 14.1 36.1 4.8 53.2l-18 33.1 58.5-25.1c11.8-5.1 25.2-5.2 37.1-.3 25.7 10.5 54.2 16.4 84.3 16.4 117.8 0 208-88.8 208-192S373.8 48 256 48 48 136.8 48 240c0 42.8 15.1 82.4 41.2 114.7z"/></svg>
+                                        </span>
+                                        <span>告知「35天無效退費」</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="icon-white w-6 h-6 rounded-full flex items-center justify-center mr-2">
+<svg height="14" width="14" viewBox="0 0 576 512"><path fill="#1e1e1e" d="M192 320c106 0 192-78.8 192-176S298-32 192-32 0 46.8 0 144c0 39.6 14.3 76.2 38.4 105.6L2.8 316.8C-2.1 326.1-.4 337.5 7 345s18.9 9.2 28.2 4.2L116.8 306c23.1 9 48.5 14 75.2 14zm3.2 48c16.4 81.9 94.7 144 188.8 144 26.7 0 52.1-5 75.2-14l81.6 43.2c9.3 4.9 20.7 3.2 28.2-4.2s9.2-18.9 4.2-28.2l-35.6-67.2c24.1-29.4 38.4-66 38.4-105.6 0-82.4-61.7-151.5-145-170.7-11.5 115.8-115.8 201.2-235.8 202.7zM196 32c11 0 20 9 20 20l0 4 8 0c11 0 20 9 20 20s-9 20-20 20l-47.5 0c-6.9 0-12.5 5.6-12.5 12.5 0 6.1 4.4 11.3 10.4 12.3l41.7 7c25.3 4.2 43.9 26.1 43.9 51.8 0 26.1-19 47.7-44 51.8l0 4.7c0 11-9 20-20 20s-20-9-20-20l0-4-24 0c-11 0-20-9-20-20s9-20 20-20l55.5 0c6.9 0 12.5-5.6 12.5-12.5 0-6.1-4.4-11.3-10.4-12.3l-41.7-7c-25.3-4.2-43.9-26.1-43.9-51.8 0-28.8 23.2-52.2 52-52.5l0-4c0-11 9-20 20-20z"/></svg>
+                                        </span>
+                                        <span>立即進行退款流程</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 重要限制條件 -->
+        <section class="mb-16">
+            <div class="bg-white rounded-2xl shadow-xl p-8 section-card">
+                <div class="text-center mb-12">
+                    <h2 class="text-5xl font-bold text-gray-800 mb-4">重要限制條件</h2>
+                    <p class="text-gray-600 text-lg">申請前請詳細了解以下限制規定</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 limits-grid">
+                    <!-- 首次購買限制 -->
+                    <div class="warning-box p-6 rounded-xl border-4 border-solid border-yellow-500">
+                        <div class="text-center mb-4">
+                            <div class="w-20 h-20 flex items-center justify-center mx-auto mb-4">
+<svg viewBox="0 0 640 512"><path fill="#303030" d="M64 96c0-35.3 28.7-64 64-64l288 0c35.3 0 64 28.7 64 64l0 32 50.7 0c17 0 33.3 6.7 45.3 18.7L621.3 192c12 12 18.7 28.3 18.7 45.3L640 384c0 35.3-28.7 64-64 64l-3.3 0c-10.4 36.9-44.4 64-84.7 64s-74.2-27.1-84.7-64l-102.6 0c-10.4 36.9-44.4 64-84.7 64s-74.2-27.1-84.7-64l-3.3 0c-35.3 0-64-28.7-64-64l0-48-40 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l112 0c13.3 0 24-10.7 24-24s-10.7-24-24-24L24 240c-13.3 0-24-10.7-24-24s10.7-24 24-24l176 0c13.3 0 24-10.7 24-24s-10.7-24-24-24L24 144c-13.3 0-24-10.7-24-24S10.7 96 24 96l40 0zM576 288l0-50.7-45.3-45.3-50.7 0 0 96 96 0zM256 424a40 40 0 1 0 -80 0 40 40 0 1 0 80 0zm232 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-yellow-800 mb-2">首次購買限制</h3>
+                        </div>
+                        <div class="space-y-2 text-yellow-700">
+                            <p>• 僅限同一產品的<strong>首次購買</strong></p>
+                            <p>• 第二次購買同產品<strong>不適用</strong></p>
+                            <p>• 每項產品僅有一次機會</p>
+                        </div>
+                    </div>
+
+                    <!-- 官網購買限制 -->
+                    <div class="highlight-box p-6 rounded-xl border-4 border-solid border-blue-500">
+                        <div class="text-center mb-4">
+                            <div class="w-20 h-20 flex items-center justify-center mx-auto mb-4">
+<svg viewBox="0 0 640 512"><path fill="#303030" d="M24-16C10.7-16 0-5.3 0 8S10.7 32 24 32l45.3 0c3.9 0 7.2 2.8 7.9 6.6l52.1 286.3c6.2 34.2 36 59.1 70.8 59.1L456 384c13.3 0 24-10.7 24-24s-10.7-24-24-24l-255.9 0c-11.6 0-21.5-8.3-23.6-19.7l-5.1-28.3 303.6 0c30.8 0 57.2-21.9 62.9-52.2L568.9 69.9C572.6 50.2 557.5 32 537.4 32l-412.7 0-.4-2c-4.8-26.6-28-46-55.1-46L24-16zM208 512a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm224 0a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"/></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-blue-800 mb-2">官網購買限制</h3>
+                        </div>
+                        <div class="space-y-2 text-blue-700">
+                            <p>• 僅限<strong>官方網站</strong>購買</p>
+                            <p>• 網址：unitedbio.com.tw</p>
+                            <p>• 其他通路不適用</p>
+                        </div>
+                    </div>
+
+                    <!-- 累計退貨限制 -->
+                    <div class="danger-box p-6 rounded-xl border-4 border-solid border-red-500">
+                        <div class="text-center mb-4">
+                            <div class="w-20 h-20 flex items-center justify-center mx-auto mb-4">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#303030" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 208c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-176c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 272c0 1.5 0 3.1 .1 4.6L67.6 283c-16-15.2-41.3-14.6-56.6 1.4S-3.6 325.7 12.4 341L124.8 448c43.1 41.1 100.4 64 160 64l19.2 0c97.2 0 176-78.8 176-176l0-208c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-176c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 176c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-208z"/></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-red-800 mb-2">累計退貨限制</h3>
+                        </div>
+                        <div class="space-y-2 text-red-700">
+                            <p>• 退貨達<strong>3款產品</strong>後</p>
+                            <p>• <strong>永久停止販售</strong>給您</p>
+                            <p>• 包含全系列產品</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特殊情況說明 -->
+        <section class="mb-16">
+            <div class="bg-white rounded-2xl shadow-xl p-8 section-card">
+                <div class="text-center mb-12">
+                    <h2 class="text-5xl font-bold text-gray-800 mb-4">特殊情況說明</h2>
+                    <p class="text-gray-600 text-lg">贈品與多件組的特別規定</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- 贈品規定 -->
+                    <div class="space-y-6">
+                        <div class="flex items-center mb-6">
+                            <h3 class="text-2xl font-bold text-gray-800">贈品相關規定</h3>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-400 callout callout--purple">
+                                <h4 class="font-semibold text-purple-800 mb-2">贈品拆封規則</h4>
+                                <p class="text-purple-700">若贈品已拆封或食用，視同已使用「35天無效退費」方案</p>
+                            </div>
+                            
+                            <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-400 callout callout--red">
+                                <h4 class="font-semibold text-red-800 mb-2">退費範圍限制</h4>
+                                <p class="text-red-700"><strong>贈品價值不列入退費範圍</strong>，退費金額僅包含主商品價格</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-400 callout callout--gray">
+                                <h4 class="font-semibold text-gray-800 mb-2">計算方式</h4>
+                                <p class="text-gray-700">退費金額 = 主商品價格 - 贈品價值</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 多件組規定 -->
+                    <div class="space-y-6">
+                        <div class="flex items-center mb-6">
+                            <h3 class="text-2xl font-bold text-gray-800">多件組限制</h3>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-400 callout callout--green">
+                                <h4 class="font-semibold text-green-800 mb-2">體驗機會</h4>
+                                <p class="text-green-700">僅提供<strong>一盒體驗</strong>機會，其他盒商品請勿拆封</p>
+                            </div>
+                            
+                            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400 callout callout--blue">
+                                <h4 class="font-semibold text-blue-800 mb-2">退貨要求</h4>
+                                <p class="text-blue-700">其他盒商品需<strong>全數寄回賀得生醫</strong></p>
+                            </div>
+                            
+                            <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-400 callout callout--red">
+                                <h4 class="font-semibold text-red-800 mb-2">開封限制</h4>
+                                <p class="text-red-700"><strong>第二盒以上若已開封，將不受理退費</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 政策分析總結 -->
+        <section class="mb-16">
+            <div class="bg-white rounded-2xl shadow-xl p-8 section-card">
+                <div class="text-center mb-12">
+                    <h2 class="text-5xl font-bold text-gray-800 mb-4">服務分析總結</h2>
+                    <p class="text-gray-600 text-lg">客觀分析退費政策的優勢與限制</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- 政策優勢 -->
+                    <div class="space-y-6">
+                        <div class="text-center mb-8">
+                           
+                                <!-- decorative icon removed per request -->
+                          <h3 class="text-3xl font-light text-green-700 mb-2">比其他品牌更優的尊榮服務</h3>
+                           
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4 p-4 bg-green-50 rounded-lg callout callout--green">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+<svg viewBox="0 0 512 512"><path fill="#57a00e" d="M80 160c17.7 0 32 14.3 32 32l0 256c0 17.7-14.3 32-32 32l-48 0c-17.7 0-32-14.3-32-32L0 192c0-17.7 14.3-32 32-32l48 0zM270.6 16C297.9 16 320 38.1 320 65.4l0 4.2c0 6.8-1.3 13.6-3.8 19.9L288 160 448 160c26.5 0 48 21.5 48 48 0 19.7-11.9 36.6-28.9 44 17 7.4 28.9 24.3 28.9 44 0 23.4-16.8 42.9-39 47.1 4.4 7.3 7 15.8 7 24.9 0 22.2-15 40.8-35.4 46.3 2.2 5.5 3.4 11.5 3.4 17.7 0 26.5-21.5 48-48 48l-87.9 0c-36.3 0-71.6-12.4-99.9-35.1L184 435.2c-15.2-12.1-24-30.5-24-50l0-186.6c0-14.9 3.5-29.6 10.1-42.9L226.3 43.3C234.7 26.6 251.8 16 270.6 16z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-green-800">試用期較長</h4>
+                                    <p class="text-green-700 text-sm">35天試用期比一般7-14天更充裕</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4 p-4 bg-green-50 rounded-lg callout callout--green">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+<svg viewBox="0 0 512 512"><path fill="#57a00e" d="M80 160c17.7 0 32 14.3 32 32l0 256c0 17.7-14.3 32-32 32l-48 0c-17.7 0-32-14.3-32-32L0 192c0-17.7 14.3-32 32-32l48 0zM270.6 16C297.9 16 320 38.1 320 65.4l0 4.2c0 6.8-1.3 13.6-3.8 19.9L288 160 448 160c26.5 0 48 21.5 48 48 0 19.7-11.9 36.6-28.9 44 17 7.4 28.9 24.3 28.9 44 0 23.4-16.8 42.9-39 47.1 4.4 7.3 7 15.8 7 24.9 0 22.2-15 40.8-35.4 46.3 2.2 5.5 3.4 11.5 3.4 17.7 0 26.5-21.5 48-48 48l-87.9 0c-36.3 0-71.6-12.4-99.9-35.1L184 435.2c-15.2-12.1-24-30.5-24-50l0-186.6c0-14.9 3.5-29.6 10.1-42.9L226.3 43.3C234.7 26.6 251.8 16 270.6 16z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-green-800">免退貨便利</h4>
+                                    <p class="text-green-700 text-sm">無需寄回商品，省去包裝運送麻煩</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4 p-4 bg-green-50 rounded-lg callout callout--green">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+<svg viewBox="0 0 512 512"><path fill="#57a00e" d="M80 160c17.7 0 32 14.3 32 32l0 256c0 17.7-14.3 32-32 32l-48 0c-17.7 0-32-14.3-32-32L0 192c0-17.7 14.3-32 32-32l48 0zM270.6 16C297.9 16 320 38.1 320 65.4l0 4.2c0 6.8-1.3 13.6-3.8 19.9L288 160 448 160c26.5 0 48 21.5 48 48 0 19.7-11.9 36.6-28.9 44 17 7.4 28.9 24.3 28.9 44 0 23.4-16.8 42.9-39 47.1 4.4 7.3 7 15.8 7 24.9 0 22.2-15 40.8-35.4 46.3 2.2 5.5 3.4 11.5 3.4 17.7 0 26.5-21.5 48-48 48l-87.9 0c-36.3 0-71.6-12.4-99.9-35.1L184 435.2c-15.2-12.1-24-30.5-24-50l0-186.6c0-14.9 3.5-29.6 10.1-42.9L226.3 43.3C234.7 26.6 251.8 16 270.6 16z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-green-800">全額退費</h4>
+                                    <p class="text-green-700 text-sm">承諾100%退還商品價格</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4 p-4 bg-green-50 rounded-lg callout callout--green">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+<svg viewBox="0 0 512 512"><path fill="#57a00e" d="M80 160c17.7 0 32 14.3 32 32l0 256c0 17.7-14.3 32-32 32l-48 0c-17.7 0-32-14.3-32-32L0 192c0-17.7 14.3-32 32-32l48 0zM270.6 16C297.9 16 320 38.1 320 65.4l0 4.2c0 6.8-1.3 13.6-3.8 19.9L288 160 448 160c26.5 0 48 21.5 48 48 0 19.7-11.9 36.6-28.9 44 17 7.4 28.9 24.3 28.9 44 0 23.4-16.8 42.9-39 47.1 4.4 7.3 7 15.8 7 24.9 0 22.2-15 40.8-35.4 46.3 2.2 5.5 3.4 11.5 3.4 17.7 0 26.5-21.5 48-48 48l-87.9 0c-36.3 0-71.6-12.4-99.9-35.1L184 435.2c-15.2-12.1-24-30.5-24-50l0-186.6c0-14.9 3.5-29.6 10.1-42.9L226.3 43.3C234.7 26.6 251.8 16 270.6 16z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-green-800">申請簡便</h4>
+                                    <p class="text-green-700 text-sm">電話或LINE即可申請，流程簡單</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 注意限制 -->
+                    <div class="space-y-6">
+                        <div class="text-center mb-8">
+                            <h3 class="text-5xl font-bold text-red-700">避免惡意退貨之所需限制</h3>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4 p-4 bg-red-50 rounded-lg callout callout--red">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+<svg height="45" width="45" viewBox="0 0 512 512"><path fill="#ab1c31" d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zm0-192a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm0-192c-18.2 0-32.7 15.5-31.4 33.7l7.4 104c.9 12.6 11.4 22.3 23.9 22.3 12.6 0 23-9.7 23.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-red-800">首次限制</h4>
+                                    <p class="text-red-700 text-sm">每項產品僅限首次購買可使用</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4 p-4 bg-red-50 rounded-lg callout callout--red">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+<svg height="45" width="45" viewBox="0 0 512 512"><path fill="#ab1c31" d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zm0-192a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm0-192c-18.2 0-32.7 15.5-31.4 33.7l7.4 104c.9 12.6 11.4 22.3 23.9 22.3 12.6 0 23-9.7 23.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-red-800">累計限制</h4>
+                                    <p class="text-red-700 text-sm">退貨3款後永久停止販售</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4 p-4 bg-red-50 rounded-lg callout callout--red">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+<svg height="45" width="45" viewBox="0 0 512 512"><path fill="#ab1c31" d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zm0-192a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm0-192c-18.2 0-32.7 15.5-31.4 33.7l7.4 104c.9 12.6 11.4 22.3 23.9 22.3 12.6 0 23-9.7 23.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-red-800">開封限制</h4>
+                                    <p class="text-red-700 text-sm">多件組開封規定嚴格</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4 p-4 bg-red-50 rounded-lg callout callout--red">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+<svg height="45" width="45" viewBox="0 0 512 512"><path fill="#ab1c31" d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zm0-192a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm0-192c-18.2 0-32.7 15.5-31.4 33.7l7.4 104c.9 12.6 11.4 22.3 23.9 22.3 12.6 0 23-9.7 23.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-red-800">贈品不退</h4>
+                                    <p class="text-red-700 text-sm">贈品價值不列入退費範圍</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 重要提醒 -->
+        <section class="mb-16">
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-700 text-white rounded-2xl shadow-xl p-8">
+                <div class="text-center">
+                    <h2 class="text-5xl font-bold mb-4">特別提醒</h2>
+                    <div class="max-w-3xl mx-auto">
+                            <p class="reminder-sentence reminder-line">
+                                「35天無效退費」為賀得生醫特別專案<br>
+                                若有疑似同一人重複申請之情形<br>
+                                賀得生醫保留查核及最終判定權
+                            </p>
+                        <div class="bg-white bg-opacity-20 p-6 rounded-xl">
+                            <p class="text-lg" style="color: #000000 !important;">
+                                本政策解析僅供參考，實際退費條件以賀得生醫官方公告為準。
+                                如有疑問請直接聯繫官方客服確認。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </main>
+
+
+
+    <script>
+
+
+        // 滾動動畫效果
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // 頁面載入動畫
+        window.addEventListener('load', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        });
+
+        // 平滑滾動效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'all 0.6s ease-out';
+                observer.observe(section);
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98bd8acfa5b54a69',t:'MTc2MDAwOTM4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

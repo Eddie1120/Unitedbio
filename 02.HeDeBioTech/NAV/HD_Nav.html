@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>賀得生醫（原 U能生醫）導覽列</title>
+	<style>
+		/* 導覽列（複製自 index.html）- 包含字級、間距、hover 與響應式行為 */
+	.HD_NAV_site-nav {
+		/* 導覽列預設顯示：移除先前強制隱藏的規則，讓備份導覽可在需要時顯示 */
+		display: flex;
+		position: sticky;
+		top: 0;
+		left: 0;
+		width: 100%;
+		align-items: center;
+		justify-content: center;
+		padding: 0 1rem;
+		height: 64px;
+		min-height: 40px;
+		background: #ffffff;
+		color: rgba(0,0,0,0.85);
+		box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+		z-index: 9999;
+		font-weight: 300;
+		-webkit-font-smoothing: antialiased;
+	}
+		/* 顯示品牌區塊（先前被隱藏），若需隱藏可在整合時再調整 */
+		.HD_NAV_site-nav .HD_NAV_brand { display: block; }
+		.HD_NAV_site-nav .HD_NAV_nav-links {
+				display: flex;
+				gap: 0.5rem;
+				align-items: center;
+				flex-wrap: nowrap;
+				justify-content: center;
+		}
+
+		/* 交錯深淺：odd 60% (0.6)，even 80% (0.8) */
+		.HD_NAV_site-nav .HD_NAV_nav-links a:nth-child(odd) { color: rgba(0,0,0,0.6); }
+		.HD_NAV_site-nav .HD_NAV_nav-links a:nth-child(even) { color: rgba(0,0,0,0.95); }
+
+		.HD_NAV_site-nav a {
+				display: inline-block;
+				position: relative;
+				color: inherit;
+				text-decoration: none;
+				padding: 0.25rem 0.15rem;
+				border-radius: 6px;
+				margin: 0;
+				transition: color 300ms cubic-bezier(.2,.9,.2,1), background 240ms ease, transform 300ms cubic-bezier(.18,.9,.32,1), margin 300ms cubic-bezier(.2,.9,.2,1);
+				will-change: transform, margin;
+				font-weight: 300;
+				font-size: 15px;
+		}
+
+		/* thin underline implemented via pseudo-element for smooth control */
+		.HD_NAV_site-nav a::after {
+				content: '';
+				position: absolute;
+				left: 12%;
+				right: 12%;
+				height: 1px;
+				background: currentColor;
+				bottom: -6px;
+				transform-origin: center left;
+				transform: scaleX(0);
+				opacity: 0;
+				transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 200ms ease;
+				border-radius: 1px;
+		}
+
+		.HD_NAV_site-nav a:hover {
+				transform: translateY(-8px) scale(1.12);
+				z-index: 5;
+				color: rgba(0,0,0,0.95);
+		}
+		.HD_NAV_site-nav a:hover::after {
+				transform: scaleX(1);
+				opacity: 1;
+		}
+
+		.HD_NAV_site-nav .HD_NAV_nav-links:hover { gap: 0.35rem; transition: gap 220ms ease; }
+		.HD_NAV_site-nav .HD_NAV_nav-links:hover a:not(:hover) {
+				transform: translateY(0) scale(0.97);
+				opacity: 0.95;
+				transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease;
+		}
+		.HD_NAV_site-nav a:hover { transform: translateY(-8px) scale(1.12); margin: 0 12px; z-index:5; color: rgba(0,0,0,0.95); }
+
+		.HD_NAV_site-nav a:focus {
+				outline: none;
+				box-shadow: 0 0 0 3px rgba(2,129,171,0.08);
+		}
+
+		@media (max-width: 640px) {
+			/* 手機版：保留導覽列可見性；若宿主 UI 需隱藏請在整合時以更高權重的選擇器覆蓋 */
+			.HD_NAV_site-nav { padding: 0 1rem; height: 9vh; display: flex; }
+				.HD_NAV_site-nav .HD_NAV_nav-links { gap: 0.5rem; font-size: 0.95rem; }
+		}
+
+		/* show on desktop */
+		/* 在所有寬度下顯示已由上方設定；保留此處以便未來需針對大螢幕調整樣式 */
+		@media (min-width: 1024px) {
+			.HD_NAV_site-nav { padding: 0 2rem; }
+		}
+	</style>
+</head>
+
+<body>
+	<header class="HD_NAV_site-nav" role="navigation" aria-label="主導覽列">
+		<nav class="HD_NAV_nav-links" aria-label="主要連結">
+			<a href="https://unitedbio.com.tw/about_us">關於我們</a>
+			<a href="https://unitedbio.com.tw/page/articles">最新醫療健康知識</a>
+			<a href="https://unitedbio.com.tw/category">商品列表</a>
+			<a href="https://unitedbio.com.tw/page/refund">安心體驗退費計劃</a>
+			<a href="https://unitedbio.com.tw/user/edit">會員中心</a>
+			<a href="https://unitedbio.com.tw/order_form">訂單查詢</a>
+		</nav>
+	</header>
+
+
+	<script>
+		// accessibility: hide decorative svgs if no role/title
+		document.addEventListener('DOMContentLoaded', function() {
+			document.querySelectorAll('svg').forEach(svg => {
+				if (svg.querySelector('title') || svg.getAttribute('role') === 'img') return;
+				svg.setAttribute('aria-hidden', 'true');
+				svg.setAttribute('focusable', 'false');
+			});
+		});
+	</script>
+
+	<!-- Sync nav height into CSS variable so hero can reserve space: --total-nav-height -->
+	<script>
+		(function syncHDNavHeight(){
+			const nav = document.querySelector('.HD_NAV_site-nav');
+			const root = document.documentElement;
+			function setHeight(){
+				try{
+					if(!nav){ root.style.setProperty('--total-nav-height','0px'); return; }
+					const h = Math.max(0, Math.round(nav.getBoundingClientRect().height));
+					root.style.setProperty('--total-nav-height', h + 'px');
+				}catch(e){
+					root.style.setProperty('--total-nav-height','0px');
+				}
+			}
+			window.addEventListener('load', setHeight);
+			window.addEventListener('resize', setHeight);
+			if(window.ResizeObserver && nav){
+				try{ const ro = new ResizeObserver(setHeight); ro.observe(nav); }catch(e){}
+			}
+			if(window.MutationObserver && nav){
+				try{
+					const mo = new MutationObserver(setHeight);
+					mo.observe(nav, { attributes: true, childList: true, subtree: true });
+				}catch(e){}
+			}
+			// initial
+			setHeight();
+		})();
+	</script>
+</body>
+
+</html>

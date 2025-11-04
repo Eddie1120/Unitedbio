@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重要‼️最新的醫療健康知識</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            margin-bottom: 12px;
+        }
+        
+        .ub-medical-hero-wrapper {
+            width: 100%;
+            height: 50vh;
+            background: url('https://unitedbio.com.tw/upload/3552/home/3552_68efc62857bc1.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 4%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ub-medical-hero-heading {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .ub-medical-hero-tagline {
+            display: block;
+            margin-bottom: 10px;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            background: rgba(67, 77, 55, 1);
+            color: #c1c193;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            animation: ub-tagline-drift 4s ease-in-out infinite;
+        }
+
+        @keyframes ub-tagline-drift {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(10px);
+            }
+        }
+
+        .ub-medical-hero-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            margin-top: 5px;
+            line-height: 1.05;
+            color: #5d6343;
+            display: inline-block;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .ub-medical-hero-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(93, 99, 67, 0.7);
+            border-radius: 999px;
+        }
+        
+        .ub-medical-hero-subtitle {
+            font-size: 1.25rem;
+            color: #2f3238;
+            letter-spacing: 0;
+            margin: 0 0 6px;
+            line-height: 1.25;
+            letter-spacing: 0.01em;
+        }
+        
+        
+        .ub-medical-hero-bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .ub-medical-hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 12px 0;
+            max-width: 420px;
+        }
+        
+
+        
+        @keyframes ub-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @media (max-width: 768px) {
+            .ub-medical-hero-title {
+                font-size: 2rem;
+            }
+            
+            .ub-medical-hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .ub-medical-hero-wrapper {
+                padding-left: 20px;
+            }
+        }
+
+        .ub-article-wrapper {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 60px 5% 120px;
+            color: #2d2f25;
+            font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+            line-height: 1.8;
+        }
+
+        .ub-article-header {
+            margin-bottom: 32px;
+        }
+
+        .ub-article-title {
+            font-size: 2rem;
+            margin: 0;
+            color: #364026;
+        }
+
+        .ub-article-meta {
+            font-size: 0.95rem;
+            color: #6c7158;
+            margin-top: 12px;
+        }
+
+        .ub-article-list {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .ub-article-card {
+            border: 1px solid #d3d9c2;
+            border-radius: 24px;
+            background: #ffffff;
+            box-shadow: 0 12px 28px rgba(71, 79, 57, 0.08);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .ub-article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 36px rgba(71, 79, 57, 0.12);
+            border-width: 5px;
+        }
+
+        .ub-article-card.is-expanded {
+            box-shadow: 0 18px 44px rgba(71, 79, 57, 0.18);
+            border-width: 5px;
+        }
+
+        .ub-article-card.is-expanded .ub-article-summary {
+            display: none;
+        }
+
+        .ub-article-summary {
+            padding: 28px 32px 32px;
+            background: linear-gradient(135deg, #f7f9f2 0%, #f1f5ea 100%);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .ub-article-card:not(.is-expanded) .ub-article-summary {
+            padding: 18px 24px 22px;
+            gap: 10px;
+            line-height: 1.35;
+        }
+
+        .ub-article-summary-title {
+            margin: 0;
+            font-size: 1.65rem;
+            color: #344020;
+        }
+
+        .ub-article-card:not(.is-expanded) .ub-article-summary-title {
+            line-height: 1.1;
+        }
+
+        .ub-article-summary-meta {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #60674c;
+        }
+
+        .ub-article-card:not(.is-expanded) .ub-article-summary-meta {
+            line-height: 1.25;
+            background: #4f5c37;
+            color: #f1f5ea;
+            padding: 4px 12px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .ub-article-summary-highlights {
+            margin: 0;
+            padding-left: 18px;
+            color: #475239;
+            font-size: 0.95rem;
+        }
+
+        .ub-article-summary-highlights li {
+            margin-bottom: 6px;
+        }
+
+        .ub-article-card:not(.is-expanded) .ub-article-summary-highlights {
+            padding-left: 16px;
+            line-height: 1.35;
+        }
+
+        .ub-article-card:not(.is-expanded) .ub-article-summary-highlights li {
+            margin-bottom: 2px;
+            line-height: 1.35;
+        }
+
+        .ub-article-button {
+            align-self: flex-start;
+            padding: 10px 24px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            background: #4f5c37;
+            color: #f1f5ea;
+            font-size: 0.96rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+        .ub-article-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(67, 100, 51, 0.25);
+            border-color: #4f5c37;
+        }
+
+        .ub-article-button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .ub-article-button.is-secondary {
+            background: #ffffff;
+            color: #496536;
+            border-color: #496536;
+            margin-top: 16px;
+        }
+
+        .ub-article-card.is-expanded .js-article-expand {
+            display: none;
+        }
+
+        .ub-article-content {
+            padding: 42px 48px 48px;
+            background: linear-gradient(180deg, rgba(248, 250, 244, 0.9) 0%, #ffffff 28%);
+            border-top: 1px solid #dce4c7;
+            display: none;
+            border-radius: 0;
+        }
+
+        .ub-article-card.is-expanded .ub-article-content {
+            display: block;
+        }
+
+        .ub-article-content article,
+        .ub-article-body {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .ub-article-body {
+            line-height: 1.75;
+            color: #2e3521;
+        }
+
+        .ub-article-body p {
+            margin: 0 0 18px;
+        }
+
+        .ub-article-body h2 {
+            margin: 0 0 18px;
+            font-size: 1.7rem;
+            color: inherit;
+            letter-spacing: 0.01em;
+        }
+
+        .ub-article-body h3 {
+            margin: 22px 0 14px;
+            font-size: 1.25rem;
+            color: inherit;
+        }
+
+        .ub-article-body strong {
+            color: inherit;
+            background: rgba(255, 255, 255, 0.38);
+            padding: 0 6px;
+            border-radius: 8px;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+            margin-right: 0.25em;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .ub-article-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .ub-article-keyword {
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: #eef4df;
+            color: #4b5436;
+            font-size: 0.85rem;
+            border: 1px solid #d4debc;
+        }
+
+        .ub-article-box {
+            border-radius: 22px;
+            padding: 38px 40px 34px;
+            margin: 0;
+            border: 4px solid rgba(79, 92, 55, 0.18);
+            box-shadow: 0 18px 36px rgba(71, 79, 57, 0.12);
+            backdrop-filter: blur(2px);
+            position: relative;
+        }
+
+        .ub-article-box::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 40px;
+            width: 68px;
+            height: 5px;
+            border-radius: 999px;
+            background: currentColor;
+            opacity: 0.35;
+        }
+
+        .ub-article-box.is-primary {
+            background: linear-gradient(135deg, #fbfdf6 0%, #eef6e4 100%);
+            border-color: rgba(151, 175, 117, 0.48);
+            color: #31441f;
+        }
+
+        .ub-article-box.is-secondary {
+            background: linear-gradient(135deg, #f6fbff 0%, #e7f2fc 100%);
+            border-color: rgba(122, 166, 206, 0.42);
+            color: #1f405b;
+        }
+
+        .ub-article-box.is-accent {
+            background: linear-gradient(135deg, #fdf7f2 0%, #f5e7d6 100%);
+            border-color: rgba(209, 168, 120, 0.46);
+            color: #5b381b;
+        }
+
+        .ub-article-box h2 {
+            margin: 0 0 18px;
+            font-size: 1.65rem;
+            color: inherit;
+        }
+
+        .ub-article-box h3 {
+            margin: 16px 0 12px;
+            font-size: 1.18rem;
+            color: inherit;
+        }
+
+        .ub-article-box p {
+            margin: 0 0 18px;
+        }
+
+        .ub-article-bullets {
+            padding-left: 26px;
+            margin: 0 0 18px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .ub-article-bullets li::marker {
+            font-weight: 600;
+        }
+
+        .ub-article-box.is-primary .ub-article-bullets li,
+        .ub-article-box.is-secondary .ub-article-bullets li,
+        .ub-article-box.is-accent .ub-article-bullets li {
+            padding: 12px 18px;
+            border-radius: 16px;
+            color: #ffffff;
+            box-shadow: 0 12px 22px rgba(0, 0, 0, 0.12) inset;
+        }
+
+        .ub-article-box .ub-article-bullets li strong {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: none;
+            margin-right: 0.3em;
+            display: inline-flex;
+            align-items: center;
+            padding: 0 6px;
+            border-radius: 10px;
+        }
+
+        .ub-article-box.is-primary .ub-article-bullets li {
+            background: rgba(49, 68, 31, 0.92);
+        }
+
+        .ub-article-box.is-secondary .ub-article-bullets li {
+            background: rgba(35, 70, 102, 0.9);
+        }
+
+        .ub-article-box.is-accent .ub-article-bullets li {
+            background: rgba(133, 74, 32, 0.9);
+        }
+
+        .ub-article-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0 8px;
+            font-size: 0.95rem;
+        }
+
+        .ub-article-table th,
+        .ub-article-table td {
+            padding: 12px 16px;
+            border: 1px solid #dce4c7;
+            text-align: left;
+        }
+
+        .ub-article-table thead {
+            background: #eef4df;
+            color: #3d462c;
+        }
+
+        .ub-article-table.is-feature,
+        .ub-article-table.is-contrast {
+            border-collapse: separate;
+            border-spacing: 0;
+            border: none;
+            background: #fbfdf7;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 28px rgba(71, 79, 57, 0.08);
+        }
+
+        .ub-article-box.is-primary strong {
+            color: #1f2f0e;
+            background: linear-gradient(120deg, rgba(116, 138, 81, 0.28), rgba(245, 250, 236, 0.7));
+        }
+
+        .ub-article-box.is-secondary strong {
+            color: #16374c;
+            background: linear-gradient(120deg, rgba(96, 146, 180, 0.28), rgba(236, 245, 252, 0.75));
+        }
+
+        .ub-article-box.is-accent strong {
+            color: #5c3313;
+            background: linear-gradient(120deg, rgba(209, 168, 120, 0.28), rgba(250, 239, 226, 0.78));
+        }
+
+        .ub-article-box.is-secondary .ub-article-bullets li::marker,
+        .ub-article-box.is-accent .ub-article-bullets li::marker,
+        .ub-article-box.is-primary .ub-article-bullets li::marker {
+            color: #ffffff;
+        }
+
+        .ub-article-box.is-primary .ub-article-meta {
+            color: #4f6a39;
+        }
+
+        .ub-article-box.is-secondary .ub-article-meta {
+            color: #3c6b95;
+        }
+
+        .ub-article-box.is-accent .ub-article-meta {
+            color: #a5632f;
+        }
+
+        .ub-article-box.is-secondary .ub-article-table.is-feature,
+        .ub-article-box.is-secondary .ub-article-table.is-contrast {
+            background: #f3f8ff;
+            box-shadow: 0 14px 32px rgba(46, 103, 145, 0.18);
+        }
+
+        .ub-article-box.is-accent .ub-article-table.is-feature,
+        .ub-article-box.is-accent .ub-article-table.is-contrast {
+            background: #fdf3ea;
+            box-shadow: 0 14px 32px rgba(173, 120, 69, 0.16);
+        }
+
+        .ub-article-box.is-primary .ub-article-table.is-feature,
+        .ub-article-box.is-primary .ub-article-table.is-contrast {
+            background: #f5f9ec;
+            box-shadow: 0 14px 32px rgba(106, 139, 71, 0.16);
+        }
+
+        .ub-article-box.is-primary .ub-article-table.is-feature thead,
+        .ub-article-box.is-primary .ub-article-table.is-contrast thead {
+            background: linear-gradient(135deg, #5f7a3f, #3e5223);
+            color: #f4f7ef;
+        }
+
+        .ub-article-box.is-secondary .ub-article-table.is-feature thead,
+        .ub-article-box.is-secondary .ub-article-table.is-contrast thead {
+            background: linear-gradient(135deg, #5a8fb9, #366284);
+            color: #f3f9ff;
+        }
+
+        .ub-article-box.is-accent .ub-article-table.is-feature thead,
+        .ub-article-box.is-accent .ub-article-table.is-contrast thead {
+            background: linear-gradient(135deg, #d89c5a, #b47332);
+            color: #fff7ef;
+        }
+
+        .ub-article-box.is-primary .ub-article-table.is-feature tbody tr:nth-child(odd),
+        .ub-article-box.is-primary .ub-article-table.is-contrast tbody tr:nth-child(odd) {
+            background: rgba(95, 122, 63, 0.12);
+        }
+
+        .ub-article-box.is-primary .ub-article-table.is-feature tbody tr:nth-child(even),
+        .ub-article-box.is-primary .ub-article-table.is-contrast tbody tr:nth-child(even) {
+            background: rgba(95, 122, 63, 0.04);
+        }
+
+        .ub-article-box.is-secondary .ub-article-table.is-feature tbody tr:nth-child(odd),
+        .ub-article-box.is-secondary .ub-article-table.is-contrast tbody tr:nth-child(odd) {
+            background: rgba(74, 122, 164, 0.15);
+        }
+
+        .ub-article-box.is-secondary .ub-article-table.is-feature tbody tr:nth-child(even),
+        .ub-article-box.is-secondary .ub-article-table.is-contrast tbody tr:nth-child(even) {
+            background: rgba(74, 122, 164, 0.06);
+        }
+
+        .ub-article-box.is-accent .ub-article-table.is-feature tbody tr:nth-child(odd),
+        .ub-article-box.is-accent .ub-article-table.is-contrast tbody tr:nth-child(odd) {
+            background: rgba(214, 153, 93, 0.14);
+        }
+
+        .ub-article-box.is-accent .ub-article-table.is-feature tbody tr:nth-child(even),
+        .ub-article-box.is-accent .ub-article-table.is-contrast tbody tr:nth-child(even) {
+            background: rgba(214, 153, 93, 0.06);
+        }
+
+        .ub-article-box.is-primary .ub-article-table.is-feature td:first-child,
+        .ub-article-box.is-primary .ub-article-table.is-contrast td:first-child {
+            color: #2b3d1b;
+            background: rgba(122, 158, 80, 0.2);
+        }
+
+        .ub-article-box.is-secondary .ub-article-table.is-feature td:first-child,
+        .ub-article-box.is-secondary .ub-article-table.is-contrast td:first-child {
+            color: #1d3e5c;
+            background: rgba(92, 143, 185, 0.2);
+        }
+
+        .ub-article-box.is-accent .ub-article-table.is-feature td:first-child,
+        .ub-article-box.is-accent .ub-article-table.is-contrast td:first-child {
+            color: #5c3515;
+            background: rgba(214, 153, 93, 0.22);
+        }
+
+        .ub-article-box.is-primary .ub-article-table.is-feature tbody tr + tr td,
+        .ub-article-box.is-primary .ub-article-table.is-contrast tbody tr + tr td {
+            border-top: 1px solid rgba(122, 158, 80, 0.26);
+        }
+
+        .ub-article-box.is-secondary .ub-article-table.is-feature tbody tr + tr td,
+        .ub-article-box.is-secondary .ub-article-table.is-contrast tbody tr + tr td {
+            border-top: 1px solid rgba(92, 143, 185, 0.24);
+        }
+
+        .ub-article-box.is-accent .ub-article-table.is-feature tbody tr + tr td,
+        .ub-article-box.is-accent .ub-article-table.is-contrast tbody tr + tr td {
+            border-top: 1px solid rgba(214, 153, 93, 0.24);
+        }
+
+        .ub-article-box.is-primary .ub-article-table.is-feature tbody tr:hover,
+        .ub-article-box.is-primary .ub-article-table.is-contrast tbody tr:hover {
+            background: rgba(95, 122, 63, 0.18);
+        }
+
+        .ub-article-box.is-secondary .ub-article-table.is-feature tbody tr:hover,
+        .ub-article-box.is-secondary .ub-article-table.is-contrast tbody tr:hover {
+            background: rgba(74, 122, 164, 0.22);
+        }
+
+        .ub-article-box.is-accent .ub-article-table.is-feature tbody tr:hover,
+        .ub-article-box.is-accent .ub-article-table.is-contrast tbody tr:hover {
+            background: rgba(214, 153, 93, 0.2);
+        }
+
+        .ub-article-table.is-feature caption,
+        .ub-article-table.is-contrast caption {
+            padding: 14px 20px 0;
+            font-weight: 600;
+            color: inherit;
+            text-align: left;
+        }
+
+        .ub-article-table.is-feature thead,
+        .ub-article-table.is-contrast thead {
+            background: linear-gradient(135deg, #4f5c37, #54653b);
+            color: #f1f5ea;
+        }
+
+        .ub-article-table.is-feature th,
+        .ub-article-table.is-feature td,
+        .ub-article-table.is-contrast th,
+        .ub-article-table.is-contrast td {
+            border: none;
+            padding: 18px 22px;
+        }
+
+        .ub-article-table.is-feature tbody tr,
+        .ub-article-table.is-contrast tbody tr {
+            position: relative;
+        }
+
+        .ub-article-table.is-feature tbody tr:nth-child(odd),
+        .ub-article-table.is-contrast tbody tr:nth-child(odd) {
+            background: rgba(79, 92, 55, 0.05);
+        }
+
+        .ub-article-table.is-feature tbody tr:nth-child(even),
+        .ub-article-table.is-contrast tbody tr:nth-child(even) {
+            background: rgba(79, 92, 55, 0.02);
+        }
+
+        .ub-article-table.is-feature td:first-child,
+        .ub-article-table.is-contrast td:first-child {
+            font-weight: 600;
+            color: #4b5834;
+            background: rgba(79, 92, 55, 0.08);
+        }
+
+        .ub-article-table.is-feature tbody tr + tr td,
+        .ub-article-table.is-contrast tbody tr + tr td {
+            border-top: 1px solid rgba(79, 92, 55, 0.08);
+        }
+
+        .ub-article-table.is-feature tbody tr:hover,
+        .ub-article-table.is-contrast tbody tr:hover {
+            background: rgba(79, 92, 55, 0.12);
+            transition: background 0.2s ease;
+        }
+
+        .ub-article-qa {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 16px;
+        }
+
+        .ub-article-qa li {
+            margin: 0;
+            padding: 16px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(79, 92, 55, 0.08);
+            background: rgba(255, 255, 255, 0.55);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+        }
+
+        .ub-article-qa strong {
+            display: block;
+            margin-bottom: 6px;
+            color: inherit;
+            font-size: 1.02rem;
+        }
+
+        .ub-article-box.is-secondary .ub-article-qa li {
+            border-color: rgba(62, 110, 150, 0.22);
+            background: rgba(228, 241, 251, 0.7);
+        }
+
+        .ub-article-box.is-secondary .ub-article-qa strong {
+            color: #1e4160;
+        }
+
+        .ub-article-box.is-accent .ub-article-qa li {
+            border-color: rgba(194, 137, 82, 0.24);
+            background: rgba(249, 233, 220, 0.72);
+        }
+
+        .ub-article-box.is-accent .ub-article-qa strong {
+            color: #5f3618;
+        }
+
+        .ub-article-box.is-primary .ub-article-qa li {
+            border-color: rgba(115, 143, 82, 0.2);
+            background: rgba(239, 248, 231, 0.7);
+        }
+
+        .ub-article-box.is-primary .ub-article-qa strong {
+            color: #2a3b17;
+        }
+
+        .ub-article-box .ub-article-bullets.is-summary {
+            counter-reset: summary-counter;
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+            display: grid;
+            gap: 14px;
+        }
+
+        .ub-article-box .ub-article-bullets.is-summary li {
+            position: relative;
+            padding: 16px 22px 16px 74px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.48);
+            background: rgba(255, 255, 255, 0.85);
+            color: inherit;
+            box-shadow: 0 16px 28px rgba(31, 44, 28, 0.08);
+        }
+
+        .ub-article-box.is-primary .ub-article-bullets.is-summary li {
+            color: #31441f;
+            border: 1px solid rgba(49, 68, 31, 0.22);
+            box-shadow: 0 16px 28px rgba(49, 68, 31, 0.12);
+        }
+
+        .ub-article-box.is-secondary .ub-article-bullets.is-summary li {
+            color: #1f405b;
+            border: 1px solid rgba(31, 64, 91, 0.2);
+            box-shadow: 0 16px 28px rgba(31, 64, 91, 0.16);
+        }
+
+        .ub-article-box.is-accent .ub-article-bullets.is-summary li {
+            color: #5b381b;
+            border: 1px solid rgba(91, 56, 27, 0.22);
+            box-shadow: 0 16px 28px rgba(91, 56, 27, 0.14);
+        }
+
+        .ub-article-box .ub-article-bullets.is-summary li::before {
+            counter-increment: summary-counter;
+            content: counter(summary-counter, decimal-leading-zero);
+            position: absolute;
+            left: 26px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.12em;
+            color: inherit;
+            opacity: 0.88;
+        }
+
+        .ub-article-box .ub-article-bullets.is-summary li strong {
+            color: inherit;
+            background: none;
+            padding: 0;
+            margin-right: 0.2em;
+            display: inline;
+            box-shadow: none;
+        }
+
+        .ub-article-reference {
+            margin: 24px 0 16px;
+            padding: 26px 28px;
+            background: #f1f2f4;
+            border-radius: 18px;
+            color: #2f3238;
+            border: none;
+            box-shadow: none;
+        }
+
+        .ub-article-reference .ub-reference-title {
+            font-size: 1.25rem;
+            letter-spacing: 0;
+            margin: 0 0 8px;
+        }
+
+        .ub-article-reference .ub-article-bullets.is-reference,
+        .ub-article-box .ub-article-bullets.is-reference {
+            padding-left: 0;
+            margin: 0;
+            display: grid;
+            gap: 0;
+            font-size: 0.85rem;
+        }
+
+        .ub-article-reference .ub-article-bullets.is-reference li,
+        .ub-article-box .ub-article-bullets.is-reference li {
+            list-style: none;
+            background: none;
+            color: #3e4248;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            display: flex;
+            align-items: flex-start;
+            gap: 4px;
+            line-height: 1.32;
+        }
+
+        .ub-article-reference .ub-article-bullets.is-reference li strong,
+        .ub-article-box .ub-article-bullets.is-reference li strong {
+            color: #2d3035;
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            margin-right: 0.25em;
+            display: inline;
+            box-shadow: none;
+        }
+
+        .ub-article-reference .ub-article-bullets.is-reference li::before,
+        .ub-article-box .ub-article-bullets.is-reference li::before {
+            content: '\2022';
+            font-size: 1.1em;
+            color: currentColor;
+            opacity: 0.8;
+            line-height: 1.32;
+            margin-top: 0;
+        }
+
+        .ub-article-footer {
+            font-size: 0.88rem;
+            color: #4c533d;
+            border-radius: 18px;
+            border: 4px solid rgba(122, 139, 93, 0.28);
+            background: linear-gradient(135deg, rgba(245, 248, 236, 0.85), rgba(233, 240, 222, 0.95));
+            padding: 24px 28px;
+            box-shadow: 0 12px 28px rgba(87, 102, 61, 0.12);
+            margin-top: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .ub-article-box {
+                padding: 26px 24px;
+            }
+
+            .ub-article-title {
+                font-size: 1.6rem;
+            }
+
+            .ub-article-summary {
+                padding: 24px;
+            }
+
+            .ub-article-summary-title {
+                font-size: 1.4rem;
+            }
+
+            .ub-article-button {
+                width: 100%;
+                text-align: center;
+            }
+
+            .ub-article-content {
+                padding: 32px 24px 38px;
+            }
+
+            .ub-article-body {
+                gap: 22px;
+            }
+
+            .ub-article-box {
+                padding: 26px 24px;
+            }
+
+            .ub-article-bullets {
+                padding-left: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="ub-medical-hero-wrapper">
+        <svg class="ub-medical-hero-bg-pattern" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+                <linearGradient id="ub-hero-gradient" x1="0%" y1="0%" x2="90%" y2="100%">
+                    <stop offset="0%" stop-color="rgba(255, 255, 255, 0.95)"></stop>
+                    <stop offset="100%" stop-color="rgba(233, 243, 214, 0.55)"></stop>
+                </linearGradient>
+                <pattern id="ub-hero-pattern" width="120" height="120" patternUnits="userSpaceOnUse">
+                    <circle cx="22" cy="18" r="4" fill="rgba(116, 138, 81, 0.18)"></circle>
+                    <circle cx="78" cy="42" r="6" fill="rgba(163, 189, 120, 0.24)"></circle>
+                    <circle cx="54" cy="96" r="5" fill="rgba(116, 138, 81, 0.18)"></circle>
+                    <circle cx="6" cy="88" r="3" fill="rgba(163, 189, 120, 0.22)"></circle>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#ub-hero-gradient)"></rect>
+            <rect width="100%" height="100%" fill="url(#ub-hero-pattern)"></rect>
+        </svg>
+        <div class="ub-medical-hero-content">
+            <div class="ub-medical-hero-heading">
+                <span class="ub-medical-hero-tagline">賀得生醫</span>
+                <h1 class="ub-medical-hero-title">給您最新的<br>醫療健康知識</h1>
+            </div>
+            <p class="ub-medical-hero-subtitle">
+                 掌握最前沿的醫療資訊<br>守護您和家人的健康<br>
+                 專業醫師團隊<br>為您精選重要健康知識
+            </p>
+        </div>
+    </section>
+    <section class="ub-article-wrapper">
+        <div class="ub-article-list">
+            <article class="ub-article-card" id="article-ocular-nutrition">
+                <div class="ub-article-summary">
+                    <h3 class="ub-article-summary-title">如何挑選保護眼睛的保健食品？醫師與營養師聯合解析『葉黃素 × 玉米黃素 × DHA × 藻紅素』黃金防護力</h3>
+                    <p class="ub-article-summary-meta">林宜宏 醫學博士｜2025-10-17</p>
+                    <ul class="ub-article-summary-highlights">
+                        <li>長時間使用 3C，藍光與視覺疲勞成為現代人共同困擾。</li>
+                        <li>三大關鍵營養素——葉黃素＋玉米黃素、藻油 DHA、藻紅素——構築眼睛多層次防護。</li>
+                        <li>臨床研究顯示 DHA 能顯著提升葉黃素吸收率，黃斑部保護更全面。</li>
+                        <li>挑選重點：營養型態、專利來源、安全檢測與比例設計。</li>
+                    </ul>
+                    <button type="button" class="ub-article-button js-article-expand" aria-expanded="false" aria-controls="article-ocular-nutrition-content">閱讀全文</button>
+                </div>
+                <div class="ub-article-content" id="article-ocular-nutrition-content" hidden>
+                    <article class="ub-article-body">
+                        <header class="ub-article-header">
+                            <h2 class="ub-article-title">如何挑選保護眼睛的保健食品？醫師與營養師聯合解析『葉黃素 × 玉米黃素 × DHA × 藻紅素』黃金防護力</h2>
+                            <p class="ub-article-meta">作者：林宜宏 醫學博士｜發布日期：2025-10-17</p>
+                            <div class="ub-article-keywords">
+                                <span class="ub-article-keyword">葉黃素</span>
+                                <span class="ub-article-keyword">玉米黃素</span>
+                                <span class="ub-article-keyword">DHA</span>
+                                <span class="ub-article-keyword">藻紅素</span>
+                                <span class="ub-article-keyword">視覺營養</span>
+                                <span class="ub-article-keyword">乾眼</span>
+                                <span class="ub-article-keyword">視覺清晰</span>
+                                <span class="ub-article-keyword">藻油</span>
+                                <span class="ub-article-keyword">黃斑部</span>
+                                <span class="ub-article-keyword">視覺疲勞</span>
+                                <span class="ub-article-keyword">藍光防護</span>
+                                <span class="ub-article-keyword">護眼營養</span>
+                                <span class="ub-article-keyword">植物性DHA</span>
+                                <span class="ub-article-keyword">賀得生醫</span>
+                            </div>
+                        </header>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>文章重點速覽</h2>
+                            <ul class="ub-article-bullets is-summary">
+                                <li>長時間使用 3C，藍光與視覺疲勞成為現代人共同困擾。</li>
+                                <li>三大關鍵營養素——葉黃素＋玉米黃素、藻油 DHA、藻紅素——構築眼睛的多層次防護。</li>
+                                <li>臨床顯示 DHA 能顯著提升葉黃素吸收率，讓黃斑部保護更全面。</li>
+                                <li>挑選產品看「型態 × 來源 × 安全檢測 × 比例設計」。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>現代視覺健康挑戰</h2>
+                            <p>手機、平板與電腦成為日常不可或缺的一部分，長時間盯螢幕容易造成藍光曝露、乾澀與疲勞。研究顯示，長期藍光暴露可能導致黃斑部色素密度下降，而這些色素正是由葉黃素與玉米黃素（Zeaxanthin）所構成。</p>
+                            <p>想維持清晰與舒適的視覺，從補足營養基礎開始，是日常保護的第一步。</p>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>（1）葉黃素＋玉米黃素——黃斑部核心防護</h2>
+                            <p>兩者為視網膜中央「黃斑部」主要色素，能吸收藍光並中和自由基。</p>
+                            <ul class="ub-article-bullets">
+                                <li>研究建議比例約為 <strong>30 mg 葉黃素 : 6 mg 玉米黃素</strong> 時吸收理想。</li>
+                                <li><strong>游離型（Free Form）</strong>葉黃素吸收率比酯化型高約 2 倍。</li>
+                                <li>常見國際專利來源如 <strong>FloraGLO®</strong>、<strong>Lutemax®</strong>。</li>
+                                <li>攝取足夠有助維持視覺清晰、降低長時間用眼不適。</li>
+                            </ul>
+                            <p class="ub-article-meta">✅ 專業提醒：食品標示應註明原料來源與型態，避免使用如「治療眼疾」等醫療詞句。</p>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>（2）葉黃素＋藻油中 DHA——視覺神經的溝通橋樑</h2>
+                            <p>DHA（Docosahexaenoic Acid）為視網膜脂肪酸主要組成（約佔 60%），對影像訊號傳導與視覺穩定極為重要。</p>
+                            <h3>📊 科學依據</h3>
+                            <ul class="ub-article-bullets">
+                                <li>西班牙 Navarra 大學臨床研究（Nutrients, 2013）：每日補充 <strong>12 mg 葉黃素 + 280 mg DHA</strong> 的受試者，黃斑部色素密度（MPOD）提升 <strong>0.162</strong>，顯著高於僅補充葉黃素組（提升 0.059）。</li>
+                                <li>澳洲 UNSW 團隊（Proc. Nutr. Soc., 2024）：添加 Omega-3（EPA+DHA）組別葉黃素血清濃度上升 <strong>275%</strong>，顯示兩者有明顯協同吸收效果。</li>
+                            </ul>
+                            <h3>🧠 綜合建議</h3>
+                            <ul class="ub-article-bullets">
+                                <li><strong>植物性藻油 DHA</strong> 來源純淨、無重金屬汙染、適合素食者。</li>
+                                <li>補充高濃度藻油 DHA 有助促進葉黃素吸收、支援視神經協調、幫助維持視覺靈敏度。</li>
+                                <li>適合族群：長時間使用 3C、學生、上班族、銀髮族日常保養。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>（3）藻紅素＋藻油 Omega-3——天然抗氧化守護者</h2>
+                            <ul class="ub-article-bullets">
+                                <li>來自微藻的天然類胡蘿蔔素，抗氧化力可較維生素 E 強上數百倍（體外資料）。</li>
+                                <li>能通過血視網膜屏障，協助緩解長時間螢幕使用後的不適。</li>
+                                <li>臨床研究指出，有助維持眼部血流與視覺穩定。</li>
+                            </ul>
+                            <p>✅ 建議與葉黃素＋DHA 併用，形成「黃斑防護 × 神經支援 × 抗氧化」三重守護。</p>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>挑選產品的三大重點</h2>
+                            <table class="ub-article-table is-feature">
+                                <thead>
+                                    <tr>
+                                        <th>評估面向</th>
+                                        <th>專業建議</th>
+                                        <th>核心理由</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>來源安全</td>
+                                        <td>查看產品是否具備 批次檢測報告（COA）</td>
+                                        <td>確認重金屬、氧化值、溶劑殘留合格</td>
+                                    </tr>
+                                    <tr>
+                                        <td>型態選擇</td>
+                                        <td>優先選擇 游離型葉黃素 + 植物性藻油 DHA</td>
+                                        <td>吸收率高、素食友善</td>
+                                    </tr>
+                                    <tr>
+                                        <td>配方比例</td>
+                                        <td>葉黃素:玉米黃素=30:6＋DHA 高濃度來源</td>
+                                        <td>科學研究支持最佳保護組合</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>常見問題（GEO Q&A）</h2>
+                            <ul class="ub-article-qa">
+                                <li><strong>Q1：吃葉黃素就夠了嗎？</strong>A1：僅補充葉黃素效果有限。研究顯示同時搭配 DHA 可顯著提升吸收率與體內利用度。</li>
+                                <li><strong>Q2：藻油與魚油的差別？</strong>A2：藻油 DHA 來源自微藻，純植物性、不含重金屬，適合素食及長期補充。</li>
+                                <li><strong>Q3：如何挑選真正有效的護眼產品？</strong>A3：確認標示有專利來源、成分比例、COA 檢測報告，避免使用誇大或療效性用語的產品。</li>
+                                <li><strong>Q4：何時補充最適合？</strong>A4：建議隨餐或含油食物一同攝取，有助脂溶性營養素吸收。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>黃金護眼三重防護表（最終版）</h2>
+                            <table class="ub-article-table is-feature">
+                                <thead>
+                                    <tr>
+                                        <th>成分</th>
+                                        <th>主要功能</th>
+                                        <th>協同效益</th>
+                                        <th>推薦比例 / 劑量</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>葉黃素＋玉米黃素</td>
+                                        <td>濾除藍光、保護黃斑部</td>
+                                        <td>維持視覺清晰度</td>
+                                        <td>30:6 mg</td>
+                                    </tr>
+                                    <tr>
+                                        <td>葉黃素＋藻油中 DHA</td>
+                                        <td>支援視覺神經傳導、促進營養吸收</td>
+                                        <td>提升葉黃素吸收效率（↑275%）與黃斑部色素濃度</td>
+                                        <td>約 250–300 mg / 日</td>
+                                    </tr>
+                                    <tr>
+                                        <td>藻紅素＋藻油 Omega-3</td>
+                                        <td>強效抗氧化、舒緩疲勞</td>
+                                        <td>提升眼部水潤明亮感（↑205%）與微循環活性</td>
+                                        <td>4–6 mg / 日</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p class="ub-article-meta">🔍 說明：「↑275%」「↑205%」為研究中觀察的相對吸收與主觀改善指標，屬營養功能描述，非療效宣稱。</p>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>結語｜葉黃素 × DHA × 藻紅素──打造現代人的視覺防護力</h2>
+                            <p>在藍光世代中，長時間使用 3C 產品容易導致眼睛乾澀與視覺疲勞。科學研究證實，護眼營養素的關鍵在於協同組合：</p>
+                            <ul class="ub-article-bullets">
+                                <li><strong>葉黃素＋玉米黃素：</strong>為黃斑部的天然色素，能濾除藍光、維持視覺清晰，是眼部防護的第一道屏障。</li>
+                                <li><strong>葉黃素＋藻油中 DHA：</strong>DHA 是視網膜主要脂肪酸，有助光信號傳導；與葉黃素並用可使其吸收效率提升高達 275%，幫助黃斑部色素更集中。</li>
+                                <li><strong>藻紅素＋藻油 Omega-3：</strong>具強效抗氧化與微循環支持，能協助舒緩疲勞、維持水潤與明亮感，整體舒適度提升約 205%。</li>
+                            </ul>
+                            <p>臨床證據（Nutrients, 2013；Proc. Nutr. Soc., 2024）指出，這樣的組合能有效提升黃斑部色素密度與葉黃素利用率，進而支援長時間用眼後的視覺穩定。</p>
+                        </div>
+
+                        <footer class="ub-article-footer">
+                            ╳ 合規與免責聲明：保健食品屬於一般食品，無醫療效能。建議維持均衡飲食與良好用眼習慣，若有特殊疾病或服藥中，應先諮詢醫療專業。本文內容僅供健康知識參考，不具醫療診斷、治療或預防疾病之意涵。本文提及之「吸收率提升」「視覺維持」「舒緩疲勞」等描述，均屬營養生理功能說明，非療效宣稱。產品原料、劑量與安全性應以實際批次檢測報告（COA）與標示資料為準。食品廣告應符合《食品安全衛生管理法》第28條、《健康食品管理法》及《公平交易法》規定，不得涉及疾病名稱、醫療行為或誤導性用語。若有任何視覺異常或持續不適，請儘速就醫，並遵循專業醫師指導。
+                            <br><br>
+                            ╳ 結語｜補對營養，眼睛就能更有韌性。從日常攝取葉黃素、藻油 DHA 與藻紅素開始，讓你的靈魂之窗在藍光時代依然清晰、舒適、亮澤。
+                        </footer>
+                    </article>
+                    <div class="ub-article-reference">
+                        <h2 class="ub-reference-title">參考文獻</h2>
+                        <ul class="ub-article-bullets is-reference">
+                            <li>García-Layana A, et al. Effects of Lutein and Docosahexaenoic Acid Supplementation on Macular Pigment Optical Density in a Randomized Controlled Trial. Nutrients. 2013;5(2):543–551.</li>
+                            <li>Kalu K, Lin S, McMonnies C, Arcot J. Relative bioavailability of lutein and zeaxanthin in the presence of Omega-3 supplements. Proc Nutr Soc. 2024;83(OCE1):E53.</li>
+                            <li>Landrum JT, Bone RA. Lutein, Zeaxanthin, and the Macular Pigment. Arch Biochem Biophys. 2001;385:28–40.</li>
+                            <li>Seddon JM, et al. Dietary fat and risk of age-related macular degeneration. Arch Ophthalmol. 2003;121:1728–1737.</li>
+                        </ul>
+                    </div>
+                    <button type="button" class="ub-article-button is-secondary js-article-collapse" aria-expanded="false" aria-controls="article-ocular-nutrition-content">收合文章</button>
+                </div>
+            </article>
+            <article class="ub-article-card" id="article-dha-dpa-ps">
+                <div class="ub-article-summary">
+                    <h3 class="ub-article-summary-title">DHA預防失智不夠？醫師解密「DHA+DPA+PS」黃金組合，打造大腦防護力</h3>
+                    <p class="ub-article-summary-meta">陳家榮 博士｜2025-03-17</p>
+                    <ul class="ub-article-summary-highlights">
+                        <li>全球失智人口攀升，營養介入成為延緩退化的關鍵策略。</li>
+                        <li>DHA 必須與 DPA、PS 協同，才能形成完整大腦防護網。</li>
+                        <li>挑選產品需檢視來源安全、DHA:DPA=6:1 與 PS 劑量標示。</li>
+                    </ul>
+                    <button type="button" class="ub-article-button js-article-expand" aria-expanded="false" aria-controls="article-dha-dpa-ps-content">閱讀全文</button>
+                </div>
+                <div class="ub-article-content" id="article-dha-dpa-ps-content" hidden>
+                    <article class="ub-article-body">
+                        <header class="ub-article-header">
+                            <h2 class="ub-article-title">DHA預防失智不夠？醫師解密「DHA+DPA+PS」黃金組合，打造大腦防護力</h2>
+                            <p class="ub-article-meta">作者：陳家榮 博士｜發布日期：2025-03-17</p>
+                            <div class="ub-article-keywords">
+                                <span class="ub-article-keyword">DHA</span>
+                                <span class="ub-article-keyword">DPA</span>
+                                <span class="ub-article-keyword">PS</span>
+                                <span class="ub-article-keyword">Omega-3</span>
+                                <span class="ub-article-keyword">多元不飽和脂肪酸</span>
+                                <span class="ub-article-keyword">認知健康</span>
+                                <span class="ub-article-keyword">失智預防</span>
+                                <span class="ub-article-keyword">腦部營養</span>
+                                <span class="ub-article-keyword">磷脂</span>
+                                <span class="ub-article-keyword">記憶力維持</span>
+                            </div>
+                        </header>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>文章重點速覽</h2>
+                            <ul class="ub-article-bullets is-summary">
+                                <li>DHA 是腦中最多的 Omega-3，但單獨補充不足以全面預防失智，需要搭配 DPA 與 PS 形塑完整防護網。</li>
+                                <li>DHA 與 DPA 建議維持 6:1 比例，可同時強化神經膜、降低慢性發炎並維持認知靈活。</li>
+                                <li>PS 作為神經膜磷脂，與 DHA、DPA 共同作用時能加乘提升記憶形成與訊息傳導效率。</li>
+                                <li>選購產品時應確認來源安全、比例正確與 PS 劑量標示，以確保補充策略有效且安心。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>高齡浪潮下的「失智風暴」</h2>
+                            <p>長壽是祝福，但失智症人口同時快速增加。國際失智症協會預估 2050 年全球每 3 秒就有 1 人罹患失智症；台灣 65 歲長者中平均每 100 人就有 8 人受影響。</p>
+                            <p>早發型失智症也在上升，40 歲以上中壯年開始面臨風險。由於尚無治癒藥物，透過營養介入預防與延緩退化成為全民健康的關鍵任務。</p>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>僅補充 DHA，真的足夠嗎？</h2>
+                            <p>DHA（Docosahexaenoic acid）為腦部含量最高的 Omega-3，能維持神經細胞膜彈性並具抗發炎、神經保護功效。研究顯示，血中 DHA 越高者，失智風險越低。</p>
+                            <p>然而最新研究指出，<strong>單一補充 DHA 效果有限</strong>，若缺乏 DPA（Docosapentaenoic acid）與 PS（Phosphatidylserine），大腦防護網仍不完整。</p>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>DHA + DPA：6:1 黃金比例</h2>
+                            <p>DPA 是常被忽略的 Omega-3，抗發炎能力比 EPA 更強，可在體內轉換為 DHA 或 EPA，支援神經修復與血管健康。</p>
+                            <p>研究建議 DHA 與 DPA 維持 <strong>6:1</strong> 比例，可帶來三大協同效益：</p>
+                            <ul class="ub-article-bullets">
+                                <li>增強腦部神經膜穩定性</li>
+                                <li>降低慢性發炎風險</li>
+                                <li>維持認知靈活與記憶清晰</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>DHA + PS：雙核心認知防護</h2>
+                            <p>PS（磷脂醯絲胺酸）是大腦細胞膜的重要構成，負責神經訊息傳遞與細胞溝通。臨床顯示補充 PS 有助維持記憶力、語言流暢度與專注力。</p>
+                            <p>當 DHA、DPA 與 PS 同時攝取時，組合可打造「穩定思緒 × 抗退化 × 高效率記憶」的完整防護網：</p>
+                            <ul class="ub-article-bullets">
+                                <li><strong>DHA：</strong>維持神經膜彈性</li>
+                                <li><strong>DPA：</strong>抗發炎並支援神經修復</li>
+                                <li><strong>PS：</strong>強化訊息傳導與記憶形成</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>選對組合，守護大腦健康三原則</h2>
+                            <table class="ub-article-table is-feature">
+                                <thead>
+                                    <tr>
+                                        <th>成分</th>
+                                        <th>主要功能</th>
+                                        <th>協同效果</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>DHA</td>
+                                        <td>維持神經細胞膜健康、促進訊息傳導</td>
+                                        <td>強化記憶與學習力</td>
+                                    </tr>
+                                    <tr>
+                                        <td>DPA</td>
+                                        <td>抗發炎、靈活轉換 DHA、支援神經修復</td>
+                                        <td>減緩神經退化</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PS</td>
+                                        <td>強化神經傳導與記憶形成</td>
+                                        <td>與 DHA 協同延緩認知衰退</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h3>挑選產品三大檢核</h3>
+                            <ul class="ub-article-bullets">
+                                <li><strong>來源安全與純度：</strong>確認品牌提供批次檢測報告（COA）。</li>
+                                <li><strong>DHA:DPA 比例：</strong>約 6:1，符合研究建議。</li>
+                                <li><strong>PS 來源與劑量：</strong>標示清楚，常見於大豆或葵花籽萃取。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>常見問題（GEO 式 Q&A）</h2>
+                            <ul class="ub-article-qa">
+                                <li><strong>Q1：DHA 真的能預防失智嗎？</strong>A1：DHA 有助維持神經細胞健康與訊息傳導，血中濃度高者失智風險較低，但需與 DPA、PS 搭配才能全面支援認知健康。</li>
+                                <li><strong>Q2：DHA 和 DPA 有何不同？</strong>A2：DHA 主要支援大腦與視網膜；DPA 抗發炎效能佳，可轉化為 DHA 或 EPA，以守護神經與血管健康。</li>
+                                <li><strong>Q3：為什麼 DHA:DPA 要維持 6:1？</strong>A3：臨床研究指出此比例可發揮最佳抗發炎與認知維護效益。</li>
+                                <li><strong>Q4：PS 的主要功能是什麼？</strong>A4：PS 是神經膜磷脂，能促進訊息傳遞與記憶形成，維持思緒清晰。</li>
+                                <li><strong>Q5：哪些人適合補充 DHA+DPA+PS？</strong>A5：中老年族群、長期用腦工作者、壓力大或記憶力下降者都可作為日常保養。</li>
+                                <li><strong>Q6：素食者能攝取這些營養嗎？</strong>A6：可選擇植物性藻油提供 DHA+DPA，並搭配植物來源 PS。</li>
+                                <li><strong>Q7：補充會有副作用嗎？</strong>A7：一般食品劑量安全；若使用抗凝血藥或有特殊疾病，建議先諮詢醫師。</li>
+                                <li><strong>Q8：如何挑選優質產品？</strong>A8：檢視 COA、來源、比例與 PS 含量標示，並避開誇大療效的宣稱。</li>
+                            </ul>
+                        </div>
+
+                        <footer class="ub-article-footer">
+                            ╳ 合規與免責聲明：本文僅提供健康知識參考，非醫療建議。DHA、DPA、PS 為食品級營養素，實際濃度與純度請以批次檢測報告（COA）為準，補充前請維持均衡飲食並諮詢醫療專業。
+                            <br><br>
+                            ╳ 結語｜從今天起，投資你的腦：失智無法逆轉，但可以延緩。讓大腦保持靈活與清晰，從每天攝取正確比例的 DHA、DPA、PS 開始，預防永遠勝於治療。
+                        </footer>
+                    </article>
+                    <div class="ub-article-reference">
+                        <h2 class="ub-reference-title">參考文獻</h2>
+                        <ul class="ub-article-bullets is-reference">
+                            <li>Byelashov OA, Sinclair AJ, Kaur G. Lipid Technology. 2015;9999(4).</li>
+                            <li>Kato-Kataoka A et al. J Clin Biochem Nutr. 2010;47(3):246-55.</li>
+                            <li>Yurko-Mauro K. Curr Alzheimer Res. 2007;4(5):553-5.</li>
+                            <li>Schaefer EJ et al. Arch Neurol. 2006;63(11):1545-50.</li>
+                            <li>Kaur G et al. Prog Lipid Res. 2011;50(1):28-34.</li>
+                            <li>Yurko-Mauro K et al. Alzheimers Dement. 2010;6(6):456-64.</li>
+                        </ul>
+                    </div>
+                    <button type="button" class="ub-article-button is-secondary js-article-collapse" aria-expanded="false" aria-controls="article-dha-dpa-ps-content">收合文章</button>
+                </div>
+            </article>
+            <article class="ub-article-card" id="article-dha-algae-oil">
+                <div class="ub-article-summary">
+                    <h3 class="ub-article-summary-title">【2025】DHA 藻油推薦｜藻油 vs. 魚油，哪種更適合你？</h3>
+                    <p class="ub-article-summary-meta">審稿：林安民醫師｜2025-03-17</p>
+                    <ul class="ub-article-summary-highlights">
+                        <li>DHA 為大腦與視網膜關鍵營養，藻油提供植物性來源且素食與過敏友善。</li>
+                        <li>魚油兼具 DHA＋EPA，藻油則重點補充 DHA；選擇需看族群與來源純度。</li>
+                        <li>挑選時檢視型態（rTG/TG）、COA 與劑量，並留意服用時機以提升吸收。</li>
+                    </ul>
+                    <button type="button" class="ub-article-button js-article-expand" aria-expanded="false" aria-controls="article-dha-algae-oil-content">閱讀全文</button>
+                </div>
+                <div class="ub-article-content" id="article-dha-algae-oil-content" hidden>
+                    <article class="ub-article-body">
+                        <header class="ub-article-header">
+                            <h2 class="ub-article-title">【2025】DHA 藻油推薦｜藻油 vs. 魚油，哪種更適合你？</h2>
+                            <p class="ub-article-meta">醫學審稿：林安民醫師｜關鍵字：DHA、藻油、魚油、Omega-3、EPA、吸收率、素食補充、孕哺營養</p>
+                            <div class="ub-article-keywords">
+                                <span class="ub-article-keyword">DHA</span>
+                                <span class="ub-article-keyword">藻油</span>
+                                <span class="ub-article-keyword">魚油</span>
+                                <span class="ub-article-keyword">Omega-3</span>
+                                <span class="ub-article-keyword">EPA</span>
+                                <span class="ub-article-keyword">吸收率</span>
+                                <span class="ub-article-keyword">素食補充</span>
+                                <span class="ub-article-keyword">孕哺營養</span>
+                            </div>
+                        </header>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>文章重點速覽</h2>
+                            <ul class="ub-article-bullets is-summary">
+                                <li><strong>藻油是純素高 DHA 來源：</strong>室內培養降低重金屬與腥味風險，適合素食與海鮮過敏族群。</li>
+                                <li><strong>魚油兼具 DHA＋EPA：</strong>若需要抗發炎或心血管支持，可依醫師建議選擇含 EPA 的魚油配方。</li>
+                                <li><strong>挑產品看四件事：</strong>來源純度、DHA 劑量、劑型（TG／rTG）、批次檢測報告（COA）缺一不可。</li>
+                                <li><strong>補充需搭配生活習慣：</strong>隨餐搭配好油、維持規律作息與均衡飲食才能長期守護腦心健康。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>為什麼大家都在討論 DHA？</h2>
+                            <p>DHA（Docosahexaenoic acid）屬於 Omega-3 多元不飽和脂肪酸，是大腦與視網膜不可或缺的結構成分，與神經訊息傳導及細胞膜流動性密切相關。人體自製能力有限，因此需仰賴飲食或營養補充品提供。</p>
+                            <ul class="ub-article-bullets">
+                                <li><strong>主要來源：</strong>深海魚類與藻類（植物性藻油）。</li>
+                                <li><strong>植物脂類差異：</strong>多數植物油為 ALA（α-亞麻酸），需轉換成 DHA，轉換率偏低，吃堅果不等於補足 DHA。</li>
+                            </ul>
+                            <p class="ub-article-meta">專業提醒：本文提供健康知識分享，並非醫療建議；食品不得宣稱治療或預防疾病，實際攝取量請遵循標示或諮詢專業人員。</p>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>藻油 vs. 魚油：一次看懂差異</h2>
+                            <h3>藻油是什麼？適合誰？</h3>
+                            <p>藻油取自微藻培養，DHA 含量高，EPA 多為低量或不含，常添加維生素 E 等抗氧化物維持穩定。</p>
+                            <ul class="ub-article-bullets">
+                                <li><strong>優點：</strong>來源可控、重金屬疑慮低、素食或海鮮過敏者友善、風味溫和。</li>
+                                <li><strong>可能限制：</strong>EPA 含量較低、優質產品成本較高。</li>
+                            </ul>
+                            <h3>魚油是什麼？適合誰？</h3>
+                            <p>魚油來源於深海魚脂肪，天然含有 DHA 與 EPA，是常見的 Omega-3 補充來源。</p>
+                            <ul class="ub-article-bullets">
+                                <li><strong>優點：</strong>取得容易、品項多元，可同時補充 DHA＋EPA。</li>
+                                <li><strong>可能限制：</strong>腥味接受度不一、需留意淨化與氧化指標，EPA 對凝血具潛在影響。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>藻油與魚油比較表</h2>
+                            <table class="ub-article-table is-contrast">
+                                <thead>
+                                    <tr>
+                                        <th>比較項目</th>
+                                        <th>藻油</th>
+                                        <th>魚油</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>來源</td>
+                                        <td>微藻培養</td>
+                                        <td>深海魚</td>
+                                    </tr>
+                                    <tr>
+                                        <td>主要組成</td>
+                                        <td>高 DHA，EPA 較少</td>
+                                        <td>DHA＋EPA 兼具</td>
+                                    </tr>
+                                    <tr>
+                                        <td>風味與接受度</td>
+                                        <td>無魚腥味、口感溫和</td>
+                                        <td>可能有腥味，需要接受度</td>
+                                    </tr>
+                                    <tr>
+                                        <td>安全性</td>
+                                        <td>重金屬疑慮較低</td>
+                                        <td>需留意來源與純化</td>
+                                    </tr>
+                                    <tr>
+                                        <td>適合族群</td>
+                                        <td>素食者、海鮮過敏、孕哺族群可評估</td>
+                                        <td>一般成人，特殊族群建議諮詢醫師</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p>註：市售藻油多屬食品級原料，部分規格被美國認定為 GRAS（一般認為安全），實際仍以產品批次檢測報告（COA）為準。</p>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>選擇藻油的 5 個常見理由</h2>
+                            <ul class="ub-article-bullets">
+                                <li><strong>素食與過敏友善：</strong>100% 植物性來源，海鮮過敏者負擔較小。</li>
+                                <li><strong>來源純淨：</strong>室內可控培養，降低重金屬與環境污染疑慮。</li>
+                                <li><strong>DHA 直接補充：</strong>無需仰賴 ALA 轉換，較能掌握攝取量。</li>
+                                <li><strong>特殊族群可評估：</strong>低 EPA 設計，術前或抗凝血用藥者較好調整（仍須專業評估）。</li>
+                                <li><strong>風味友善：</strong>腥味輕，長期補充接受度高。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>「rTG / TG / EE」有差嗎？吸收率與型態解析</h2>
+                            <ul class="ub-article-bullets">
+                                <li><strong>TG 型（Triglyceride）：</strong>接近天然結構，整體吸收表現佳且溫和。</li>
+                                <li><strong>EE 型（Ethyl Ester）：</strong>早期濃縮技術，濃度高但非天然結構，部分人胃部耐受度較差。</li>
+                                <li><strong>rTG 型（Re-esterified TG）：</strong>由 EE 轉回 TG 類天然結構，兼具高濃度與吸收率，價格通常較高。</li>
+                            </ul>
+                            <p>重點在於「整體劑量 × 型態 × 品質管控」，而非單一指標，挑選時需綜合評估。</p>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>2025 熱門藻油品牌焦點（示意）</h2>
+                            <p>以下資料僅供示意，實際產品資訊仍需以品牌標示、COA、原料來源與品質檢測為準，勿將其視作醫療療效依據。</p>
+                            <table class="ub-article-table is-feature">
+                                <thead>
+                                    <tr>
+                                        <th>品牌</th>
+                                        <th>DHA 含量（每顆）</th>
+                                        <th>EPA 含量</th>
+                                        <th>常見認證/檢測*</th>
+                                        <th>適合族群與定位</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>賀得生醫</td>
+                                        <td>350 mg</td>
+                                        <td>無/極低</td>
+                                        <td>SGS、ISO、HACCP（以品牌公示為準）</td>
+                                        <td>素食者、重視高 DHA 劑量者</td>
+                                    </tr>
+                                    <tr>
+                                        <td>VITABOX</td>
+                                        <td>240 mg</td>
+                                        <td>120 mg</td>
+                                        <td>SGS、cGMP 等</td>
+                                        <td>需要少量 EPA 的族群</td>
+                                    </tr>
+                                    <tr>
+                                        <td>赫而司</td>
+                                        <td>100 mg</td>
+                                        <td>無/極低</td>
+                                        <td>ISO、cGMP 等</td>
+                                        <td>入門或劑量保守者</td>
+                                    </tr>
+                                    <tr>
+                                        <td>亞尼活力</td>
+                                        <td>200 mg</td>
+                                        <td>無/極低</td>
+                                        <td>SGS、第三方檢測</td>
+                                        <td>家庭日常保養</td>
+                                    </tr>
+                                    <tr>
+                                        <td>里仁</td>
+                                        <td>157.5 mg</td>
+                                        <td>無/極低</td>
+                                        <td>依門市或包裝公示</td>
+                                        <td>素食與永續偏好者</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p>*常見認證/檢測欄位為體系舉例，仍須以品牌最新批次檢驗、過氧化價、安定性與標示為準。</p>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>怎麼挑，才不會踩雷？4 大必看條件</h2>
+                            <ul class="ub-article-bullets">
+                                <li><strong>看 DHA 含量：</strong>確認每份提供的毫克數，依年齡與飲食狀況調整。</li>
+                                <li><strong>看型態與穩定度：</strong>優先考慮 TG／rTG，並留意抗氧化設計（如維生素 E）。</li>
+                                <li><strong>看來源與檢測：</strong>確認微藻來源、純化流程、COA 與過氧化指標。</li>
+                                <li><strong>看族群適配：</strong>素食、孕哺、術前或用藥族群需先與專業人員討論。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>服用與飲食搭配：效果更穩、更安心</h2>
+                            <ul class="ub-article-bullets">
+                                <li>與餐同服、搭配優質油脂可提升脂溶性吸收。</li>
+                                <li>遵循標示攝取，避免高溫烹調造成氧化。</li>
+                                <li>大量咖啡因、高鈣或高纖食物建議錯開時間。</li>
+                                <li>孕哺、術前或慢性病用藥族群，補充前請先諮詢醫師或藥師。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>常見問題（FAQ）</h2>
+                            <ul class="ub-article-qa">
+                                <li><strong>Q1：藻油與魚油的效果有差嗎？</strong>A：兩者主要功能來自 Omega-3。藻油擅長補充 DHA，魚油同時提供 DHA＋EPA，選擇重點在族群適配、來源品質與劑量。</li>
+                                <li><strong>Q2：孕婦可以吃 DHA 藻油嗎？</strong>A：孕哺族群重視來源純淨與 EPA 量，藻油常被視為友善選項，但需個別評估並諮詢產科醫師或營養師。</li>
+                                <li><strong>Q3：每天要吃多少？</strong>A：依產品標示、年齡與飲食狀況而定，切勿自行超量，請參考專業建議。</li>
+                                <li><strong>Q4：哪種型態吸收最好？</strong>A：rTG／TG 型普遍被視為吸收佳且耐受度好，EE 型偏重濃度但非天然結構，仍需依個人情況與產品設計判斷。</li>
+                                <li><strong>Q5：藻油不要跟什麼一起吃？</strong>A：大量咖啡因或高鈣、高纖食物可能干擾吸收或腸胃舒適度，建議錯開時間。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>小結：選對、吃對，長期最重要</h2>
+                            <ul class="ub-article-bullets">
+                                <li>選對產品：聚焦 DHA 劑量 × 型態 × 來源 × 檢測。</li>
+                                <li>吃對方式：隨餐搭配好油，規律且穩定補充。</li>
+                                <li>重視全人健康：飲食、運動、睡眠、壓力與慢病控制同時調整。</li>
+                                <li>找到適合自己的 DHA 來源，長期守護全家人的腦部健康。</li>
+                            </ul>
+                        </div>
+
+                        <footer class="ub-article-footer">
+                            ╳ 合規與免責聲明：本文為健康知識分享，非醫療建議；若有疾病或用藥，請先諮詢醫師或藥師。食品不得宣稱療效，任何濃度、純度與安全資訊請以該批次 COA 與合法標示為準。特殊族群（孕哺、孩童、慢性病、術前或抗凝血用藥）補充前需個別評估。
+                            <br><br>
+                            ╳ 結語｜選擇來源透明、DHA 劑量與型態清楚的藻油產品，並搭配地中海型飲食與規律作息，才能循證守護視覺與認知健康。
+                        </footer>
+                    </article>
+                    <div class="ub-article-reference">
+                        <h2 class="ub-reference-title">參考文獻</h2>
+                        <ul class="ub-article-bullets is-reference">
+                            <li>Arterburn LM, Hall EB, Oken H. Curr Opin Clin Nutr Metab Care. 2006;9(2):136-146.</li>
+                            <li>Ryan AS et al. Am J Clin Nutr. 2009;89(3):651-659.</li>
+                            <li>Lane KE et al. Nutrients. 2014;6(8):3057-3073.</li>
+                            <li>European Food Safety Authority (EFSA). EFSA J. 2014;12(10):3840.</li>
+                            <li>Swanson D et al. Adv Nutr. 2012;3(1):1-7.</li>
+                        </ul>
+                    </div>
+                    <button type="button" class="ub-article-button is-secondary js-article-collapse" aria-expanded="false" aria-controls="article-dha-algae-oil-content">收合文章</button>
+                </div>
+            </article>
+            <article class="ub-article-card" id="article-early-dementia">
+                <div class="ub-article-summary">
+                    <h3 class="ub-article-summary-title">早期失智的 7 大徵兆，你中幾項？如何用生活與營養守護大腦健康</h3>
+                    <p class="ub-article-summary-meta">審稿：林安民醫師｜2025-03-17</p>
+                    <ul class="ub-article-summary-highlights">
+                        <li>醫師提醒多數輕度認知障礙只要及早調整生活與營養，就能放慢退化。</li>
+                        <li>七大警訊協助辨識早期失智徵兆，必要時盡速就醫評估。</li>
+                        <li>Omega-3、睡眠、運動與社交互動是維持大腦功能的關鍵策略。</li>
+                    </ul>
+                    <button type="button" class="ub-article-button js-article-expand" aria-expanded="false" aria-controls="article-early-dementia-content">閱讀全文</button>
+                </div>
+                <div class="ub-article-content" id="article-early-dementia-content" hidden>
+                    <article class="ub-article-body">
+                        <header class="ub-article-header">
+                            <h2 class="ub-article-title">早期失智的 7 大徵兆，你中幾項？如何用生活與營養守護大腦健康</h2>
+                            <p class="ub-article-meta">醫學審稿：林安民醫師｜主題關鍵詞：失智、MCI、DHA、Omega-3、生活習慣、藻油與魚油比較</p>
+                            <div class="ub-article-keywords">
+                                <span class="ub-article-keyword">失智</span>
+                                <span class="ub-article-keyword">MCI</span>
+                                <span class="ub-article-keyword">DHA</span>
+                                <span class="ub-article-keyword">Omega-3</span>
+                                <span class="ub-article-keyword">生活習慣</span>
+                                <span class="ub-article-keyword">藻油</span>
+                                <span class="ub-article-keyword">魚油</span>
+                            </div>
+                        </header>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>文章重點速覽</h2>
+                            <ul class="ub-article-bullets is-summary">
+                                <li><strong>辨識七大警訊：</strong>記憶、語言、判斷與日常功能同步下滑時，應立即安排醫療評估。</li>
+                                <li><strong>調整生活是第一線：</strong>規律運動、優質睡眠、社交互動與動腦活動可延緩認知退化。</li>
+                                <li><strong>營養防護要多因子：</strong>DHA、DPA、PS 搭配抗發炎飲食、B 群與維生素 D 有助神經維護。</li>
+                                <li><strong>就醫與追蹤不可少：</strong>合併慢性病或情緒問題者需跨專業團隊與定期量表追蹤。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>醫師觀點：及早辨識、及早調整</h2>
+                            <p>林安民醫師指出：「許多輕度認知障礙（MCI）患者，只要及早建立正確生活習慣與營養策略，就能維持認知功能並放慢退化速度。」</p>
+                            <p>研究也顯示，Omega-3 脂肪酸（特別是 DHA、EPA）與大腦結構與機能維持息息相關，具有抗發炎、抗氧化與維持細胞膜流動性的作用，是生活型態介入的重要一環。</p>
+                            <p class="ub-article-meta">專業提醒：以下內容屬健康知識分享，非醫療建議；食品不得宣稱療效，實際需求請諮詢醫師與營養師。</p>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>早期失智的 7 大警訊</h2>
+                            <ol class="ub-article-bullets" style="list-style: decimal;">
+                                <li><strong>記憶力下降、影響日常：</strong>常忘記事情、重複提問，尤其對剛發生的事沒有印象。</li>
+                                <li><strong>規劃與解決問題能力下降：</strong>處理帳單、簡單計算或依序完成任務變得困難。</li>
+                                <li><strong>對時間與地點感到混淆：</strong>不確定日期、行程，甚至一時迷失方向。</li>
+                                <li><strong>語言表達與理解下滑：</strong>想不起常用詞、句子不流暢，需要更多時間溝通。</li>
+                                <li><strong>情緒與個性改變：</strong>焦慮、易怒、退縮，不願社交，對喜好活動失去興趣。</li>
+                                <li><strong>判斷力變差：</strong>容易衝動購物、輕信詐騙或做出不合常理的決定。</li>
+                                <li><strong>日常活動變困難：</strong>突然不會使用熟悉家電、忘記家中動線或常用物品放置處。</li>
+                            </ol>
+                            <p>若出現多項且逐步加劇，或已影響生活與安全，應盡速就醫評估。</p>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>老化健忘 vs. 失智症：如何分辨？</h2>
+                            <table class="ub-article-table is-feature">
+                                <thead>
+                                    <tr>
+                                        <th>比較項目</th>
+                                        <th>一般老化</th>
+                                        <th>可能失智</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>記憶</td>
+                                        <td>偶爾想不起來，過一會兒會想起</td>
+                                        <td>近事記憶反覆缺失，剛說過或做過馬上忘</td>
+                                    </tr>
+                                    <tr>
+                                        <td>重複性</td>
+                                        <td>不會在短時間內一再重複同件事</td>
+                                        <td>語言、判斷、方向感等多面向功能同步下滑</td>
+                                    </tr>
+                                    <tr>
+                                        <td>日常功能</td>
+                                        <td>日常功能與安全大多不受影響</td>
+                                        <td>可能虛構從未發生的事件，影響生活安全</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p>建議透過門診評估（病史、量表、必要時影像或實驗室檢查）釐清狀況。</p>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>預防或延緩大腦退化的 5 大重點</h2>
+                            <ul class="ub-article-bullets">
+                                <li><strong>維持規律生活與運動：</strong>每週至少 150 分鐘中等強度有氧搭配阻力訓練。</li>
+                                <li><strong>聰明吃脂肪：</strong>透過魚類、藻油、堅果種子與橄欖油補充 Omega-3。</li>
+                                <li><strong>少糖少油、遠離過度加工：</strong>降低氧化壓力與代謝風險。</li>
+                                <li><strong>保持社交與動腦：</strong>社交互動、閱讀、學習新技能、桌遊或拼圖。</li>
+                                <li><strong>充足睡眠：</strong>深度睡眠有助腦部廢物清除，固定作息並減少睡前刺激。</li>
+                            </ul>
+                            <p>若有高血壓、糖尿病、高血脂、心血管疾病或憂鬱等慢性病，務必依醫囑控制，腦血管健康即是認知健康的基礎。</p>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>藻油 vs. 魚油：怎麼選？</h2>
+                            <table class="ub-article-table is-contrast">
+                                <thead>
+                                    <tr>
+                                        <th>比較項目</th>
+                                        <th>藻油（微藻來源）</th>
+                                        <th>魚油（深海魚來源）</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>主要成分</td>
+                                        <td>高 DHA，EPA 較少</td>
+                                        <td>DHA＋EPA 兼具</td>
+                                    </tr>
+                                    <tr>
+                                        <td>安全性</td>
+                                        <td>重金屬疑慮較低</td>
+                                        <td>需留意淨化與氧化管理</td>
+                                    </tr>
+                                    <tr>
+                                        <td>適合族群</td>
+                                        <td>素食、海鮮過敏或孕哺族群可評估</td>
+                                        <td>一般成人，特定族群需與醫師討論</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p>挑選時務必檢視 COA、氧化指標（如過氧化價）、來源標示與劑量，並隨餐搭配優質油脂以提升吸收。</p>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>常見問題（FAQ）</h2>
+                            <ul class="ub-article-qa">
+                                <li><strong>Q1：透過飲食如何友善大腦？</strong>A：參考地中海型飲食模式，強調蔬果、全榖、堅果種子、魚類或藻油，同時減少精製糖與加工食品。</li>
+                                <li><strong>Q2：DHA 能改善記憶嗎？</strong>A：DHA 著重支持神經結構與訊息傳遞，若已明顯衰退仍需醫療評估，營養是輔助策略之一。</li>
+                                <li><strong>Q3：DHA＋EPA 補充怎麼選？</strong>A：留意來源、濃度、純度、劑型與 COA；素食或在意重金屬者可選藻油，需要 EPA 者可評估魚油。</li>
+                                <li><strong>Q4：熟齡者該選魚油還是藻油？</strong>A：取決於安全性、腥味接受度與用藥情況；擔心重金屬或飲食偏素者可評估藻油。</li>
+                                <li><strong>Q5：何時吃較好吸收？</strong>A：建議隨餐、搭配含油餐點，利於脂溶性營養吸收。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>何時該就醫？三個提醒</h2>
+                            <ul class="ub-article-bullets">
+                                <li>近幾個月記憶、語言、判斷或方向感明顯下滑，影響生活或安全。</li>
+                                <li>家人反映重複問同一件事、經常走失或做出不尋常決定。</li>
+                                <li>合併顯著情緒變化（焦慮、退縮、易怒）且持續一段時間。</li>
+                            </ul>
+                            <p>及早就醫可獲完整評估與多專業介入（藥物、認知訓練、社會資源與照顧指引）。</p>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>結語：把握可改變的因子</h2>
+                            <p>與其等問題發生，不如從現在開始調整生活習慣：規律運動、優質睡眠、社交互動、均衡飲食及聰明補充，必要時諮詢醫療與營養專業，為大腦訂製長期防護計畫。</p>
+                        </div>
+
+                        <footer class="ub-article-footer">
+                            ╳ 合規與免責聲明：本文為健康知識分享，非醫療建議；如有不適或用藥疑慮，請洽醫師。食品不得宣稱療效；任何濃度、純度、品質資訊請以該批次 COA 與合法標示為準。特殊族群（孕哺、孩童、慢性病患者、手術前或使用抗凝血藥物者）補充營養品前需先諮詢醫師。
+                            <br><br>
+                            ╳ 結語｜及早辨識認知變化、管理血壓血脂並補充足量 DHA、DPA、B 群與抗發炎飲食，是延緩失智進程最被醫療團隊推崇的核心策略。
+                        </footer>
+                    </article>
+                    <div class="ub-article-reference">
+                        <h2 class="ub-reference-title">參考文獻</h2>
+                        <ul class="ub-article-bullets is-reference">
+                            <li>Livingston G et al. Lancet. 2020;396(10248):413-446.</li>
+                            <li>World Health Organization. Global status report on the public health response to dementia. 2021.</li>
+                            <li>Ngandu T et al. Lancet. 2015;385(9984):2255-2263.</li>
+                            <li>Samieri C et al. Ann Neurol. 2018;83(5):915-927.</li>
+                            <li>Harada CN, Natelson Love MC, Triebel KL. Clin Geriatr Med. 2013;29(4):737-752.</li>
+                        </ul>
+                    </div>
+                    <button type="button" class="ub-article-button is-secondary js-article-collapse" aria-expanded="false" aria-controls="article-early-dementia-content">收合文章</button>
+                </div>
+            </article>
+            <article class="ub-article-card" id="article-adhd-dha">
+                <div class="ub-article-summary">
+                    <h3 class="ub-article-summary-title">過動症小孩的症狀評估與 DHA 營養補充指南（家長必讀）</h3>
+                    <p class="ub-article-summary-meta">審稿：林安民醫師｜2025-03-17</p>
+                    <ul class="ub-article-summary-highlights">
+                        <li>ADHD 診斷須由醫師評估，營養調整為日常保養輔助而非治療。</li>
+                        <li>列出注意力不足、過動與衝動三大徵兆及就醫評估提醒。</li>
+                        <li>提供 Omega-3、飲食與生活策略，協助家長打造穩定支持環境。</li>
+                    </ul>
+                    <button type="button" class="ub-article-button js-article-expand" aria-expanded="false" aria-controls="article-adhd-dha-content">閱讀全文</button>
+                </div>
+                <div class="ub-article-content" id="article-adhd-dha-content" hidden>
+                    <article class="ub-article-body">
+                        <header class="ub-article-header">
+                            <h2 class="ub-article-title">過動症小孩的症狀評估與 DHA 營養補充指南（家長必讀）</h2>
+                            <p class="ub-article-meta">醫學審稿：林安民醫師｜關鍵字：ADHD、過動症、注意力不足、兒童專注力、DHA、EPA、Omega-3、營養補充</p>
+                            <div class="ub-article-keywords">
+                                <span class="ub-article-keyword">ADHD</span>
+                                <span class="ub-article-keyword">過動症</span>
+                                <span class="ub-article-keyword">注意力</span>
+                                <span class="ub-article-keyword">DHA</span>
+                                <span class="ub-article-keyword">EPA</span>
+                                <span class="ub-article-keyword">Omega-3</span>
+                                <span class="ub-article-keyword">兒童營養</span>
+                            </div>
+                        </header>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>文章重點速覽</h2>
+                            <ul class="ub-article-bullets is-summary">
+                                <li><strong>ADHD 診斷需專業評估：</strong>症狀影響兩個以上情境、持續 ≥ 6 個月並造成功能困擾時必須就醫。</li>
+                                <li><strong>多管齊下最有效：</strong>藥物、行為治療與家校合作是核心，營養調整僅作輔助。</li>
+                                <li><strong>Omega-3 可作支持：</strong>DHA／EPA 有助神經訊息傳導與抗發炎，但劑量與比例需醫師或營養師評估。</li>
+                                <li><strong>生活型態要先穩：</strong>規律睡眠、結構化學習環境與減糖少加工飲食能提升孩子的自我調節。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>醫師觀點：診斷與保養的邊界</h2>
+                            <p>注意力不足過動症（ADHD）屬於神經發展狀態，表現為難以維持注意力、活動量大與衝動控制困難。林安民醫師提醒：及早辨識、規律就醫與多專業介入（醫療、心理、教育支持）是核心；生活與營養調整僅作為日常保養輔助，不能取代專業治療。</p>
+                            <p>Omega-3（含 DHA、EPA）與腦部結構與訊息傳導相關，可能透過抗發炎、抗氧化與維持細胞膜流動性協助神經調節，但需與醫療處置並行。</p>
+                            <p class="ub-article-meta">專業提醒：本文為健康知識分享，非醫療建議；食品不得宣稱療效或預防／治療疾病，實際需求請諮詢兒少心智科／兒科醫師與營養師。</p>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>ADHD 是什麼？如何判斷？</h2>
+                            <p>ADHD 核心表現聚焦於注意力不集中、過動與衝動三大面向。活潑好動不等於 ADHD，是否符合診斷須依精神醫學準則（如 DSM-5-TR）並由專業醫師綜合評估。</p>
+                            <ul class="ub-article-bullets">
+                                <li><strong>注意力不集中：</strong>常漏掉細節、易分心、難以完成作業或遵循指令，物品常遺失。</li>
+                                <li><strong>過動：</strong>無法安坐、總想動來動去、講話很多，難以安靜進行遊戲或休閒活動。</li>
+                                <li><strong>衝動：</strong>難以等待輪到自己、常插話或干擾他人。</li>
+                            </ul>
+                            <p>診斷會整合家長與老師回饋、臨床訪談、行為觀察、量表與必要心理衡鑑；線上量表僅供初步參考，不可作為診斷依據。</p>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>何時需要就醫評估？</h2>
+                            <ul class="ub-article-bullets">
+                                <li>症狀持續 ≥ 6 個月，頻率與強度明顯高於同齡兒童。</li>
+                                <li>影響至少兩種情境（如家裡與學校）。</li>
+                                <li>造成學業、人際或安全上的顯著困擾。</li>
+                            </ul>
+                            <p>多數孩子為混合型，即使只出現單一面向也可能符合亞型判定，仍需醫師專業評估。</p>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>生活與學習支持：家長可做的 5 件事</h2>
+                            <ul class="ub-article-bullets">
+                                <li><strong>規律作息與充足睡眠：</strong>固定起床與就寢時間，睡前減少藍光與咖啡因。</li>
+                                <li><strong>結構化學習環境：</strong>運用視覺化流程、分段任務（番茄鐘、待辦清單）。</li>
+                                <li><strong>增加戶外活動：</strong>中等強度運動有助穩定情緒並提升執行功能。</li>
+                                <li><strong>家校同盟：</strong>與導師、輔導室合作，使用一致的提示與座位安排。</li>
+                                <li><strong>飲食簡化原則：</strong>少糖、少加工、高纖好油脂，避免色素與高糖零食作獎勵。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>Omega-3 與兒童專注力：我們知道些什麼？</h2>
+                            <p>研究顯示，Omega-3 狀態較低的兒童在適量補充 DHA／EPA 後，專注力與行為表現可能獲得溫和改善，但效果大小因人而異。營養屬結構與機能支持，需與醫療、心理與教育介入並行。</p>
+                            <p class="ub-article-meta">安全提醒：EPA／DHA 的耐受與需求因人而異，補充前務必與醫師或營養師討論，尤其已用藥或有特殊病史者。</p>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>家長怎麼補 DHA？食物 vs. 補充品</h2>
+                            <h3>食物來源優先</h3>
+                            <ul class="ub-article-bullets">
+                                <li><strong>動物性：</strong>鮭魚、鯖魚、秋刀魚等深海魚類富含 DHA／EPA。</li>
+                                <li><strong>植物性：</strong>核桃、奇亞籽、亞麻籽提供 ALA，轉換率較低。</li>
+                                <li><strong>藻油：</strong>植物性 DHA 直接來源，結構與魚油類似。</li>
+                            </ul>
+                            <h3>兒童補充實務重點</h3>
+                            <ul class="ub-article-bullets">
+                                <li>每週 2–3 次含脂魚或等量替代，不足再評估補充。</li>
+                                <li>查看標示與來源：掌握每份 DHA、來源與批次 COA、注意氧化指標。</li>
+                                <li>依接受度選擇液態油或軟膠囊，並與餐同服促進吸收。</li>
+                                <li>劑量依年齡、體重、飲食與臨床狀況評估，遵循專業指示。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>哪些食物要少吃？</h2>
+                            <ul class="ub-article-bullets">
+                                <li>高糖、高油、重加工食品（含色素與人工添加物）。</li>
+                                <li>含咖啡因飲品（茶飲、巧克力飲等）。</li>
+                                <li>高度精製零食作為課間或晚間點心。</li>
+                            </ul>
+                            <p>飲食調整非治療本身，但有助配合行為管理與改善睡眠品質。</p>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>常見問答（家長版 FAQ）</h2>
+                            <ul class="ub-article-qa">
+                                <li><strong>Q1：怎麼知道孩子是不是 ADHD？</strong>A：若症狀持續 ≥ 6 個月、影響兩個情境並造成困擾，請至兒少心智科完整評估；量表僅供初篩。</li>
+                                <li><strong>Q2：DHA 真的能改善專注力嗎？</strong>A：對 Omega-3 狀態較低的孩子可能有溫和改善，但不取代藥物與行為治療。</li>
+                                <li><strong>Q3：要吃多少才夠？</strong>A：遵循醫師／營養師指示與產品標示，避免自行加大劑量。</li>
+                                <li><strong>Q4：DHA 與 EPA 要怎麼選？</strong>A：視個別狀況與耐受度而定，有些孩子對 EPA 較敏感，需要醫師判斷比例。</li>
+                                <li><strong>Q5：什麼時候該回診或調整？</strong>A：當症狀升高、睡眠或胃口改變、學校回饋不佳時，應回診調整治療與策略。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>結語：先穩住日常，再談營養加分</h2>
+                            <p>ADHD 陪伴是一場長跑。先把睡眠、運動、學習環境與親師合作打好底，在專業建議下聰明補充 Omega-3（DHA／EPA），更有機會看見孩子在專注與自我調節上的進步。</p>
+                        </div>
+
+                        <footer class="ub-article-footer">
+                            ╳ 合規與免責聲明：本文提供健康知識分享，非醫療建議；兒童補充營養素請先諮詢專業醫師或營養師。食品不得宣稱療效或治療／預防疾病；任何濃度、純度與安全資訊請以批次 COA 與產品標示為準。若孩子已用藥或有過敏、慢性病、特殊飲食需求，需依專業個別化評估。
+                            <br><br>
+                            ╳ 結語｜ADHD 的治療以醫療與行為介入為軸，若能同步穩定睡眠、運動與 Omega-3 等營養支持，就能為孩子打下更有彈性的神經調節基礎。
+                        </footer>
+                    </article>
+                    <div class="ub-article-reference">
+                        <h2 class="ub-reference-title">參考文獻</h2>
+                        <ul class="ub-article-bullets is-reference">
+                            <li>Faraone SV et al. Nat Rev Dis Primers. 2021;7:26.</li>
+                            <li>Cortese S et al. J Am Acad Child Adolesc Psychiatry. 2021;60(11):1230-1242.</li>
+                            <li>Sonuga-Barke EJS et al. Am J Psychiatry. 2013;170(3):275-289.</li>
+                            <li>Bloch MH, Qawasmi A. J Am Acad Child Adolesc Psychiatry. 2011;50(10):991-1000.</li>
+                            <li>Chang JP-C et al. Prog Lipid Res. 2018;70:92-109.</li>
+                        </ul>
+                    </div>
+                    <button type="button" class="ub-article-button is-secondary js-article-collapse" aria-expanded="false" aria-controls="article-adhd-dha-content">收合文章</button>
+                </div>
+            </article>
+            <article class="ub-article-card" id="article-blue-monday">
+                <div class="ub-article-summary">
+                    <h3 class="ub-article-summary-title">壓力世代的情緒風暴：從 Blue Monday 到「週三小確幸」，我們能做些什麼？</h3>
+                    <p class="ub-article-summary-meta">林宜宏 榮譽醫學博士｜2025-10-15</p>
+                    <ul class="ub-article-summary-highlights">
+                        <li>Blue Monday 與周中情緒波動與睡眠負債、工作節奏與獎賞預期密切相關。</li>
+                        <li>列出日常緩衝策略：啟動儀式、中場小慶祝、生活與營養調整。</li>
+                        <li>整理 Omega-3／DHA 與情緒健康的生理機制與臨床證據、以及尋求協助的判準。</li>
+                    </ul>
+                    <button type="button" class="ub-article-button js-article-expand" aria-expanded="false" aria-controls="article-blue-monday-content">閱讀全文</button>
+                </div>
+                <div class="ub-article-content" id="article-blue-monday-content" hidden>
+                    <article class="ub-article-body">
+                        <header class="ub-article-header">
+                            <h2 class="ub-article-title">壓力世代的情緒風暴：從 Blue Monday 到「週三小確幸」，我們能做些什麼？</h2>
+                            <p class="ub-article-meta">2025-10-15 · 林宜宏 榮譽醫學博士</p>
+                            <div class="ub-article-keywords">
+                                <span class="ub-article-keyword">Blue Monday</span>
+                                <span class="ub-article-keyword">情緒健康</span>
+                                <span class="ub-article-keyword">壓力管理</span>
+                                <span class="ub-article-keyword">Omega-3</span>
+                                <span class="ub-article-keyword">DHA</span>
+                                <span class="ub-article-keyword">自我照護</span>
+                            </div>
+                        </header>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>文章重點速覽</h2>
+                            <ul class="ub-article-bullets is-summary">
+                                <li><strong>Blue Monday 源自睡眠與節奏失衡：</strong>週末作息延遲、任務堆疊與獎賞預期落差共同造成情緒低谷。</li>
+                                <li><strong>生活儀式能緩衝壓力：</strong>規律睡眠、啟動儀式與中場小確幸可降低皮質醇與焦慮感。</li>
+                                <li><strong>EPA／DHA 提供生理支持：</strong>Omega-3 維持神經膜流動性與抗發炎，對憂鬱情緒有小至中度輔助效果。</li>
+                                <li><strong>必要時尋求專業：</strong>情緒低落持續兩週以上、影響功能或出現自傷意念，需立即聯繫心理或精神專業。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>情緒波動的集體經驗</h2>
+                            <p>在高壓節奏下，Blue Monday 與週三小確幸並非迷思，而是工作節奏、睡眠負債與社交切換共同作用的群體情緒曲線。世界衛生組織指出，全球約 5% 成人正受憂鬱症困擾，提醒我們長期壓力必須被正視。</p>
+                            <p class="ub-article-meta">資料來源：World Health Organization, Depression Fact Sheet</p>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>為何 Blue Monday 這麼真實？</h2>
+                            <ul class="ub-article-bullets">
+                                <li>週末作息延遲與睡眠負債，使周一精神狀態下滑、壓力荷爾蒙升高。</li>
+                                <li>待辦事項在週一聚集，工作節奏突然加速，主觀壓力感倍增。</li>
+                                <li>人腦對「可預期的獎勵」高度敏感，週三看見「已撐過一半」的小確幸，可暫時平衡負面情緒。</li>
+                                <li>若情緒低落持續 ≥ 2 週或影響日常功能，應尋求專業協助，避免延誤治療。</li>
+                            </ul>
+                            <p class="ub-article-meta">參考：WHO《Depression》、臨床情緒障礙評估指南</p>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>把「小確幸」變成日常緩衝</h2>
+                            <ul class="ub-article-bullets">
+                                <li><strong>預留溫柔啟動儀式：</strong>早晨咖啡、音樂或三分鐘呼吸練習，協助從週末切換到週一。</li>
+                                <li><strong>安排中場小慶祝：</strong>提前規劃可預期的正向事件，例如綠地散步、短暫社交或讀完一個章節。</li>
+                                <li><strong>生活型態＋營養並進：</strong>規律運動、固定作息、全食飲食；與專業討論 Omega-3、維生素 D/B 群等營養補強。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-primary">
+                            <h2>Omega-3、DHA 與情緒健康：已知與未知</h2>
+                            <h3>生物學基礎</h3>
+                            <p>DHA 是大腦神經膜的關鍵脂肪酸，負責維持膜流動性、神經傳導與抗發炎調節，提供情緒穩定的生理合理性。</p>
+                            <h3>臨床證據速覽</h3>
+                            <ul class="ub-article-bullets">
+                                <li><strong>憂鬱症：</strong>統合分析顯示 Omega-3 對憂鬱症狀具小至中度效益；EPA ≥ 60% 或純 EPA 配方較一致，DHA 提供神經結構支持。（Translational Psychiatry 2019；Nutrients 2023）</li>
+                                <li><strong>躁鬱症：</strong>作為藥物治療輔助，對憂鬱相症狀有幫助；躁期效應仍待釐清。（PubMed 21903025；34228881）</li>
+                                <li><strong>兒少 ADHD：</strong>補充 Omega-3 對過動與注意力有小幅改善，但效果有限且個體差異大。（PubMed 28741625；21961774）</li>
+                            </ul>
+                            <h3>劑量與安全</h3>
+                            <p>臨床研究常見每日數百至數千毫克 EPA/DHA。高劑量或合併抗凝藥時，務必諮詢專業醫療人員並留意個別化評估。</p>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>常見問題（FAQ）</h2>
+                            <ul class="ub-article-qa">
+                                <li><strong>Q1：每天要補充多少 Omega-3 才有情緒幫助？</strong>A：多數臨床試驗使用 1–2 公克 EPA＋DHA，其中 EPA 至少占 60%；實際劑量需依醫師評估藥物、體重與共病。</li>
+                                <li><strong>Q2：純 DHA 也能改善憂鬱或焦慮嗎？</strong>A：DHA 提供神經結構支持，但改善憂鬱的證據較偏向高 EPA 配方；DHA 可與 EPA 搭配，完整兼顧結構與訊息傳導。</li>
+                                <li><strong>Q3：正在服用抗憂鬱或情緒穩定劑可以補充嗎？</strong>A：多數研究顯示 Omega-3 與藥物併用安全，仍須主治醫師確認劑量以避免出血風險或腸胃不適。</li>
+                                <li><strong>Q4：孕期或哺乳族群補充有助情緒嗎？</strong>A：DHA 對胎兒神經發育重要，也與產後情緒穩定相關；劑量與來源需由產科醫師評估，避免不明來源魚油。</li>
+                                <li><strong>Q5：僅靠飲食可達到同樣效果嗎？</strong>A：每週 2–3 份高脂魚、堅果與藻油有助達標；若飲食不足或有情緒疾病史，可與專業討論是否需要標準化補充品。</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-secondary">
+                            <h2>為何越來越多人選擇藻油 DHA？</h2>
+                            <ul class="ub-article-bullets">
+                                <li><strong>純素／非魚類來源：</strong>適合素食者與海鮮過敏族群，避免魚源季節差異。</li>
+                                <li><strong>污染風險可控：</strong>密閉培養降低重金屬與戴奧辛疑慮，仍須查閱每批檢測報告（COA）。</li>
+                                <li><strong>生物等效性：</strong>研究顯示藻油能有效提升血中 DHA 指標，與傳統魚油相近。（Nutrients 2022；ScienceDirect 2024；GlobalRPH 2025）</li>
+                            </ul>
+                        </div>
+
+                        <div class="ub-article-box is-accent">
+                            <h2>什麼樣的人需要更早尋求協助？</h2>
+                            <ul class="ub-article-bullets">
+                                <li>情緒低落、快感缺失、功能下滑持續兩週以上。</li>
+                                <li>出現自我傷害意念、計畫或行為—請立即就醫或撥打緊急專線。</li>
+                                <li>有躁鬱症家族史、過去情緒疾患、物質使用或壓力劇增者。</li>
+                            </ul>
+                        </div>
+
+                        <footer class="ub-article-footer">
+                            ╳ 合規與免責聲明：本文提供一般健康與營養知識，不等同醫療建議，食品無醫療效能。如有情緒困擾、慢性疾病、懷孕／哺乳或正在用藥，請先諮詢合格的醫療或營養專業。產品功能與安全性須以標示與第三方檢測報告為準，並依建議攝取量使用。
+                            <br><br>
+                            ╳ 結語｜情緒波動需要生活節奏、社會支持與 EPA／DHA 等營養補強共同到位；若低落或焦慮持續干擾功能，務必儘早尋求心理或精神專業協助。
+                        </footer>
+                    </article>
+                    <div class="ub-article-reference">
+                        <h2 class="ub-reference-title">參考文獻</h2>
+                        <ul class="ub-article-bullets is-reference">
+                            <li>World Health Organization. Depression fact sheet. 2023.</li>
+                            <li>Wittmann M et al. Curr Biol. 2006;16(22):R1009-R1010.</li>
+                            <li>Grosso G et al. Nutrients. 2014;6(12):5415-5434.</li>
+                            <li>Mocking RJT et al. Transl Psychiatry. 2019;9:299.</li>
+                            <li>Harvey SB et al. Lancet. 2017;389(10081):1410-1421.</li>
+                        </ul>
+                    </div>
+                    <button type="button" class="ub-article-button is-secondary js-article-collapse" aria-expanded="false" aria-controls="article-blue-monday-content">收合文章</button>
+                </div>
+            </article>
+        </div>
+    </section>
+    <script>
+    (function () {
+    var cards = document.querySelectorAll('.ub-article-card');
+    var heroSection = document.querySelector('.ub-medical-hero-wrapper');
+
+        var collapseCard = function (targetCard, options) {
+            var opts = options || {};
+            var targetContent = targetCard.querySelector('.ub-article-content');
+            var targetExpandBtn = targetCard.querySelector('.js-article-expand');
+            var targetCollapseBtn = targetCard.querySelector('.js-article-collapse');
+
+            if (!targetContent || !targetExpandBtn || !targetCollapseBtn) {
+                return;
+            }
+
+            targetCard.classList.remove('is-expanded');
+            targetContent.hidden = true;
+            targetExpandBtn.setAttribute('aria-expanded', 'false');
+            targetCollapseBtn.setAttribute('aria-expanded', 'false');
+
+            if (opts.focusExpand === true) {
+                targetExpandBtn.focus();
+            }
+        };
+
+        var expandCard = function (targetCard) {
+            var targetContent = targetCard.querySelector('.ub-article-content');
+            var targetExpandBtn = targetCard.querySelector('.js-article-expand');
+            var targetCollapseBtn = targetCard.querySelector('.js-article-collapse');
+
+            if (!targetContent || !targetExpandBtn || !targetCollapseBtn) {
+                return;
+            }
+
+            cards.forEach(function (card) {
+                if (card !== targetCard) {
+                    collapseCard(card);
+                }
+            });
+
+            targetCard.classList.add('is-expanded');
+            targetContent.hidden = false;
+            targetExpandBtn.setAttribute('aria-expanded', 'true');
+            targetCollapseBtn.setAttribute('aria-expanded', 'true');
+
+            setTimeout(function () {
+                var prevCard = targetCard.previousElementSibling;
+                var targetY;
+
+                var referenceElement = prevCard || heroSection || targetCard;
+                var referenceRect = referenceElement.getBoundingClientRect();
+                var viewportOffset = window.innerHeight ? window.innerHeight * 0.1 : 0;
+                targetY = window.scrollY + referenceRect.bottom - viewportOffset;
+
+                if (typeof targetY === 'number' && !isNaN(targetY)) {
+                    window.scrollTo({ top: Math.max(targetY, 0), behavior: 'smooth' });
+                }
+            }, 80);
+        };
+
+        cards.forEach(function (card) {
+            var expandBtn = card.querySelector('.js-article-expand');
+            var collapseBtn = card.querySelector('.js-article-collapse');
+
+            if (!expandBtn || !collapseBtn) {
+                return;
+            }
+
+            expandBtn.addEventListener('click', function () {
+                if (card.classList.contains('is-expanded')) {
+                    collapseCard(card);
+                } else {
+                    expandCard(card);
+                }
+            });
+
+            collapseBtn.addEventListener('click', function () {
+                collapseCard(card, { focusExpand: true });
+            });
+
+            collapseCard(card);
+        });
+    })();
+    </script>
+</body>
+
+
+
+</html>
