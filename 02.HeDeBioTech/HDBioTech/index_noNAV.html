@@ -249,7 +249,7 @@
         }
 
         /* 額外覆蓋：更廣的手機範圍，確保在某些高 DPR 裝置上也會觸發較大字級 */
-        @media (max-width: 768px) {
+        @media (max-width: 1023px) {
             .hero-title {
                 font-size: clamp(2rem, 9vw + 0.35rem, 3.6rem) !important;
                 line-height: 1.08;
@@ -1636,7 +1636,7 @@ DHA 到底是啥？
                 const img = document.createElement('img');
                 img.src = imageUrl;
                 img.alt = `專利${patentId}圖片 ${startIndex + index + 1}`;
-                img.className = 'w-full h-48 object-cover rounded-lg border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer';
+                img.className = 'w-full h-64 object-contain rounded-lg border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer';
                 img.loading = 'lazy';                    imageContainer.appendChild(img);
                     grid.appendChild(imageContainer);
                 });
