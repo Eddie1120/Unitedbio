@@ -256,18 +256,7 @@
                 font-weight: 100 !important;
             }
             
-            /* 手機版專利圖片輪播調整 */
-            .patent-carousel .patent-images-grid-1,
-            .patent-carousel .patent-images-grid-2,
-            .patent-carousel .patent-images-grid-3,
-            .patent-carousel .patent-images-grid-4,
-            .patent-carousel .patent-images-grid-5,
-            .patent-carousel .patent-images-grid-6 {
-                grid-template-columns: repeat(1, 1fr) !important;
-                gap: 0.75rem !important;
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
-            }
+
 
             .patent-carousel .patent-prev-btn-1,
             .patent-carousel .patent-prev-btn-2,
@@ -1546,7 +1535,15 @@ DHA 到底是啥？
         };
 
         // Configuration
-        const imagesPerPage = 6;
+        function getImagesPerPage() {
+            const width = window.innerWidth;
+            if (width >= 1536) return 6; // 2xl
+            if (width >= 1280) return 5; // xl
+            if (width >= 1024) return 4; // lg
+            if (width >= 768) return 3;  // md
+            if (width >= 640) return 2;  // sm
+            return 1; // xs
+        }
 
         // Initialize all patent carousels
         function initializePatentCarousels() {
@@ -1554,10 +1551,25 @@ DHA 到底是啥？
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function() {
                     createCarouselsForPatents();
+                    addResizeListener();
                 });
             } else {
                 createCarouselsForPatents();
+                addResizeListener();
             }
+        }
+
+        function addResizeListener() {
+            let resizeTimeout;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(function() {
+                    // Clear existing carousels
+                    document.querySelectorAll('.patent-carousel').forEach(carousel => carousel.remove());
+                    // Recreate carousels with new dimensions
+                    createCarouselsForPatents();
+                }, 250); // Debounce resize events
+            });
         }
 
         function createCarouselsForPatents() {
@@ -1570,6 +1582,7 @@ DHA 到底是啥？
         }
 
         function createPatentCarousel(patentId, images) {
+            const imagesPerPage = getImagesPerPage();
             const totalPages = Math.ceil(images.length / imagesPerPage);
             let currentPage = 0;
 
@@ -1583,7 +1596,7 @@ DHA 到底是啥？
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
                     </button>
-                    <div class="patent-images-grid-${patentId} grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 px-16"></div>
+                    <div class="patent-images-grid-${patentId} flex gap-4 px-16 overflow-x-auto" style="width: 100%;"></div>
                     <button class="patent-next-btn-${patentId} absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -1631,7 +1644,8 @@ DHA 到底是啥？
 
                 currentImages.forEach((imageUrl, index) => {
                     const imageContainer = document.createElement('div');
-                    imageContainer.className = 'relative group';
+                    imageContainer.className = 'relative group flex-shrink-0';
+                    imageContainer.style.width = `${100 / getImagesPerPage()}%`;
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
