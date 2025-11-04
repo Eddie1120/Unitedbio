@@ -1604,7 +1604,8 @@ DHA 到底是啥？
             }
             
             if (patentTextContainer) {
-                patentTextContainer.appendChild(carouselContainer);
+                // Insert carousel after the patent text container
+                patentTextContainer.insertAdjacentElement('afterend', carouselContainer);
             } else {
                 console.log(`Patent ${patentId} container not found`);
             }
