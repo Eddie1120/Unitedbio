@@ -1637,9 +1637,9 @@ DHA 到底是啥？
             // Use a more specific selector for the first patent
             let patentTextContainer;
             if (patentId === 1) {
-                patentTextContainer = document.querySelector('.space-y-8 > div:first-child > div:last-child');
+                patentTextContainer = document.querySelector('.space-y-8 > div:first-child p');
             } else {
-                patentTextContainer = document.querySelector(`.space-y-8 > div:nth-child(${patentId}) > div:last-child`);
+                patentTextContainer = document.querySelector(`.space-y-8 > div:nth-child(${patentId}) p`);
             }
             
             if (patentTextContainer) {
