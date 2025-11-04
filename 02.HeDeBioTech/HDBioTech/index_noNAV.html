@@ -1557,8 +1557,10 @@ DHA 到底是啥？
                     img.alt = `Patent Image ${patentId} - ${currentIndex + 1}`;
                     prevBtn.disabled = currentIndex === 0;
                     prevBtn.style.backgroundColor = currentIndex === 0 ? '#ddd' : '#f97316';
+                    prevBtn.style.cursor = currentIndex === 0 ? 'not-allowed' : 'pointer';
                     nextBtn.disabled = currentIndex === images.length - 1;
                     nextBtn.style.backgroundColor = currentIndex === images.length - 1 ? '#ddd' : '#f97316';
+                    nextBtn.style.cursor = currentIndex === images.length - 1 ? 'not-allowed' : 'pointer';
                 }
 
                 prevBtn.addEventListener('click', function() {
