@@ -264,10 +264,10 @@
             .patent-carousel .patent-images-grid-4,
             .patent-carousel .patent-images-grid-5,
             .patent-carousel .patent-images-grid-6 {
-                grid-template-columns: repeat(2, 1fr) !important;
+                grid-template-columns: repeat(1, 1fr) !important;
                 gap: 0.75rem !important;
-                padding-left: 2rem !important;
-                padding-right: 2rem !important;
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
             }
 
             .patent-carousel .patent-prev-btn-1,
@@ -282,8 +282,8 @@
             .patent-carousel .patent-next-btn-4,
             .patent-carousel .patent-next-btn-5,
             .patent-carousel .patent-next-btn-6 {
-                width: 2.5rem !important;
-                height: 2.5rem !important;
+                width: 2rem !important;
+                height: 2rem !important;
             }
 
             .patent-carousel .patent-prev-btn-1 svg,
@@ -1584,7 +1584,7 @@ DHA 到底是啥？
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
                     </button>
-                    <div class="patent-images-grid-${patentId} grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 px-16"></div>
+                    <div class="patent-images-grid-${patentId} grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 px-16"></div>
                     <button class="patent-next-btn-${patentId} absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -1634,13 +1634,11 @@ DHA 到底是啥？
                     const imageContainer = document.createElement('div');
                     imageContainer.className = 'relative group';
 
-                    const img = document.createElement('img');
-                    img.src = imageUrl;
-                    img.alt = `專利${patentId}圖片 ${startIndex + index + 1}`;
-                    img.className = 'w-full h-32 object-cover rounded-lg border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer';
-                    img.loading = 'lazy';
-
-                    imageContainer.appendChild(img);
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利${patentId}圖片 ${startIndex + index + 1}`;
+                img.className = 'w-full h-48 object-cover rounded-lg border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer';
+                img.loading = 'lazy';                    imageContainer.appendChild(img);
                     grid.appendChild(imageContainer);
                 });
 
