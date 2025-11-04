@@ -1551,6 +1551,17 @@ DHA 到底是啥？
 
         // Initialize all patent carousels
         function initializePatentCarousels() {
+            // Use a more reliable approach - wait for DOM to be fully loaded
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    createCarouselsForPatents();
+                });
+            } else {
+                createCarouselsForPatents();
+            }
+        }
+
+        function createCarouselsForPatents() {
             for (let patentId = 1; patentId <= 6; patentId++) {
                 const images = patentImages[patentId.toString()] || [];
                 if (images.length > 0) {
@@ -1567,7 +1578,6 @@ DHA 到底是啥？
             const carouselContainer = document.createElement('div');
             carouselContainer.className = `mt-8 mb-12 patent-carousel patent-${patentId}`;
             carouselContainer.innerHTML = `
-                <h4 class="text-lg font-medium mb-6 text-gray-900 text-center">專利${patentId} - 技術圖片展示</h4>
                 <div class="relative">
                     <button class="patent-prev-btn-${patentId} absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1585,9 +1595,18 @@ DHA 到底是啥？
             `;
 
             // Find the patent text container and insert carousel after it
-            const patentTextContainer = document.querySelector(`.space-y-8 > div:nth-child(${patentId})`);
+            // Use a more specific selector for the first patent
+            let patentTextContainer;
+            if (patentId === 1) {
+                patentTextContainer = document.querySelector('.space-y-8 > div:first-child');
+            } else {
+                patentTextContainer = document.querySelector(`.space-y-8 > div:nth-child(${patentId})`);
+            }
+            
             if (patentTextContainer) {
                 patentTextContainer.appendChild(carouselContainer);
+            } else {
+                console.log(`Patent ${patentId} container not found`);
             }
 
             // Create page indicators
