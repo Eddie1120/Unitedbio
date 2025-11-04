@@ -258,19 +258,46 @@
             }
             
             /* 手機版專利圖片輪播調整 */
-            #patent-images-grid {
+            .patent-carousel .patent-images-grid-1,
+            .patent-carousel .patent-images-grid-2,
+            .patent-carousel .patent-images-grid-3,
+            .patent-carousel .patent-images-grid-4,
+            .patent-carousel .patent-images-grid-5,
+            .patent-carousel .patent-images-grid-6 {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 0.75rem !important;
                 padding-left: 2rem !important;
                 padding-right: 2rem !important;
             }
 
-            #patent-prev-btn, #patent-next-btn {
+            .patent-carousel .patent-prev-btn-1,
+            .patent-carousel .patent-prev-btn-2,
+            .patent-carousel .patent-prev-btn-3,
+            .patent-carousel .patent-prev-btn-4,
+            .patent-carousel .patent-prev-btn-5,
+            .patent-carousel .patent-prev-btn-6,
+            .patent-carousel .patent-next-btn-1,
+            .patent-carousel .patent-next-btn-2,
+            .patent-carousel .patent-next-btn-3,
+            .patent-carousel .patent-next-btn-4,
+            .patent-carousel .patent-next-btn-5,
+            .patent-carousel .patent-next-btn-6 {
                 width: 2.5rem !important;
                 height: 2.5rem !important;
             }
 
-            #patent-prev-btn svg, #patent-next-btn svg {
+            .patent-carousel .patent-prev-btn-1 svg,
+            .patent-carousel .patent-prev-btn-2 svg,
+            .patent-carousel .patent-prev-btn-3 svg,
+            .patent-carousel .patent-prev-btn-4 svg,
+            .patent-carousel .patent-prev-btn-5 svg,
+            .patent-carousel .patent-prev-btn-6 svg,
+            .patent-carousel .patent-next-btn-1 svg,
+            .patent-carousel .patent-next-btn-2 svg,
+            .patent-carousel .patent-next-btn-3 svg,
+            .patent-carousel .patent-next-btn-4 svg,
+            .patent-carousel .patent-next-btn-5 svg,
+            .patent-carousel .patent-next-btn-6 svg {
                 width: 1rem !important;
                 height: 1rem !important;
             }
@@ -658,6 +685,7 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這份專利的核心內容與其對應的美國專利 US9745539B2 與 US11198891B2 基本一致，主要描述一種 「無溶劑、濕式、整合式的一鍋法油脂萃取技術」，專門用於 藻類與類似微生物（如 Thraustochytrium 屬） 的油脂提取。這項技術被廣泛應用於 高純度 DHA、EPA 藻油 的生產領域。</p>
                                 </div>
                          </div>
+
                          <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                                         <div class="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"><span class="text-white font-medium text-xs">2</span></div>
@@ -703,38 +731,6 @@
                                             <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">於 US11198891B2（非無菌高糖發酵） 的延伸升級版本。重點在於導入 「自動補料與過程控制系統（Automated Feed and Control System）」，使整個發酵 → 油脂生成 → 酵素破壁 → 萃取流程能在工業規模下全自動運作。</p>
                                         </div>
                                         </div>
-        </div>
-
-        <!-- 統一專利圖片輪播區域 -->
-        <div class="mt-16">
-            <h4 class="text-lg font-medium mb-8 text-gray-900 text-center">專利技術圖片展示</h4>
-            <div class="relative">
-                <!-- 上一頁按鈕 -->
-                <button id="patent-prev-btn" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                </button>
-
-                <!-- 圖片網格容器 -->
-                <div id="patent-images-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 px-16">
-                    <!-- 圖片將通過JavaScript動態生成 -->
-                </div>
-
-                <!-- 下一頁按鈕 -->
-                <button id="patent-next-btn" class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- 頁碼指示器 -->
-            <div class="flex justify-center mt-6 space-x-2">
-                <div id="page-indicators" class="flex space-x-2">
-                    <!-- 頁碼點將通過JavaScript動態生成 -->
-                </div>
-            </div>
         </div>
       </div>
       <div>
@@ -1513,131 +1509,166 @@ DHA 到底是啥？
 
         // syncHeaderHeightToCSSVar removed because site nav/HTML was removed.
 
-        // Patent image carousel functionality - Unified grid view
+        // Patent image carousel functionality - Individual patent groups
         // Initialize immediately when script loads
 
-        // Define all patent images in a single array
-        const allPatentImages = [
-            // Patent 1 images (23 images)
-            'https://unitedbio.com.tw/upload/3552/home/3552_690977501b0cd.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_69097759232f7.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_690973fb89539.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_6909747e29d65.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_6909752c885f9.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_6909753848c65.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_6909755398a61.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_6909755c7eb58.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_6909756844634.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_69097572075c7.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_6909757d2de3a.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_69097585c8439.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_690976b4cabde.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_690976be3ddf9.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_690976f4d5c01.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_69097704151eb.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_69097710de6b4.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_6909771a04586.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_69097723848f0.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_6909772c0fd8c.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_690977358550c.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_6909773d84fd3.webp',
-            'https://unitedbio.com.tw/upload/3552/home/3552_6909774723589.webp'
-            // Patent 2-6 images can be added here later
-        ];
+        // Define images for each patent (replace with actual image URLs)
+        const patentImages = {
+            '1': [
+                'https://unitedbio.com.tw/upload/3552/home/3552_690977501b0cd.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_69097759232f7.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_690973fb89539.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909747e29d65.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909752c885f9.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909753848c65.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909755398a61.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909755c7eb58.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909756844634.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_69097572075c7.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909757d2de3a.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_69097585c8439.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_690976b4cabde.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_690976be3ddf9.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_690976f4d5c01.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_69097704151eb.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_69097710de6b4.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909771a04586.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_69097723848f0.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909772c0fd8c.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_690977358550c.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909773d84fd3.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909774723589.webp'
+            ], // Patent 1 images
+            '2': [], // Patent 2 images (to be added later)
+            '3': [], // Patent 3 images (to be added later)
+            '4': [], // Patent 4 images (to be added later)
+            '5': [], // Patent 5 images (to be added later)
+            '6': []  // Patent 6 images (to be added later)
+        };
 
         // Configuration
         const imagesPerPage = 6;
-        const totalPages = Math.ceil(allPatentImages.length / imagesPerPage);
 
-        // DOM elements
-        const imagesGrid = document.getElementById('patent-images-grid');
-        const prevBtn = document.getElementById('patent-prev-btn');
-        const nextBtn = document.getElementById('patent-next-btn');
-        const pageIndicators = document.getElementById('page-indicators');
+        // Initialize all patent carousels
+        function initializePatentCarousels() {
+            for (let patentId = 1; patentId <= 6; patentId++) {
+                const images = patentImages[patentId.toString()] || [];
+                if (images.length > 0) {
+                    createPatentCarousel(patentId, images);
+                }
+            }
+        }
 
-        let currentPage = 0;
+        function createPatentCarousel(patentId, images) {
+            const totalPages = Math.ceil(images.length / imagesPerPage);
+            let currentPage = 0;
 
-        // Create page indicators
-        function createPageIndicators() {
-            pageIndicators.innerHTML = '';
+            // Create carousel container
+            const carouselContainer = document.createElement('div');
+            carouselContainer.className = `mt-8 mb-12 patent-carousel patent-${patentId}`;
+            carouselContainer.innerHTML = `
+                <h4 class="text-lg font-medium mb-6 text-gray-900 text-center">專利${patentId} - 技術圖片展示</h4>
+                <div class="relative">
+                    <button class="patent-prev-btn-${patentId} absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="patent-images-grid-${patentId} grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 px-16"></div>
+                    <button class="patent-next-btn-${patentId} absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="patent-page-indicators-${patentId} flex justify-center mt-6 space-x-2"></div>
+            `;
+
+            // Find the patent text container and insert carousel after it
+            const patentTextContainer = document.querySelector(`.space-y-8 > div:nth-child(${patentId})`);
+            if (patentTextContainer) {
+                patentTextContainer.appendChild(carouselContainer);
+            }
+
+            // Create page indicators
+            const indicatorsContainer = carouselContainer.querySelector(`.patent-page-indicators-${patentId}`);
             for (let i = 0; i < totalPages; i++) {
                 const indicator = document.createElement('div');
                 indicator.className = `w-3 h-3 rounded-full cursor-pointer transition-colors ${
                     i === currentPage ? 'bg-orange-500' : 'bg-gray-300'
                 }`;
-                indicator.addEventListener('click', () => goToPage(i));
-                pageIndicators.appendChild(indicator);
+                indicator.addEventListener('click', () => goToPage(patentId, i));
+                indicatorsContainer.appendChild(indicator);
             }
-        }
 
-        // Update images display
-        function updateImages() {
-            const startIndex = currentPage * imagesPerPage;
-            const endIndex = Math.min(startIndex + imagesPerPage, allPatentImages.length);
-            const currentImages = allPatentImages.slice(startIndex, endIndex);
+            // Update images function
+            function updateImages(page) {
+                const startIndex = page * imagesPerPage;
+                const endIndex = Math.min(startIndex + imagesPerPage, images.length);
+                const currentImages = images.slice(startIndex, endIndex);
 
-            imagesGrid.innerHTML = '';
+                const grid = carouselContainer.querySelector(`.patent-images-grid-${patentId}`);
+                grid.innerHTML = '';
 
-            currentImages.forEach((imageUrl, index) => {
-                const imageContainer = document.createElement('div');
-                imageContainer.className = 'relative group';
+                currentImages.forEach((imageUrl, index) => {
+                    const imageContainer = document.createElement('div');
+                    imageContainer.className = 'relative group';
 
-                const img = document.createElement('img');
-                img.src = imageUrl;
-                img.alt = `專利圖片 ${startIndex + index + 1}`;
-                img.className = 'w-full h-32 object-cover rounded-lg border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer';
-                img.loading = 'lazy';
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = `專利${patentId}圖片 ${startIndex + index + 1}`;
+                    img.className = 'w-full h-32 object-cover rounded-lg border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer';
+                    img.loading = 'lazy';
 
-                // Add click to enlarge functionality (optional)
-                img.addEventListener('click', () => {
-                    // You can add modal or lightbox functionality here
-                    console.log(`Clicked image: ${imageUrl}`);
+                    imageContainer.appendChild(img);
+                    grid.appendChild(imageContainer);
                 });
 
-                imageContainer.appendChild(img);
-                imagesGrid.appendChild(imageContainer);
+                // Update button states
+                const prevBtn = carouselContainer.querySelector(`.patent-prev-btn-${patentId}`);
+                const nextBtn = carouselContainer.querySelector(`.patent-next-btn-${patentId}`);
+                prevBtn.disabled = page === 0;
+                nextBtn.disabled = page === totalPages - 1;
+
+                // Update page indicators
+                const indicators = indicatorsContainer.querySelectorAll('div');
+                indicators.forEach((indicator, index) => {
+                    indicator.className = `w-3 h-3 rounded-full cursor-pointer transition-colors ${
+                        index === page ? 'bg-orange-500' : 'bg-gray-300'
+                    }`;
+                });
+            }
+
+            // Navigation functions
+            function goToPage(patentId, page) {
+                currentPage = Math.max(0, Math.min(page, totalPages - 1));
+                updateImages(currentPage);
+            }
+
+            // Event listeners
+            const prevBtn = carouselContainer.querySelector(`.patent-prev-btn-${patentId}`);
+            const nextBtn = carouselContainer.querySelector(`.patent-next-btn-${patentId}`);
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    updateImages(currentPage);
+                }
             });
 
-            // Update button states
-            prevBtn.disabled = currentPage === 0;
-            nextBtn.disabled = currentPage === totalPages - 1;
-
-            // Update page indicators
-            const indicators = pageIndicators.querySelectorAll('div');
-            indicators.forEach((indicator, index) => {
-                indicator.className = `w-3 h-3 rounded-full cursor-pointer transition-colors ${
-                    index === currentPage ? 'bg-orange-500' : 'bg-gray-300'
-                }`;
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    updateImages(currentPage);
+                }
             });
+
+            // Initialize
+            updateImages(currentPage);
         }
 
-        // Navigation functions
-        function goToPage(page) {
-            currentPage = Math.max(0, Math.min(page, totalPages - 1));
-            updateImages();
-        }
-
-        function nextPage() {
-            if (currentPage < totalPages - 1) {
-                currentPage++;
-                updateImages();
-            }
-        }
-
-        function prevPage() {
-            if (currentPage > 0) {
-                currentPage--;
-                updateImages();
-            }
-        }
-
-        // Event listeners
-        prevBtn.addEventListener('click', prevPage);
-        nextBtn.addEventListener('click', nextPage);
-
-        // Initialize
-        createPageIndicators();
-        updateImages();
+        // Initialize all carousels
+        initializePatentCarousels();
         // Hero min-height still uses --total-nav-height with the default fallback (0px).
     </script>
     <script>
