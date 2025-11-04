@@ -256,6 +256,28 @@
                 line-height: 1.08;
                 font-weight: 100 !important;
             }
+            
+            /* 專利項目手機版佈局：圖片移至文字下方 */
+            [data-patent] {
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 1rem !important;
+            }
+            
+            /* 手機版圖片區塊寬度調整 */
+            [data-patent] .image-container {
+                width: 100% !important;
+                max-width: 300px !important;
+            }
+            
+            /* 手機版按鈕位置調整 */
+            [data-patent] .prev-btn {
+                left: -15px !important;
+            }
+            
+            [data-patent] .next-btn {
+                right: -15px !important;
+            }
         }
 
         /* 已將大螢幕行為整合入基本的 fluid clamp（避免中段視窗出現衝突）。
