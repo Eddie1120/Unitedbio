@@ -282,6 +282,94 @@
             }
         }
 
+        /* 統一專利圖片輪播區域樣式 */
+        .patent-gallery {
+            max-width: 100%;
+        }
+
+        .patent-carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .patent-images-grid {
+            width: 100%;
+        }
+
+        .patent-images-wrapper {
+            width: calc(100% * 6); /* 6個專利項目 */
+        }
+
+        .patent-image-item {
+            flex: 0 0 calc(100% / 6); /* 根據螢幕大小動態調整 */
+            padding: 0 8px;
+            box-sizing: border-box;
+        }
+
+        .patent-image-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .patent-image-item img:hover {
+            border-color: #f97316;
+            transform: scale(1.02);
+        }
+
+        .patent-indicators button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            background-color: #d1d5db;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .patent-indicators button.active {
+            background-color: #f97316;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 1024px) {
+            .patent-images-wrapper {
+                width: calc(100% * 3); /* 3個一組 */
+            }
+            .patent-image-item {
+                flex: 0 0 calc(100% / 3);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .patent-images-wrapper {
+                width: calc(100% * 2); /* 2個一組 */
+            }
+            .patent-image-item {
+                flex: 0 0 calc(100% / 2);
+            }
+            .patent-image-item img {
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .patent-images-wrapper {
+                width: 100%; /* 1個一組 */
+            }
+            .patent-image-item {
+                flex: 0 0 100%;
+            }
+            .patent-image-item img {
+                height: 180px;
+            }
+        }
+
         /* 已將大螢幕行為整合入基本的 fluid clamp（避免中段視窗出現衝突）。
            若需要針對超大螢幕做特殊調整，可在此處再新增明確覆蓋規則。 */
         /* BVshop 兼容的桌面斷點規則：使用具體的 px/rem 值以避免宿主環境影響 */
@@ -663,11 +751,6 @@
                                       <h4 class="font-medium text-gray-900 mb-1" style="margin:0;line-height:1.1;">Methods of Recovering Oil from Microorganisms</h4>
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這份專利的核心內容與其對應的美國專利 US9745539B2 與 US11198891B2 基本一致，主要描述一種 「無溶劑、濕式、整合式的一鍋法油脂萃取技術」，專門用於 藻類與類似微生物（如 Thraustochytrium 屬） 的油脂提取。這項技術被廣泛應用於 高純度 DHA、EPA 藻油 的生產領域。</p>
                                 </div>
-                                <div style="width:20vw;border:1px dashed #ccc;border-radius:8px;min-height:100px;position:relative;" data-patent="1">
-                                    <button class="prev-btn" disabled style="position:absolute;left:-20px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background-color:#ddd;border:2px solid white;font-size:16px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">&lt;</button>
-                                    <img class="image-container" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" id="img-1" src="https://unitedbio.com.tw/upload/3552/home/3552_690977501b0cd.webp" alt="專利圖片">
-                                    <button class="next-btn" style="position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background-color:#f97316;border:2px solid white;font-size:16px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">&gt;</button>
-                                </div>
                          </div>
                          <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -676,11 +759,6 @@
                                 <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;flex:1;">
                                       <h4 class="font-medium text-gray-900 mb-1" style="margin:0;line-height:1.1;">Methods of Oil Production in Microorganisms後續專利</h4>
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這已經是最新且進一步擴展到：高濃度碳源、多階段補料與低 pH 無菌控制的藻油發酵生產技術。這是 EP3146060B1 的「上游生產技術版本」，著重 如何培養與控制微生物以達高產油量與低污染風險。</p>
-                                </div>
-                                <div style="width:20vw;border:1px dashed #ccc;border-radius:8px;min-height:100px;position:relative;" data-patent="2">
-                                    <button class="prev-btn" disabled style="position:absolute;left:-20px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background-color:#ddd;border:2px solid white;font-size:16px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">&lt;</button>
-                                    <img class="image-container" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" id="img-2" src="" alt="專利圖片">
-                                    <button class="next-btn" disabled style="position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background-color:#ddd;border:2px solid white;font-size:16px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">&gt;</button>
                                 </div>
                 </div>
                          <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
@@ -691,11 +769,6 @@
                                       <h4 class="font-medium text-gray-900 mb-1" style="margin:0;line-height:1.1;">微生物からの油脂の回収方法</h4>
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">日本版授權專利，屬於與 EP3146060B1 / EP3626806B1 / US11198891B2 / US11466297B2 同族的延伸授權文件。其內容主要承襲自同族歐洲與美國版本，但根據日本特許廳審查要求，文本更聚焦於「濕式油脂回收法（wet recovery of oils from microorganisms）」的具體操作條件與實驗結果。</p>
                                 </div>
-                                <div style="width:20vw;border:1px dashed #ccc;border-radius:8px;min-height:100px;position:relative;" data-patent="3">
-                                    <button class="prev-btn" disabled style="position:absolute;left:-20px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background-color:#ddd;border:2px solid white;font-size:16px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">&lt;</button>
-                                    <img class="image-container" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" id="img-3" src="" alt="專利圖片">
-                                    <button class="next-btn" disabled style="position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background-color:#ddd;border:2px solid white;font-size:16px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">&gt;</button>
-                                </div>
                 </div>
                          <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -704,11 +777,6 @@
                                 <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;flex:1;">
                                       <h4 class="font-medium text-gray-900 mb-1" style="margin:0;line-height:1.1;">Mara Renewables Corporation藻油專利族群的最早授權版本（2017）</h4>
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這份專利以「無溶劑濕式酵素破壁法（Solvent-free wet enzymatic extraction of lipids from microorganisms）」為主軸，是業界首批能於發酵液中直接回收 DHA/EPA 藻油的工業級製程。</p>
-                                </div>
-                                <div style="width:20vw;border:1px dashed #ccc;border-radius:8px;min-height:100px;position:relative;" data-patent="4">
-                                    <button class="prev-btn" disabled style="position:absolute;left:-20px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background-color:#ddd;border:2px solid white;font-size:16px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">&lt;</button>
-                                    <img class="image-container" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" id="img-4" src="" alt="專利圖片">
-                                    <button class="next-btn" disabled style="position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background-color:#ddd;border:2px solid white;font-size:16px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">&gt;</button>
                                 </div>
                 </div>
                  <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
@@ -719,11 +787,6 @@
               <h4 class="font-medium text-gray-900 mb-1" style="margin:0;line-height:1.1;">Mara Renewables Corporation 的關鍵授權專利</h4>
               <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">整個「藻油發酵與萃取」專利族群的 工業級整合版。它結合了前代的 US9745539B2（濕式萃取法） 與 EP3626806B1（高糖多段發酵控制），形成完整的「非無菌高產油發酵 + 濕式酵素回收系統」。</p>
             </div>
-            <div style="width:20vw;border:1px dashed #ccc;border-radius:8px;min-height:100px;position:relative;" data-patent="5">
-                <button class="prev-btn" disabled style="position:absolute;left:-20px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background-color:#ddd;border:2px solid white;font-size:16px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">&lt;</button>
-                <img class="image-container" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" id="img-5" src="" alt="專利圖片">
-                <button class="next-btn" disabled style="position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background-color:#ddd;border:2px solid white;font-size:16px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">&gt;</button>
-            </div>
              </div>
                                  <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -733,12 +796,28 @@
                                             <h4 class="font-medium text-gray-900 mb-1" style="margin:0;line-height:1.1;">Mara Renewables Corporation（加拿大）的藻油生產技術族群中「最新與最智能化」版本</h4>
                                             <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">於 US11198891B2（非無菌高糖發酵） 的延伸升級版本。重點在於導入 「自動補料與過程控制系統（Automated Feed and Control System）」，使整個發酵 → 油脂生成 → 酵素破壁 → 萃取流程能在工業規模下全自動運作。</p>
                                         </div>
-                                        <div style="width:20vw;border:1px dashed #ccc;border-radius:8px;min-height:100px;position:relative;" data-patent="6">
-                                            <button class="prev-btn" disabled style="position:absolute;left:-20px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background-color:#ddd;border:2px solid white;font-size:16px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">&lt;</button>
-                                            <img class="image-container" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" id="img-6" src="" alt="專利圖片">
-                                            <button class="next-btn" disabled style="position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background-color:#ddd;border:2px solid white;font-size:16px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">&gt;</button>
                                         </div>
-                                        </div>
+        </div>
+
+        <!-- 統一專利圖片輪播區域 -->
+        <div class="patent-gallery mt-16">
+            <h4 class="text-lg font-medium mb-8 text-gray-900 text-center">專利技術圖片展示</h4>
+            <div class="patent-carousel-container relative">
+                <button class="patent-prev-btn absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+                    ‹
+                </button>
+                <div class="patent-images-grid overflow-hidden">
+                    <div class="patent-images-wrapper flex transition-transform duration-300 ease-in-out">
+                        <!-- 專利圖片將通過JavaScript動態生成 -->
+                    </div>
+                </div>
+                <button class="patent-next-btn absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                    ›
+                </button>
+            </div>
+            <div class="patent-indicators flex justify-center mt-6 space-x-2">
+                <!-- 指示器將通過JavaScript動態生成 -->
+            </div>
         </div>
       </div>
       <div>
@@ -1517,11 +1596,8 @@ DHA 到底是啥？
 
         // syncHeaderHeightToCSSVar removed because site nav/HTML was removed.
 
-        // Patent image carousel functionality
+        // Unified Patent Image Gallery
         // Initialize immediately when script loads
-        const patentContainers = document.querySelectorAll('[data-patent]');
-        
-        // Define images for each patent (replace with actual image URLs)
         const patentImages = {
             '1': [
                 'https://unitedbio.com.tw/upload/3552/home/3552_690977501b0cd.webp',
@@ -1547,55 +1623,132 @@ DHA 到底是啥？
                 'https://unitedbio.com.tw/upload/3552/home/3552_690977358550c.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909773d84fd3.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909774723589.webp'
-            ], // Patent 1 images
+            ],
             '2': [], // Patent 2 images (to be added later)
             '3': [], // Patent 3 images (to be added later)
             '4': [], // Patent 4 images (to be added later)
             '5': [], // Patent 5 images (to be added later)
             '6': []  // Patent 6 images (to be added later)
         };
-        
-        patentContainers.forEach(container => {
-            const patentId = container.dataset.patent;
-            const imgContainer = container.querySelector('.image-container');
-            const prevBtn = container.querySelector('.prev-btn');
-            const nextBtn = container.querySelector('.next-btn');
 
-            const images = patentImages[patentId] || [];
-            let currentIndex = 0;
+        // Initialize unified patent gallery
+        function initPatentGallery() {
+            const galleryContainer = document.querySelector('.patent-gallery');
+            if (!galleryContainer) return;
 
-            function updateImage() {
-                if (images[currentIndex]) {
-                    imgContainer.src = images[currentIndex];
-                    imgContainer.style.display = 'block';
-                } else {
-                    imgContainer.src = '';
-                    imgContainer.style.display = 'none';
-                }
-                prevBtn.disabled = currentIndex === 0;
-                prevBtn.style.backgroundColor = currentIndex === 0 ? '#ddd' : '#f97316';
-                prevBtn.style.cursor = currentIndex === 0 ? 'not-allowed' : 'pointer';
-                nextBtn.disabled = currentIndex === images.length - 1;
-                nextBtn.style.backgroundColor = currentIndex === images.length - 1 ? '#ddd' : '#f97316';
-                nextBtn.style.cursor = currentIndex === images.length - 1 ? 'not-allowed' : 'pointer';
+            const imagesWrapper = galleryContainer.querySelector('.patent-images-wrapper');
+            const prevBtn = galleryContainer.querySelector('.patent-prev-btn');
+            const nextBtn = galleryContainer.querySelector('.patent-next-btn');
+            const indicatorsContainer = galleryContainer.querySelector('.patent-indicators');
+
+            // Get screen size to determine items per page
+            function getItemsPerPage() {
+                if (window.innerWidth <= 480) return 1;
+                if (window.innerWidth <= 768) return 2;
+                if (window.innerWidth <= 1024) return 3;
+                return 6;
             }
 
-            prevBtn.addEventListener('click', function() {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateImage();
-                }
-            });
+            let itemsPerPage = getItemsPerPage();
+            let currentPage = 0;
+            let totalPages = Math.ceil(6 / itemsPerPage); // 6 patents total
 
-            nextBtn.addEventListener('click', function() {
-                if (currentIndex < images.length - 1) {
-                    currentIndex++;
-                    updateImage();
-                }
-            });
+            // Create image items
+            function createImageItems() {
+                imagesWrapper.innerHTML = '';
+                for (let i = 1; i <= 6; i++) {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'patent-image-item';
 
-            updateImage(); // Initialize
-        });
+                    const img = document.createElement('img');
+                    const images = patentImages[i.toString()] || [];
+                    img.src = images.length > 0 ? images[0] : '';
+                    img.alt = `專利 ${i} 技術圖片`;
+                    if (images.length === 0) {
+                        img.style.display = 'none';
+                    }
+
+                    itemDiv.appendChild(img);
+                    imagesWrapper.appendChild(itemDiv);
+                }
+            }
+
+            // Create indicators
+            function createIndicators() {
+                indicatorsContainer.innerHTML = '';
+                for (let i = 0; i < totalPages; i++) {
+                    const indicator = document.createElement('button');
+                    indicator.className = i === currentPage ? 'active' : '';
+                    indicator.addEventListener('click', () => goToPage(i));
+                    indicatorsContainer.appendChild(indicator);
+                }
+            }
+
+            // Update carousel position
+            function updateCarousel() {
+                const translateX = -currentPage * 100;
+                imagesWrapper.style.transform = `translateX(${translateX}%)`;
+
+                // Update button states
+                prevBtn.disabled = currentPage === 0;
+                nextBtn.disabled = currentPage === totalPages - 1;
+
+                // Update indicators
+                const indicators = indicatorsContainer.querySelectorAll('button');
+                indicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === currentPage);
+                });
+            }
+
+            // Navigation functions
+            function goToPage(page) {
+                currentPage = Math.max(0, Math.min(page, totalPages - 1));
+                updateCarousel();
+            }
+
+            function nextPage() {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    updateCarousel();
+                }
+            }
+
+            function prevPage() {
+                if (currentPage > 0) {
+                    currentPage--;
+                    updateCarousel();
+                }
+            }
+
+            // Handle window resize
+            function handleResize() {
+                const newItemsPerPage = getItemsPerPage();
+                if (newItemsPerPage !== itemsPerPage) {
+                    itemsPerPage = newItemsPerPage;
+                    totalPages = Math.ceil(6 / itemsPerPage);
+                    currentPage = Math.min(currentPage, totalPages - 1);
+                    createIndicators();
+                    updateCarousel();
+                }
+            }
+
+            // Event listeners
+            prevBtn.addEventListener('click', prevPage);
+            nextBtn.addEventListener('click', nextPage);
+            window.addEventListener('resize', handleResize);
+
+            // Initialize
+            createImageItems();
+            createIndicators();
+            updateCarousel();
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPatentGallery);
+        } else {
+            initPatentGallery();
+        }
         // Hero min-height still uses --total-nav-height with the default fallback (0px).
     </script>
     <script>
