@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -739,13 +740,106 @@
                 rootMargin: '0px 0px -50px 0px'
             });
 
-            sections.forEach(section => {
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(30px)';
-                section.style.transition = 'all 0.6s ease-out';
-                observer.observe(section);
-            });
+        sections.forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.6s ease-out';
+            observer.observe(section);
         });
+    });
+</script>
+    <script>
+        (function neutralizeHostGutter() {
+            const root = document.getElementById('ycc-root');
+            if (!root) return;
+
+            let pending = false;
+
+            function applyAdjustments() {
+                pending = false;
+                if (!root.isConnected) return;
+
+                const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+                if (!viewportWidth) return;
+
+                const previous = {
+                    marginLeft: root.style.marginLeft,
+                    marginRight: root.style.marginRight,
+                    width: root.style.width,
+                    maxWidth: root.style.maxWidth,
+                    boxSizing: root.style.boxSizing,
+                    marginTop: root.style.marginTop
+                };
+
+                root.style.marginLeft = '';
+                root.style.marginRight = '';
+                root.style.marginTop = '';
+                root.style.width = '';
+                root.style.maxWidth = '';
+                root.style.boxSizing = '';
+
+                const rect = root.getBoundingClientRect();
+                const leftGap = Math.max(0, rect.left);
+                const rightGap = Math.max(0, viewportWidth - rect.right);
+                const topGap = Math.max(0, rect.top);
+                const customNav = document.querySelector('.HD_NAV_site-nav');
+                const navStyle = customNav ? window.getComputedStyle(customNav) : null;
+                const navRect = customNav ? customNav.getBoundingClientRect() : null;
+                const navVisible = !!customNav && navStyle && navStyle.display !== 'none' && navRect && navRect.height > 0;
+                const totalGap = leftGap + rightGap;
+
+                if (totalGap <= 0.5) {
+                    root.style.marginLeft = previous.marginLeft;
+                    root.style.marginRight = previous.marginRight;
+                    root.style.marginTop = previous.marginTop;
+                    root.style.width = previous.width;
+                    root.style.maxWidth = previous.maxWidth;
+                    root.style.boxSizing = previous.boxSizing;
+                } else {
+                    if (leftGap > 0) {
+                        root.style.marginLeft = `${-leftGap}px`;
+                    } else {
+                        root.style.marginLeft = previous.marginLeft;
+                    }
+
+                    if (rightGap > 0) {
+                        root.style.marginRight = `${-rightGap}px`;
+                    } else {
+                        root.style.marginRight = previous.marginRight;
+                    }
+
+                    root.style.width = `calc(100% + ${totalGap}px)`;
+                    root.style.maxWidth = 'none';
+                    root.style.boxSizing = 'border-box';
+                }
+
+                if (!navVisible && topGap > 0.5) {
+                    root.style.marginTop = `${-topGap}px`;
+                } else if (!totalGap || totalGap <= 0.5) {
+                    root.style.marginTop = previous.marginTop;
+                } else {
+                    root.style.marginTop = previous.marginTop;
+                }
+            }
+
+            function scheduleApply() {
+                if (pending) return;
+                pending = true;
+                requestAnimationFrame(applyAdjustments);
+            }
+
+            window.addEventListener('resize', () => {
+                pending = false;
+                scheduleApply();
+            }, { passive: true });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', scheduleApply, { once: true });
+            } else {
+                scheduleApply();
+            }
+        })();
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98bd8acfa5b54a69',t:'MTc2MDAwOTM4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
 </html>

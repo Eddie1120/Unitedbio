@@ -9,6 +9,74 @@
     <script>
     </script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+      // Adjust family video wrapper size based on video's intrinsic dimensions
+      (function() {
+            function fitFamilyVideo() {
+                const video = document.getElementById('family-video');
+                const wrapper = document.querySelector('.family-video-wrapper');
+                const right = document.querySelector('.family-right');
+                if (!video || !wrapper || !right) return;
+
+                function applySizing() {
+                    const vw = window.innerWidth;
+                    const vidW = video.videoWidth || 0;
+                    const vidH = video.videoHeight || 0;
+                    if (!vidW || !vidH) return;
+
+                    // Use percentage-based layout on md and up: left 58% / right 38%
+                    // and make the video wrapper keep the video's intrinsic aspect ratio via aspect-ratio
+                    if (vw >= 768) {
+                        // set CSS variable / inline aspect-ratio so wrapper height follows its column width
+                        wrapper.style.width = '100%';
+                        wrapper.style.boxSizing = 'border-box';
+                        // aspect-ratio expects width / height
+                        wrapper.style.aspectRatio = vidW + ' / ' + vidH;
+
+                        // Ensure the right column does not shrink and visually matches height
+                        // We'll set the right column's height to the computed height of the wrapper
+                        // (computed after layout). Use requestAnimationFrame to ensure layout settled.
+                        requestAnimationFrame(() => {
+                            const wrapperRect = wrapper.getBoundingClientRect();
+                            if (wrapperRect && wrapperRect.height) {
+                                right.style.minHeight = wrapperRect.height + 'px';
+                                right.style.height = '';
+                                right.style.boxSizing = 'border-box';
+                                right.style.overflow = '';
+                            }
+                        });
+                    } else {
+                        // On small screens, remove inline sizing so elements stack naturally
+                        wrapper.style.width = '';
+                        wrapper.style.height = '';
+                        wrapper.style.aspectRatio = '';
+                        right.style.width = '';
+                        right.style.height = '';
+                        right.style.minHeight = '';
+                        right.style.overflow = '';
+                    }
+                }
+
+                if (video.readyState >= 1 && video.videoWidth) {
+                    applySizing();
+                } else {
+                    video.addEventListener('loadedmetadata', applySizing, { once: true });
+                }
+
+                // Recalculate on resize (debounced)
+                window.addEventListener('resize', function() {
+                    clearTimeout(window._familyVideoResize);
+                    window._familyVideoResize = setTimeout(applySizing, 120);
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', fitFamilyVideo);
+            } else {
+                fitFamilyVideo();
+            }
+      })();
+  </script>
   <style>
         #ycc-root {
             --ycc-bg: #1a1a1a;
@@ -30,9 +98,12 @@
         
         .hero-bg {
             background: linear-gradient(180deg, var(--ycc-bg, #1a1a1a) 0%, var(--ycc-bg-end, #2d2d2d) 100%);
-                    /* hero 高度為視窗高度減去所有頂部導覽列總高度（--total-nav-height），
-                        並額外增加 --hero-extra-height 讓 hero 在所有裝置上更高一些。當沒有 header 時 var 為 0px。 */
-                    min-height: calc(100vh - var(--total-nav-height, 0px) + var(--hero-extra-height));
+            min-height: calc(100svh - var(--total-nav-height, 0px) + var(--hero-extra-height));
+        }
+        @supports not (height: 100svh) {
+            .hero-bg {
+                min-height: calc(100vh - var(--total-nav-height, 0px) + var(--hero-extra-height));
+            }
         }
 
         /* Site navigation styles removed because the header/nav HTML was removed.
@@ -116,9 +187,6 @@
             object-fit: cover;
             object-position: center center; /* 確保裁切時置中 */
             background-color: #000; /* fallback 背景，避免暫時空白或不同背景色 */
-            /* 微幅放大以覆蓋影片本身若有窄幅黑邊（保守值，避免過度裁切重要畫面） */
-            transform: scale(1.03);
-            transform-origin: center center;
             pointer-events: none;
         }
 
@@ -291,12 +359,70 @@
             }
         }
 
+        .patent-carousel .patent-image-wrapper {
+            position: relative;
+            flex: 0 0 auto;
+            width: 100%;
+            aspect-ratio: 9 / 16;
+        }
+
+        .patent-carousel .patent-image-wrapper::before {
+            content: "";
+            display: block;
+            width: 100%;
+            padding-top: calc(16 / 9 * 100%);
+        }
+
+        @supports (aspect-ratio: 9 / 16) {
+            .patent-carousel .patent-image-wrapper::before {
+                display: none;
+            }
+        }
+
+        .patent-carousel .patent-image-wrapper > img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: #ffffff;
+        }
+
         /* 已將大螢幕行為整合入基本的 fluid clamp（避免中段視窗出現衝突）。
            若需要針對超大螢幕做特殊調整，可在此處再新增明確覆蓋規則。 */
         /* BVshop 兼容的桌面斷點規則：使用具體的 px/rem 值以避免宿主環境影響 */
         @media (min-width: 768px) {
             .hero-title { font-size: 3rem !important; line-height: 1.06; }
             .hero-copy { width: clamp(18rem, 64vw, 56rem); }
+            /* Family split: use percentage columns on md+ (left / right = 58% / 38%) */
+            .family-split {
+                grid-template-columns: 58% 38% !important;
+                align-items: stretch;
+                gap: 2rem;
+            }
+            .family-split > * {
+                height: 100%;
+            }
+            .family-right {
+                align-self: stretch;
+                box-sizing: border-box;
+                margin-left: -1rem;
+            }
+            .family-left,
+            .family-right {
+                display: flex;
+                flex-direction: column;
+            }
+            .family-right > .space-y-10 {
+                flex: 1 1 auto;
+            }
+            .family-left .family-video-wrapper {
+                flex: 1 1 auto;
+            }
+            .family-video-wrapper {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
         }
         @media (min-width: 1024px) {
             .hero-title { font-size: 3.8rem !important; line-height: 1.04; }
@@ -506,24 +632,266 @@
             transform: translateY(6px);
             box-shadow: 0 0px 0 #666, 0 2px 5px rgba(0,0,0,0.3);
         }
-            /* Certification description styling: enable English hyphenation when needed
-               text-align: justify for two-ended alignment; text-align-last:left to keep
-               the final short line left-aligned. */
-            .cert-desc {
-                hyphens: auto;
-                -webkit-hyphens: auto;
-                -ms-hyphens: auto;
-                text-align: justify;
-                text-align-last: left;
-                word-break: normal;
+        /* 自訂 YouTube 影音容器 */
+        .yt-shell {
+            position: relative;
+            width: 100%;
+            --yt-scale: 1.45;
+            --yt-y-offset: 0%;
+            --yt-x-offset: -5%;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.22);
+            background: #000;
+            isolation: isolate;
+        }
+
+        .yt-shell .yt-frame {
+            position: relative;
+            display: block;
+            padding-top: 52%;
+            background: #000 url('https://unitedbio.com.tw//upload/3552/home/3552_690aff2589813.jpg.webp') center / cover no-repeat;
+        }
+
+        .yt-shell .yt-frame > * {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            transform: translate(var(--yt-x-offset, 0%), var(--yt-y-offset)) scale(var(--yt-scale));
+            transform-origin: center bottom;
+        }
+
+        .yt-shell .yt-poster {
+            position: absolute;
+            inset: 0;
+            background: url('https://unitedbio.com.tw//upload/3552/home/3552_690aff2589813.jpg.webp') center / cover no-repeat;
+            transition: opacity 220ms ease;
+            opacity: 1;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .yt-shell .yt-poster.is-hidden {
+            opacity: 0;
+        }
+
+        @media (max-width: 1280px) {
+            .yt-shell {
+                --yt-scale: 1.3;
+                --yt-x-offset: -4%;
             }
+        }
+
+        @media (max-width: 1024px) {
+            .yt-shell {
+                --yt-scale: 1.15;
+                --yt-x-offset: -3%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .yt-shell {
+                --yt-scale: 1.15;
+                --yt-x-offset: -2%;
+            }
+        }
+
+        .yt-shell .yt-overlay-mask {
+            position: absolute;
+            inset: auto 0 0 0;
+            height: 72px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.78), rgba(0,0,0,0));
+            pointer-events: none;
+        }
+
+        .yt-shell .yt-mobile-overlay {
+            position: absolute;
+            inset: 0;
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 100;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .yt-shell .yt-mobile-overlay .yt-pause-icon {
+            width: 80px;
+            height: 80px;
+            color: rgba(255, 255, 255, 0.9);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+        }
+
+        .yt-shell .yt-mobile-overlay:hover .yt-pause-icon {
+            opacity: 1;
+        }
+
+        .yt-shell .yt-mobile-overlay[data-state="paused"] .yt-pause-icon {
+            opacity: 1;
+        }
+
+        .yt-controls-wrapper {
+            margin-top: 0.75rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .yt-custom-controls {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(8,8,8,0.68);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 16px 36px rgba(0,0,0,0.25);
+        }
+
+        .yt-custom-controls button {
+            position: relative;
+            border: none;
+            border-radius: 999px;
+            padding: 6px 16px;
+            background: rgba(255,255,255,0.16);
+            color: #fff;
+            font-size: 0.92rem;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 180ms ease, transform 180ms ease;
+        }
+
+        .yt-custom-controls button:hover {
+            background: rgba(255,255,255,0.28);
+            transform: translateY(-1px);
+        }
+
+        .yt-custom-controls button:active {
+            transform: translateY(0);
+            background: rgba(255,255,255,0.22);
+        }
+
+        .yt-custom-controls button[data-state="active"] {
+            background: rgba(2,129,171,0.88);
+        }
+
+        .yt-custom-controls button span[data-label="pause"],
+        .yt-custom-controls button span[data-label="unmute"] {
+            display: none;
+        }
+
+        .yt-custom-controls button[data-state="playing"] span[data-label="pause"],
+        .yt-custom-controls button[data-state="muted"] span[data-label="unmute"] {
+            display: inline;
+        }
+
+        .yt-custom-controls button[data-state="playing"] span[data-label="play"],
+        .yt-custom-controls button[data-state="muted"] span[data-label="mute"] {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            .yt-shell {
+                border-radius: 18px;
+                --yt-scale: 1.20;
+                --yt-x-offset: -1%;
+            }
+            .yt-controls-wrapper {
+                margin-top: 0.75rem;
+            }
+            .yt-custom-controls {
+                gap: 8px;
+                padding: 8px 12px;
+            }
+            .yt-custom-controls button {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+            .yt-custom-controls button[data-yt-control="fullscreen"] {
+                display: none;
+            }
+            .yt-mobile-overlay {
+                display: block;
+            }
+        }
+        /* 博士影片區域手機版響應式調整 */
+        @media (max-width: 767px) {
+            /* 在手機上隱藏原本的影片區塊 */
+            .doctor-videos-container {
+                display: none !important;
+            }
+            /* 顯示手機版專用的影片區塊 */
+            .doctor-videos-mobile {
+                display: block !important;
+            }
+            /* 顯示手機版的專利圖片carousel */
+            .patent-carousel {
+                display: block !important;
+            }
+            /* 顯示手機版專用的專利圖片區塊 */
+            .patent-mobile-section {
+                display: block !important;
+            }
+            .doctor-mobile-primary,
+            .doctor-mobile-grid-wrapper {
+                margin-inline: 8vw;
+            }
+            .doctor-mobile-grid-wrapper {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: clamp(0.75rem, 2.8vw, 1.5rem);
+            }
+            .doctor-mobile-grid-wrapper .doctor-card,
+            .doctor-mobile-primary .doctor-card {
+                width: 100%;
+            }
+        }
+        /* 移除博士清單縮排與符號 */
+        .doctor-videos-container ul,
+        .doctor-videos-mobile ul {
+            list-style: none;
+            padding-left: 0;
+            margin-left: 0;
+        }
+        @media (max-width: 767px) and (orientation: landscape) {
+            .doctor-videos-container {
+                display: flex !important;
+            }
+            .doctor-videos-mobile {
+                display: none !important;
+            }
+        }
+        @media (min-width: 768px) {
+            /* 在電腦版隱藏手機專用的影片區塊 */
+            .doctor-videos-mobile {
+                display: none !important;
+            }
+            /* 在電腦版隱藏手機專用的專利圖片區塊 */
+            .patent-mobile-section {
+                display: none !important;
+            }
+        }
     </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
  <body class="font-sans"><div id="ycc-root">
     <section class="hero-bg text-white min-h-screen flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(180deg, #1a1a1a 0%, #171717 100%) !important;">
-   <video class="hero-video" src="https://www.joyhopelifes.com.tw/pics/HDBio_hero_01.mp4" autoplay loop muted playsinline></video>
+   <video class="hero-video" autoplay loop muted playsinline data-dual-source="true" poster="https://image.bvshop.tw/3552/post/3552_681f5fcc7e26c.jpg.webp" data-poster="https://image.bvshop.tw/3552/post/3552_681f5fcc7e26c.jpg.webp">
+     <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/HDBio_hero_01.webm" type="video/webm">
+     <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/HDBio_hero_01.mp4" type="video/mp4">
+     您的瀏覽器不支持影片播放。
+    </video>
     <div class="hero-copy">
     <h1 id="hero-title" class="hero-title font-thin mb-6 tracking-tight text-shadow">最高有效含量<br>有效最高感受</h1>
      <div id="hero-subtitle" class="text-lg md:text-xl opacity-90 leading-relaxed">
@@ -554,28 +922,43 @@
     <div class="grid md:grid-cols-3 gap-12">
     <article class="card-hover group p-8">
      <div class="h-64 bg-gray-100 mb-6 overflow-hidden rounded-xl">
-      <video class="article-card-video" src="https://www.joyhopelifes.com.tw/pics/HDB_a_01.mp4" autoplay loop muted playsinline aria-hidden="true"></video>
+    <video class="article-card-video" loop muted playsinline aria-hidden="true" preload="metadata" data-autoplay="visible" data-dual-source="true">
+     <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/HDB_a_01.webm" type="video/webm">
+     <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/HDB_a_01.mp4" type="video/mp4">
+     您的瀏覽器不支持影片播放。
+    </video>
      </div>
     <h3 class="text-xl font-medium mb-4 text-gray-900 group-hover:text-blue-600 transition-colors">如何挑選保護眼睛的保健食品？醫師與營養師聯合解析『葉黃素 × 玉米黃素 × DHA × 藻紅素』黃金防護力</h3>
-    <p class="text-sm text-gray-500 mb-3">林宜宏 醫學博士｜2025-10-17</p>
+    <p class="text-sm text-gray-500 mb-1">林宜宏 榮譽醫學博士</p>
+    <p class="text-sm text-gray-500 mb-3">2025-10-17</p>
     <p class="text-gray-600 mb-4 leading-relaxed">三大關鍵營養：葉黃素＋玉米黃素、藻油 DHA、藻紅素；DHA 可協同提升葉黃素吸收與黃斑部保護，選購重點包含型態、來源與第三方檢測（COA）。</p>
     <button onclick="window.open('U_articles.html#article-ocular-nutrition','_blank','noopener,noreferrer')" class="text-blue-600 hover:text-blue-800 font-medium text-sm tracking-wide">閱讀更多 →</button>
      </article>
     <article class="card-hover group p-8">
      <div class="h-64 bg-gray-100 mb-6 overflow-hidden rounded-xl">
-      <video class="article-card-video" src="https://www.joyhopelifes.com.tw/pics/HDB_a_02.mp4" autoplay loop muted playsinline aria-hidden="true"></video>
+    <video class="article-card-video" loop muted playsinline aria-hidden="true" preload="metadata" data-autoplay="visible" data-dual-source="true">
+     <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/HDB_a_02.webm" type="video/webm">
+     <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/HDB_a_02.mp4" type="video/mp4">
+     您的瀏覽器不支持影片播放。
+    </video>
      </div>
-    <h3 class="text-xl font-medium mb-4 text-gray-900 group-hover:text-blue-600 transition-colors">DHA預防失智不夠？醫師解密「DHA+DPA+PS」黃金組合，打造大腦防護力</h3>
-    <p class="text-sm text-gray-500 mb-3">陳家榮 博士｜2025-03-17</p>
+    <h3 class="text-xl font-medium mb-4 text-gray-900 group-hover:text-blue-600 transition-colors">DHA預防失智不夠？醫師解密「 DHA + DPA + PS 」黃金組合，打造大腦防護力</h3>
+    <p class="text-sm text-gray-500 mb-1">陳家榮 博士</p>
+    <p class="text-sm text-gray-500 mb-3">2025-03-17</p>
     <p class="text-gray-600 mb-4 leading-relaxed">本文說明為何 DHA 需與 DPA 與 PS 協同使用以形成完整大腦防護網，並建議 DHA:DPA 約 6:1 的比例與選購要點（來源安全、比例標示、COA）。</p>
     <button onclick="window.open('U_articles.html#article-dha-dpa-ps','_blank','noopener,noreferrer')" class="text-blue-600 hover:text-blue-800 font-medium text-sm tracking-wide">閱讀更多 →</button>
      </article>
     <article class="card-hover group p-8">
      <div class="h-64 bg-gray-100 mb-6 overflow-hidden rounded-xl">
-      <video class="article-card-video" src="https://www.joyhopelifes.com.tw/pics/HDB_a_03.mp4" autoplay loop muted playsinline aria-hidden="true"></video>
+    <video class="article-card-video" loop muted playsinline aria-hidden="true" preload="metadata" data-autoplay="visible" data-dual-source="true">
+     <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/HDB_a_03.webm" type="video/webm">
+     <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/HDB_a_03.mp4" type="video/mp4">
+     您的瀏覽器不支持影片播放。
+    </video>
      </div>
     <h3 class="text-xl font-medium mb-4 text-gray-900 group-hover:text-blue-600 transition-colors">【2025】DHA 藻油推薦｜藻油 vs. 魚油，哪種更適合你？</h3>
-    <p class="text-sm text-gray-500 mb-3">審稿：林安民醫師｜2025-03-17</p>
+    <p class="text-sm text-gray-500 mb-1">審稿：林安民醫師</p>
+    <p class="text-sm text-gray-500 mb-3">2025-03-17</p>
     <p class="text-gray-600 mb-4 leading-relaxed">比較藻油與魚油的差異、適合族群與挑選要點（型態、COA、劑量），並提供實用選購建議，協助您選擇最適合的 DHA 來源。</p>
     <button onclick="window.open('U_articles.html#article-dha-algae-oil','_blank','noopener,noreferrer')" class="text-blue-600 hover:text-blue-800 font-medium text-sm tracking-wide">閱讀更多 →</button>
      </article>
@@ -664,7 +1047,7 @@
      <div>
       <h3 class="text-xl font-medium mb-12 text-gray-900">國際專利技術</h3>
       <div class="space-y-8">
-                         <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
+                         <div data-patent-id="1" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                                         <div class="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"><span class="text-white font-medium text-xs">1</span></div>
                                 </div>
@@ -673,8 +1056,26 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這份專利的核心內容與其對應的美國專利 US9745539B2 與 US11198891B2 基本一致，主要描述一種 「無溶劑、濕式、整合式的一鍋法油脂萃取技術」，專門用於 藻類與類似微生物（如 Thraustochytrium 屬） 的油脂提取。這項技術被廣泛應用於 高純度 DHA、EPA 藻油 的生產領域。</p>
                                 </div>
                          </div>
+                         <!-- 手機版專利1圖片carousel -->
+                         <div class="mobile-patent-carousel-1 mt-4 md:hidden">
+                           <div class="relative max-w-xs mx-auto">
+                             <div class="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-300">
+                               <img id="mobile-patent-1-img" src="https://unitedbio.com.tw/upload/3552/home/3552_690977501b0cd.webp" alt="專利1圖片" class="absolute inset-0 w-full h-full object-contain">
+                             </div>
+                             <button id="mobile-patent-1-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                               </svg>
+                             </button>
+                             <button id="mobile-patent-1-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                               </svg>
+                             </button>
+                           </div>
+                         </div>
 
-                         <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
+                         <div data-patent-id="2" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                                         <div class="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"><span class="text-white font-medium text-xs">2</span></div>
                                 </div>
@@ -683,7 +1084,25 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這已經是最新且進一步擴展到：高濃度碳源、多階段補料與低 pH 無菌控制的藻油發酵生產技術。這是 EP3146060B1 的「上游生產技術版本」，著重 如何培養與控制微生物以達高產油量與低污染風險。</p>
                                 </div>
                 </div>
-                         <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
+                         <!-- 手機版專利2圖片carousel -->
+                         <div class="mobile-patent-carousel-2 mt-4 md:hidden">
+                           <div class="relative max-w-xs mx-auto">
+                             <div class="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-300">
+                               <img id="mobile-patent-2-img" src="https://unitedbio.com.tw/upload/3552/home/3552_6909a39495db4.webp" alt="專利2圖片" class="absolute inset-0 w-full h-full object-contain">
+                             </div>
+                             <button id="mobile-patent-2-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                               </svg>
+                             </button>
+                             <button id="mobile-patent-2-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                               </svg>
+                             </button>
+                           </div>
+                         </div>
+                         <div data-patent-id="3" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                                         <div class="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"><span class="text-white font-medium text-xs">3</span></div>
                                 </div>
@@ -692,7 +1111,25 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">日本版授權專利，屬於與 EP3146060B1 / EP3626806B1 / US11198891B2 / US11466297B2 同族的延伸授權文件。其內容主要承襲自同族歐洲與美國版本，但根據日本特許廳審查要求，文本更聚焦於「濕式油脂回收法（wet recovery of oils from microorganisms）」的具體操作條件與實驗結果。</p>
                                 </div>
                 </div>
-                         <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
+                         <!-- 手機版專利3圖片carousel -->
+                         <div class="mobile-patent-carousel-3 mt-4 md:hidden">
+                           <div class="relative max-w-xs mx-auto">
+                             <div class="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-300">
+                               <img id="mobile-patent-3-img" src="https://unitedbio.com.tw/upload/3552/home/3552_6909ab8f339ba.webp" alt="專利3圖片" class="absolute inset-0 w-full h-full object-contain">
+                             </div>
+                             <button id="mobile-patent-3-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                               </svg>
+                             </button>
+                             <button id="mobile-patent-3-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                               </svg>
+                             </button>
+                           </div>
+                         </div>
+                         <div data-patent-id="4" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                                         <div class="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"><span class="text-white font-medium text-xs">4</span></div>
                                 </div>
@@ -701,7 +1138,25 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這份專利以「無溶劑濕式酵素破壁法（Solvent-free wet enzymatic extraction of lipids from microorganisms）」為主軸，是業界首批能於發酵液中直接回收 DHA/EPA 藻油的工業級製程。</p>
                                 </div>
                 </div>
-                 <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
+                         <!-- 手機版專利4圖片carousel -->
+                         <div class="mobile-patent-carousel-4 mt-4 md:hidden">
+                           <div class="relative max-w-xs mx-auto">
+                             <div class="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-300">
+                               <img id="mobile-patent-4-img" src="https://unitedbio.com.tw/upload/3552/home/3552_6909aedbe7210.webp" alt="專利4圖片" class="absolute inset-0 w-full h-full object-contain">
+                             </div>
+                             <button id="mobile-patent-4-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                               </svg>
+                             </button>
+                             <button id="mobile-patent-4-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                               </svg>
+                             </button>
+                           </div>
+                         </div>
+                 <div data-patent-id="5" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                             <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                         <div class="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"><span class="text-white font-medium text-xs">5</span></div>
                     </div>
@@ -710,7 +1165,25 @@
               <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">整個「藻油發酵與萃取」專利族群的 工業級整合版。它結合了前代的 US9745539B2（濕式萃取法） 與 EP3626806B1（高糖多段發酵控制），形成完整的「非無菌高產油發酵 + 濕式酵素回收系統」。</p>
             </div>
              </div>
-                                 <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
+                         <!-- 手機版專利5圖片carousel -->
+                         <div class="mobile-patent-carousel-5 mt-4 md:hidden">
+                           <div class="relative max-w-xs mx-auto">
+                             <div class="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-300">
+                               <img id="mobile-patent-5-img" src="https://unitedbio.com.tw/upload/3552/home/3552_6909b3f0cfe05.webp" alt="專利5圖片" class="absolute inset-0 w-full h-full object-contain">
+                             </div>
+                             <button id="mobile-patent-5-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                               </svg>
+                             </button>
+                             <button id="mobile-patent-5-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                               </svg>
+                             </button>
+                           </div>
+                         </div>
+                                 <div data-patent-id="6" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                                                 <div class="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"><span class="text-white font-medium text-xs">6</span></div>
                                         </div>
@@ -719,11 +1192,29 @@
                                             <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">於 US11198891B2（非無菌高糖發酵） 的延伸升級版本。重點在於導入 「自動補料與過程控制系統（Automated Feed and Control System）」，使整個發酵 → 油脂生成 → 酵素破壁 → 萃取流程能在工業規模下全自動運作。</p>
                                         </div>
                                         </div>
+                         <!-- 手機版專利6圖片carousel -->
+                         <div class="mobile-patent-carousel-6 mt-4 md:hidden">
+                           <div class="relative max-w-xs mx-auto">
+                             <div class="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-300">
+                               <img id="mobile-patent-6-img" src="https://unitedbio.com.tw/upload/3552/home/3552_6909b5292771c.webp" alt="專利6圖片" class="absolute inset-0 w-full h-full object-contain">
+                             </div>
+                             <button id="mobile-patent-6-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                               </svg>
+                             </button>
+                             <button id="mobile-patent-6-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                               </svg>
+                             </button>
+                           </div>
+                         </div>
         </div>
       </div>
       <div>
       <h3 class="text-xl font-medium mb-12 text-gray-900">品質認證</h3>
-    <div class="grid grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
        <div class="text-center p-8 border border-gray-200 hover:border-gray-300 transition-colors rounded-xl">
         <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center"><span class="text-gray-900 font-bold text-lg">FSSC</span>
         </div>
@@ -751,8 +1242,264 @@
     </section>
   <section class="section-spacing bg-gray-50 border-t border-dashed" style="border-color: rgba(0,0,0,0.9);">
    <div class="container mx-auto px-6 max-w-6xl">
-    <h2 id="team-title" class="text-3xl md:text-4xl font-light text-center mb-20 text-gray-900 tracking-tight">專業團隊優勢</h2>
-    <div class="grid md:grid-cols-3 gap-16">
+    <h2 id="team-title" style="font-size: 2.5rem; font-weight: 1000; letter-spacing: -0.025em; line-height: 1.25; margin-bottom: 4rem; text-align: center; color: rgba(0,0,0,0.7);">整座大型研發實驗大樓<br>專業博士團隊<br>超過十億新建的藥品級高規格生產工廠</h2>
+    <p class="text-sm text-gray-500 text-center" style="margin: 0 auto 0.5rem;">Advancing Health Protection Through Evidence-Based Science</p>
+    <h3 class="text-xl md:text-2xl font-semibold text-center text-gray-800" style="margin: 0 0 2rem;">營養學博士團隊</h3>
+    <p class="text-sm md:text-base text-gray-700 leading-none mb-2 text-center max-w-4xl mx-auto px-4">
+        賀得生醫的核心研發團隊由五位具備博士學位的專家組成，橫跨 食品科技、生物化學、分子生物學、植物科學、微生物學及營養機能原料研發 等多重領域。他們共同以「從科學研究到臨床實證」為使命，建立嚴謹的研發、檢驗與安全管控流程，確保每一項產品都具備國際級的品質與科學依據。
+    </p>
+    <p class="text-sm md:text-base text-gray-700 leading-none mb-2 text-center max-w-4xl mx-auto px-4">
+        賀得生醫博士團隊堅持「數據先於宣傳，實證高於行銷」的原則。每項產品皆遵循國際食品安全體系（FSSC、HACCP、ISO 22000）規範，並以第三方檢測（COA／IFOS 檢驗報告）驗證原料品質。從原料挑選、製程控制到最終產品檢驗，團隊以實驗數據為依據，建立出透明可信的生技品質標準。
+    </p>
+    <p class="text-sm md:text-base text-gray-700 leading-none mb-2 text-center max-w-4xl mx-auto px-4">
+        博士團隊不僅追求理論與實驗的突破，更重視產品在人體的實際效益。他們以「以人體科學為起點、以日常健康為終點」為設計思維，持續投入植物性 Omega-3（DHA、EPA、DPA）、葉黃素、玉米黃素、藻紅素等營養素的應用研究，並以嚴謹態度推動保健食品的科學化與國際化。
+    </p>
+    <div class="mb-16 w-full max-w-7xl mx-auto">
+      <div class="flex border-4 border-black border-opacity-70 rounded-l-2xl rounded-r-2xl overflow-hidden doctor-videos-container">
+                <div class="relative overflow-hidden flex-1 aspect-[9/16]">
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-6" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/1陳偉翰-OK.webm" type="video/webm">
+                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/1陳偉翰-OK.mp4" type="video/mp4">
+                                                
+                        您的瀏覽器不支持影片播放。
+                    </video>
+          <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 1rem;">
+            <div style="color: rgb(31 41 55);">
+              <h3 style="margin: 0; font-size: clamp(0.85rem, 2.5vw, 1.125rem); font-weight: 700; line-height: 1.05; white-space: nowrap;">陳偉翰博士</h3>
+              <p style="margin: 0; font-size: clamp(0.7rem, 2.2vw, 0.875rem); color: rgb(154 52 18); line-height: 1.05; white-space: nowrap;">專長領域</p>
+              <ul style="margin: 0; padding: 0; list-style: none;">
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">植物分子生物學</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">植物生理學</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">分子生物學</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">碳管理</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="border-l border-dashed border-black border-opacity-50"></div>
+                <div class="relative overflow-hidden flex-1 aspect-[9/16]">
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 -translate-y-4" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/2陳家榮-OK.webm" type="video/webm">
+                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/2陳家榮-OK.mp4" type="video/mp4">
+                                                
+                        您的瀏覽器不支持影片播放。
+                    </video>
+          <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 1rem;">
+            <div style="color: rgb(31 41 55);">
+              <h3 style="margin: 0; font-size: clamp(0.85rem, 2.5vw, 1.125rem); font-weight: 700; line-height: 1.05; white-space: nowrap;">陳家榮博士</h3>
+              <p style="margin: 0; font-size: clamp(0.7rem, 2.2vw, 0.875rem); color: rgb(154 52 18); line-height: 1.05; white-space: nowrap;">專長領域</p>
+              <ul style="margin: 0; padding: 0; list-style: none;">
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">分子生物學</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">保健食品配方開發</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">原料製程開發</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">食品功效分析</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="border-l border-dashed border-black border-opacity-50"></div>
+                <div class="relative overflow-hidden flex-1 aspect-[9/16]">
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-150 translate-y-6" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/3田介昌-OK.webm" type="video/webm">
+                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/3田介昌-OK.mp4" type="video/mp4">
+                                                
+                        您的瀏覽器不支持影片播放。
+                    </video>
+          <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 1rem;">
+            <div style="color: rgb(31 41 55);">
+              <h3 style="margin: 0; font-size: clamp(0.85rem, 2.5vw, 1.125rem); font-weight: 700; line-height: 1.05; white-space: nowrap;">田介昌博士</h3>
+              <p style="margin: 0; font-size: clamp(0.7rem, 2.2vw, 0.875rem); color: rgb(154 52 18); line-height: 1.05; white-space: nowrap;">專長領域</p>
+              <ul style="margin: 0; padding: 0; list-style: none;">
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">生物化學</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">生物科學</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">食品與藥物同源性</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">功效機制</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="border-l border-dashed border-black border-opacity-50"></div>
+                <div class="relative overflow-hidden flex-1 aspect-[9/16]">
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-150 translate-y-4" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/4鍾云隆-OK.webm" type="video/webm">
+                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/4鍾云隆-OK.mp4" type="video/mp4">
+                                                
+                        您的瀏覽器不支持影片播放。
+                    </video>
+          <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 1rem;">
+            <div style="color: rgb(31 41 55);">
+              <h3 style="margin: 0; font-size: clamp(0.85rem, 2.5vw, 1.125rem); font-weight: 700; line-height: 1.05; white-space: nowrap;">鍾云隆博士</h3>
+              <p style="margin: 0; font-size: clamp(0.7rem, 2.2vw, 0.875rem); color: rgb(154 52 18); line-height: 1.05; white-space: nowrap;">專長領域</p>
+              <ul style="margin: 0; padding: 0; list-style: none;">
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">營養配方設計</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">食品原料評估</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">產品規劃</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">產品風險控管</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="border-l border-dashed border-black border-opacity-50"></div>
+                <div class="relative overflow-hidden flex-1 aspect-[9/16]">
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-4" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/5陳宏岳-OK.webm" type="video/webm">
+                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/5陳宏岳-OK.mp4" type="video/mp4">
+                                                
+                        您的瀏覽器不支持影片播放。
+                    </video>
+          <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 1rem;">
+            <div style="color: rgb(31 41 55);">
+              <h3 style="margin: 0; font-size: clamp(0.85rem, 2.5vw, 1.125rem); font-weight: 700; line-height: 1.05; white-space: nowrap;">陳宏岳博士</h3>
+              <p style="margin: 0; font-size: clamp(0.7rem, 2.2vw, 0.875rem); color: rgb(154 52 18); line-height: 1.05; white-space: nowrap;">專長領域</p>
+              <ul style="margin: 0; padding: 0; list-style: none;">
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">微生物菌種檢測</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">食品原料安全控管</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">健康食品研發技術</li>
+                <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">食品加工製程</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 手機版博士影片區塊 -->
+        <div class="doctor-videos-mobile w-full max-w-7xl mx-auto mb-16" style="display: none;">
+            <div class="space-y-6">
+            <!-- 田介昌博士 -->
+                <div class="doctor-mobile-primary">
+                    <div class="doctor-card relative overflow-hidden rounded-2xl border-4 border-black border-opacity-70" style="min-height: 300px; height: 300px; box-sizing: border-box; width: 100%; max-width: 100%;">
+                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg" style="object-position: center;" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/3田介昌-OK.webm" type="video/webm">
+                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/3田介昌-OK.mp4" type="video/mp4">
+                        
+                                                您的瀏覽器不支持影片播放。
+                                        </video>
+                        <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 1rem;">
+                            <div style="color: rgb(31 41 55);">
+                                <h3 style="margin: 0; font-size: clamp(0.85rem, 2.5vw, 1.125rem); font-weight: 700; line-height: 1.05; white-space: nowrap;">田介昌博士</h3>
+                                <p style="margin: 0; font-size: clamp(0.7rem, 2.2vw, 0.875rem); color: rgb(154 52 18); line-height: 1.05; white-space: nowrap;">專長領域</p>
+                                <ul style="margin: 0; padding: 0; list-style: none;">
+                                    <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">生物化學</li>
+                                    <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">生物科學</li>
+                                    <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">食品與藥物同源性</li>
+                                    <li style="margin: 0; font-size: clamp(0.6rem, 2.1vw, 0.75rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">功效機制</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="doctor-mobile-grid-wrapper">
+                <!-- 陳偉翰博士 -->
+                                <div class="doctor-card relative overflow-hidden rounded-2xl border-4 border-black border-opacity-70" style="aspect-ratio: 9/16; min-height: 260px; box-sizing: border-box;">
+                                                                                <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-6" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                                                                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/1陳偉翰-OK.webm" type="video/webm">
+                                                                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/1陳偉翰-OK.mp4" type="video/mp4">
+                                                
+                                                您的瀏覽器不支持影片播放。
+                                        </video>
+                    <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 0.75rem;">
+                        <div style="color: rgb(31 41 55);">
+                            <h3 style="margin: 0; font-size: clamp(0.75rem, 2.5vw, 1rem); font-weight: 700; line-height: 1.05; white-space: nowrap;">陳偉翰博士</h3>
+                            <p style="margin: 0; font-size: clamp(0.65rem, 2.2vw, 0.8rem); color: rgb(154 52 18); line-height: 1.05; white-space: nowrap;">專長領域</p>
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">植物分子生物學</li>
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">植物生理學</li>
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">分子生物學</li>
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">碳管理</li>
+                            </ul>
+                        </div>
+                    </div>
+                                </div>
+                <!-- 陳家榮博士 -->
+                                <div class="doctor-card relative overflow-hidden rounded-2xl border-4 border-black border-opacity-70" style="aspect-ratio: 9/16; min-height: 260px; box-sizing: border-box;">
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 -translate-y-4" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/2陳家榮-OK.webm" type="video/webm">
+                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/2陳家榮-OK.mp4" type="video/mp4">
+                        
+                                                您的瀏覽器不支持影片播放。
+                                        </video>
+                    <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 0.75rem;">
+                        <div style="color: rgb(31 41 55);">
+                            <h3 style="margin: 0; font-size: clamp(0.75rem, 2.5vw, 1rem); font-weight: 700; line-height: 1.05; white-space: nowrap;">陳家榮博士</h3>
+                            <p style="margin: 0; font-size: clamp(0.65rem, 2.2vw, 0.8rem); color: rgb(154 52 18); line-height: 1.05; white-space: nowrap;">專長領域</p>
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">分子生物學</li>
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">保健食品配方開發</li>
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">原料製程開發</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- 鍾云隆博士 -->
+                                <div class="doctor-card relative overflow-hidden rounded-2xl border-4 border-black border-opacity-70" style="aspect-ratio: 9/16; min-height: 260px; box-sizing: border-box;">
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-150 translate-y-4" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/4鍾云隆-OK.webm" type="video/webm">
+                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/4鍾云隆-OK.mp4" type="video/mp4">
+                        
+                                                您的瀏覽器不支持影片播放。
+                                        </video>
+                    <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 0.75rem;">
+                        <div style="color: rgb(31 41 55);">
+                            <h3 style="margin: 0; font-size: clamp(0.75rem, 2.5vw, 1rem); font-weight: 700; line-height: 1.05; white-space: nowrap;">鍾云隆博士</h3>
+                            <p style="margin: 0; font-size: clamp(0.65rem, 2.2vw, 0.8rem); color: rgb(154 52 18); line-height: 1.05; white-space: nowrap;">專長領域</p>
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">營養配方設計</li>
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">食品原料評估</li>
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">產品規劃</li>
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">產品風險控管</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- 陳宏岳博士 -->
+                                <div class="doctor-card relative overflow-hidden rounded-2xl border-4 border-black border-opacity-70" style="aspect-ratio: 9/16; min-height: 260px; box-sizing: border-box;">
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-4" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/5陳宏岳-OK.webm" type="video/webm">
+                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/5陳宏岳-OK.mp4" type="video/mp4">
+                        
+                                                您的瀏覽器不支持影片播放。
+                                        </video>
+                    <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 0.75rem;">
+                        <div style="color: rgb(31 41 55);">
+                            <h3 style="margin: 0; font-size: clamp(0.75rem, 2.5vw, 1rem); font-weight: 700; line-height: 1.05; white-space: nowrap;">陳宏岳博士</h3>
+                            <p style="margin: 0; font-size: clamp(0.65rem, 2.2vw, 0.8rem); color: rgb(154 52 18); line-height: 1.05; white-space: nowrap;">專長領域</p>
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">微生物菌種檢測</li>
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">食品原料安全控管</li>
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">健康食品研發技術</li>
+                                <li style="margin: 0; font-size: clamp(0.55rem, 2.1vw, 0.7rem); color: rgb(75 85 99); line-height: 1; white-space: nowrap;">食品加工製程</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <p class="text-sm text-gray-500 text-center" style="margin: 0 auto 0.5rem;">R&D Building and Scaled Production Base</p>
+        <h3 class="text-xl md:text-2xl font-semibold text-center text-gray-800" style="margin: 0 0 2rem;">研發大樓與規模化的生產基地</h3>
+        <div class="mb-8 w-full max-w-4xl md:max-w-5xl lg:max-w-6xl mx-auto">
+            <div id="yt-rd-player-shell" class="yt-shell">
+                <div class="yt-frame">
+                    <div id="yt-rd-player"></div>
+                    <button type="button" class="yt-mobile-overlay" data-yt-control="play-pause" aria-hidden="true"></button>
+                </div>
+                <div class="yt-poster" aria-hidden="true"></div>
+                <div class="yt-overlay-mask" aria-hidden="true"></div>
+            </div>
+            <div class="yt-controls-wrapper">
+                <div id="yt-rd-controls" class="yt-custom-controls" role="group" aria-label="影片播放控制">
+                    <button type="button" data-yt-control="play-pause" data-state="paused" aria-label="播放影片">
+                        <span data-label="play">播放</span>
+                        <span data-label="pause">暫停</span>
+                    </button>
+                    <button type="button" data-yt-control="mute" data-state="unmuted" aria-label="靜音">
+                        <span data-label="mute">靜音</span>
+                        <span data-label="unmute">取消靜音</span>
+                    </button>
+                    <button type="button" data-yt-control="fullscreen" aria-label="切換全螢幕">全螢幕</button>
+                </div>
+            </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-16">
      <div class="text-center group">
       <div class="w-20 h-20 bg-gray-100 mx-auto mb-8 flex items-center justify-center group-hover:bg-gray-200 transition-colors rounded-xl">
        <svg class="w-10 h-10 text-gray-700" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
@@ -782,60 +1529,93 @@
     </section>
   <section class="section-spacing bg-white border-t border-dashed" style="border-color: rgba(0,0,0,0.9);">
    <div class="container mx-auto px-6 max-w-6xl">
-    <h2 id="family-title" class="text-3xl md:text-4xl font-light text-center mb-12 text-gray-900 tracking-tight" style="margin-bottom:0.5rem !important;">全家人的健康守護者</h2>
-    <div class="grid md:grid-cols-2 gap-12 items-center">
-     <div>
-      <h3 class="text-xl font-medium mb-12 text-gray-900">適合全家的健康方案</h3>
-      <div class="space-y-10">
-    <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
-     <div style="width:48px;height:48px;min-width:48px;min-height:48px;flex-shrink:0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
-      <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-      </svg>
-     </div>
-                <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;flex:1;">
-                 <div style="display:flex;flex-direction:column;align-items:flex-start;gap:4px;">
-                     <h4 class="font-medium text-gray-900 mb-2" style="margin:0;line-height:1.1;">兒童成長系列</h4>
-                     <div style="color:#ff7a00;font-size:0.95rem;margin:0;line-height:1;">★★★★★</div>
-                 </div>
-                 <p style="margin:4px 0 0 0;color:#6b7280;font-size:0.95rem;">專為3-12歲兒童設計，支持健康成長發育</p>
-                </div>
-    </div>
-    <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
-     <div style="width:48px;height:48px;min-width:48px;min-height:48px;flex-shrink:0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
-      <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-      </svg>
-     </div>
-                <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;flex:1;">
-                 <div style="display:flex;flex-direction:column;align-items:flex-start;gap:4px;">
-                     <h4 class="font-medium text-gray-900 mb-2" style="margin:0;line-height:1.1;">成人活力系列</h4>
-                     <div style="color:#ff7a00;font-size:0.95rem;margin:0;line-height:1;">★★★★★</div>
-                 </div>
-                 <p style="margin:4px 0 0 0;color:#6b7280;font-size:0.95rem;">針對工作壓力大的成年人，提升精力與免疫力</p>
-                </div>
-    </div>
-    <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
-     <div style="width:48px;height:48px;min-width:48px;min-height:48px;flex-shrink:0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
-      <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-      </svg>
-     </div>
-                <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;flex:1;">
+    <p class="text-sm text-orange-500 text-center" style="margin: 0 auto 0.5rem; font-size: 1.15rem;">【 家族の健康のためのスマートな選択 】</p>
+    <h2 id="family-title" style="font-size: 2.5rem; font-weight: 1000; letter-spacing: -0.025em; line-height: 1.25; margin: 0 0 0.5rem; text-align: center; color: rgba(0,0,0,0.7);">全家人的健康守護者</h2>
+    <p class="text-sm text-gray-500 text-center" style="margin: 0 auto 2.5rem;">Empowering Every Family with Better Health</p>
+    <div class="grid md:grid-cols-2 gap-12 items-center family-split">
+    <div class="text-center family-left">
+         <div class="family-video-wrapper bg-gray-100 mx-auto mb-8 flex items-center justify-center rounded-2xl overflow-hidden" style="max-width:100%;">
+          <video id="family-video" class="w-full h-full object-cover" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+           <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/wholeFamily.webm" type="video/webm">
+           <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/wholeFamily.mp4" type="video/mp4">
+          您的瀏覽器不支持影片播放。
+          </video>
+         </div>
+        </div>
+    <div class="family-right">
+        <div class="space-y-10">
+        <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
+         <div style="width:144px;height:144px;min-width:144px;min-height:144px;flex-shrink:0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
+            <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/ChildJump.webm" type="video/webm">
+                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/ChildJump.mp4" type="video/mp4">
+                您的瀏覽器不支持影片播放。
+            </video>
+         </div>
+                                <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;flex:1;">
+                                 <div style="display:flex;flex-direction:column;align-items:flex-start;gap:4px;">
+                                         <h4 class="font-medium text-gray-900 mb-2" style="margin:0;line-height:1.1;">兒童成長系列</h4>
+                                         <div style="color:#ff7a00;font-size:0.95rem;margin:0;line-height:1;">★★★★★</div>
+                                 </div>
+                                 <p style="margin:4px 0 0 0;color:#6b7280;font-size:0.95rem;">維持兒童專注力與腦部正常發育，讓您的兒童在正常的身心健康下，活力成長。</p>
+                                </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
+         <div style="width:144px;height:144px;min-width:144px;min-height:144px;flex-shrink:0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
+            <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/healthyCouple.webm" type="video/webm">
+                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/healthyCouple.mp4" type="video/mp4">
+                您的瀏覽器不支持影片播放。
+            </video>
+         </div>
+                                <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;flex:1;">
+                                 <div style="display:flex;flex-direction:column;align-items:flex-start;gap:4px;">
+                                         <h4 class="font-medium text-gray-900 mb-2" style="margin:0;line-height:1.1;">成人活力系列</h4>
+                                         <div style="color:#ff7a00;font-size:0.95rem;margin:0;line-height:1;">★★★★★</div>
+                                 </div>
+                                 <p style="margin:4px 0 0 0;color:#6b7280;font-size:0.95rem;">針對工作壓力大的成年人，維持你每日飽滿的精力、守護你身體健康的免疫力。</p>
+                                </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
+         <div style="width:144px;height:144px;min-width:144px;min-height:144px;flex-shrink:0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
+            <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/elderlyCouple.webm" type="video/webm">
+                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/elderlyCouple.mp4" type="video/mp4">
+                您的瀏覽器不支持影片播放。
+            </video>
+         </div>
+                                <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;flex:1;">
                  <div style="display:flex;flex-direction:column;align-items:flex-start;gap:4px;">
                      <h4 class="font-medium text-gray-900 mb-2" style="margin:0;line-height:1.1;">銀髮保健系列</h4>
                      <div style="color:#ff7a00;font-size:0.95rem;margin:0;line-height:1;">★★★★★</div>
                  </div>
-                 <p style="margin:4px 0 0 0;color:#6b7280;font-size:0.95rem;">關注長者健康需求，維持活力與認知功能</p>
-                </div>
-    </div>
-      </div>
-     </div>
-     <div class="text-center">
-      <div class="w-64 h-64 bg-gray-100 mx-auto mb-8 flex items-center justify-center rounded-2xl">
-       <svg class="w-32 h-32 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-       </svg>
-      </div>
-      <p class="text-lg text-gray-700 font-light">一個品牌，守護全家健康</p>
-     </div>
-    </div>
+                 <p style="margin:4px 0 0 0;color:#6b7280;font-size:0.95rem;">關注長者健康需求，維持老年人精神活力與認知功能，滿足老年人的生活品質。</p>
+                                </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
+         <div style="width:144px;height:144px;min-width:144px;min-height:144px;flex-shrink:0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
+            <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
+                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/pregnantWoman.webm" type="video/webm">
+                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/pregnantWoman.mp4" type="video/mp4">
+                您的瀏覽器不支持影片播放。
+            </video>
+         </div>
+                                <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;flex:1;">
+                 <div style="display:flex;flex-direction:column;align-items:flex-start;gap:4px;">
+                     <h4 class="font-medium text-gray-900 mb-2" style="margin:0;line-height:1.1;">孕婦照護系列</h4>
+                     <div style="color:#ff7a00;font-size:0.95rem;margin:0;line-height:1;">★★★★★</div>
+                 </div>
+                 <p style="margin:4px 0 0 0;color:#6b7280;font-size:0.95rem;">了解孕婦生產前後的保健需求，保持孕婦身體活力與胎內健康，滿足所需營養。</p>
+                                </div>
+        </div>
+            </div>
+         </div>
+        </div>
+            <div class="mt-10">
+             <p class="text-sm text-orange-500 text-center" style="margin: 0 auto 0.5rem;">【 世代を超えて、家族の健康を支えるブランド 】</p>
+             <p class="text-gray-700 font-light text-center" style="margin: 1rem 0 0; font-size: 2.25rem; line-height: 1.2; letter-spacing: -0.01em;">一個品牌，守護全家健康</p>
+             <p class="text-sm text-gray-500 text-center" style="margin: 0 auto 0.5rem;">One Trusted Brand for Your Family’s Wellness</p>
+            </div>
    </div>
     </section>
   <section class="section-spacing bg-gray-50 border-t border-dashed" style="border-color: rgba(0,0,0,0.9);">
@@ -1136,6 +1916,265 @@ DHA 到底是啥？
     </div>
    </div>
   </section>
+    <script>
+        (function initialiseDualSourceVideos(){
+            const MAX_ATTEMPTS = 3;
+
+            function canPlayWebM() {
+                const probe = document.createElement('video');
+                return !!probe.canPlayType && probe.canPlayType('video/webm; codecs="vp9,vorbis"') !== '';
+            }
+
+            function waitForEvent(video, event) {
+                return new Promise(resolve => {
+                    if ((event === 'loadeddata' && video.readyState >= 2) ||
+                        (event === 'canplay' && video.readyState >= 3)) {
+                        resolve();
+                        return;
+                    }
+                    const handler = () => {
+                        video.removeEventListener(event, handler);
+                        resolve();
+                    };
+                    video.addEventListener(event, handler, { once: true });
+                });
+            }
+
+            function setActiveSource(video, source) {
+                if (!source) return;
+                if (video.firstElementChild !== source) {
+                    video.insertBefore(source, video.firstElementChild);
+                }
+            }
+
+            function restoreOrder(video, preferred, originalOrder, webmSource, mp4Source) {
+                const queue = [];
+                if (preferred === 'webm' && webmSource) queue.push(webmSource);
+                if (preferred === 'mp4' && mp4Source && !queue.includes(mp4Source)) queue.push(mp4Source);
+                originalOrder.forEach(src => {
+                    if (!queue.includes(src)) queue.push(src);
+                });
+                queue.forEach(src => {
+                    if (src.parentElement === video) {
+                        video.appendChild(src);
+                    }
+                });
+            }
+
+            function ensureMp4FirstFrame(video, mp4Source) {
+                if (!mp4Source) return Promise.resolve();
+
+                return new Promise(resolve => {
+                    setActiveSource(video, mp4Source);
+                    if (!video.getAttribute('poster') && video.dataset.poster) {
+                        video.setAttribute('poster', video.dataset.poster);
+                    }
+
+                    waitForEvent(video, 'loadeddata').then(() => {
+                        try {
+                            video.pause();
+                            video.currentTime = 0;
+                        } catch (err) {}
+                        resolve();
+                    });
+
+                    video.load();
+                });
+            }
+
+            function attemptPlay(video) {
+                return new Promise(resolve => {
+                    let resolved = false;
+                    const startTime = video.currentTime;
+
+                    const cleanup = (result) => {
+                        if (resolved) return;
+                        resolved = true;
+                        clearTimeout(timeoutId);
+                        video.removeEventListener('playing', onPlaying);
+                        video.removeEventListener('timeupdate', onTimeUpdate);
+                        video.removeEventListener('error', onError);
+                        resolve(result);
+                    };
+
+                    const onPlaying = () => cleanup(true);
+                    const onTimeUpdate = () => {
+                        if (video.currentTime > startTime + 0.05) cleanup(true);
+                    };
+                    const onError = () => cleanup(false);
+
+                    const timeoutId = setTimeout(() => {
+                        cleanup(!video.paused && video.currentTime > startTime + 0.05);
+                    }, 1600);
+
+                    video.addEventListener('playing', onPlaying);
+                    video.addEventListener('timeupdate', onTimeUpdate);
+                    video.addEventListener('error', onError, { once: true });
+
+                    const playPromise = video.play();
+                    if (playPromise && typeof playPromise.then === 'function') {
+                        playPromise.catch(() => {});
+                    }
+                });
+            }
+
+            function playWithRetries(video, source, attempts) {
+                if (!source) return Promise.resolve(false);
+
+                return new Promise(resolve => {
+                    const tryOnce = (remaining) => {
+                        if (remaining === 0) {
+                            resolve(false);
+                            return;
+                        }
+
+                        setActiveSource(video, source);
+                        video.load();
+
+                        waitForEvent(video, 'canplay').then(() => {
+                            attemptPlay(video).then(success => {
+                                if (success) {
+                                    resolve(true);
+                                } else {
+                                    tryOnce(remaining - 1);
+                                }
+                            });
+                        });
+                    };
+
+                    tryOnce(attempts);
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function(){
+                const supportsWebM = canPlayWebM();
+                const videos = Array.from(document.querySelectorAll('video[data-dual-source="true"]'))
+                    .filter(video => video.dataset.autoplay !== 'visible');
+
+                videos.forEach(video => {
+                    const sources = Array.from(video.querySelectorAll('source[data-format]'));
+                    if (sources.length === 0) return;
+
+                    const originalOrder = sources.slice();
+                    const webmSource = sources.find(src => src.dataset.format === 'webm');
+                    const mp4Source = sources.find(src => src.dataset.format === 'mp4');
+                    const indicator = ensureIndicator(video);
+                    if (!video.dataset.poster && video.getAttribute('poster')) {
+                        video.dataset.poster = video.getAttribute('poster');
+                    }
+
+                    ensureMp4FirstFrame(video, mp4Source).then(() => {
+                        if (supportsWebM && webmSource) {
+                            playWithRetries(video, webmSource, MAX_ATTEMPTS).then(webmSuccess => {
+                                if (webmSuccess) {
+                                    restoreOrder(video, 'webm', originalOrder, webmSource, mp4Source);
+                                    video.removeAttribute('poster');
+                                    showIndicator(indicator, 'webm');
+                                    return;
+                                }
+
+                                playWithRetries(video, mp4Source, MAX_ATTEMPTS).then(mp4Success => {
+                                    if (mp4Success) {
+                                        restoreOrder(video, 'mp4', originalOrder, webmSource, mp4Source);
+                                        video.removeAttribute('poster');
+                                        showIndicator(indicator, 'mp4');
+                                    } else if (mp4Source) {
+                                        setActiveSource(video, mp4Source);
+                                        video.load();
+                                        waitForEvent(video, 'loadeddata').then(() => {
+                                            if (video.dataset.poster) {
+                                                video.setAttribute('poster', video.dataset.poster);
+                                            }
+                                            try {
+                                                video.pause();
+                                                video.currentTime = 0;
+                                            } catch (err) {}
+                                            showIndicator(indicator, 'mp4');
+                                        });
+                                    }
+                                });
+                            });
+                        } else {
+                            playWithRetries(video, mp4Source, MAX_ATTEMPTS).then(mp4Success => {
+                                if (mp4Success) {
+                                    restoreOrder(video, 'mp4', originalOrder, webmSource, mp4Source);
+                                    video.removeAttribute('poster');
+                                    showIndicator(indicator, 'mp4');
+                                } else if (mp4Source) {
+                                    setActiveSource(video, mp4Source);
+                                    video.load();
+                                    waitForEvent(video, 'loadeddata').then(() => {
+                                        if (video.dataset.poster) {
+                                            video.setAttribute('poster', video.dataset.poster);
+                                        }
+                                        try {
+                                            video.pause();
+                                            video.currentTime = 0;
+                                        } catch (err) {}
+                                        showIndicator(indicator, 'mp4');
+                                    });
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        })();
+    </script>
+  <script>
+        (function enableLazyVideoAutoplay(){
+            const videos = Array.from(document.querySelectorAll('video[data-autoplay="visible"]'));
+            if (videos.length === 0) return;
+
+            function pauseVideo(video){
+                video.pause();
+                video.dataset.playing = 'false';
+            }
+
+            videos.forEach(video => {
+                if (video.autoplay) {
+                    video.autoplay = false;
+                }
+                pauseVideo(video);
+            });
+
+            function playVideo(video){
+                if (video.dataset.playing === 'true') return;
+                const playPromise = video.play();
+                if (playPromise && typeof playPromise.then === 'function') {
+                    playPromise.then(() => {
+                        video.dataset.playing = 'true';
+                    }).catch(() => {
+                        video.dataset.playing = 'false';
+                    });
+                } else {
+                    video.dataset.playing = 'true';
+                }
+            }
+
+            if (!('IntersectionObserver' in window)) {
+                videos.forEach(playVideo);
+                return;
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target;
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
+                        playVideo(video);
+                    } else {
+                        pauseVideo(video);
+                    }
+                });
+            }, { threshold: [0.0, 0.35, 0.75] });
+
+            videos.forEach(video => observer.observe(video));
+
+            window.addEventListener('pagehide', () => {
+                videos.forEach(pauseVideo);
+            });
+        })();
+  </script>
   <script>
         const defaultConfig = {
             hero_title: "最高有效含量\n有效最高感受",
@@ -1144,7 +2183,7 @@ DHA 到底是啥？
             article_title: "最新醫療健康知識",
             main_slogan: "賀得生醫安心體驗計畫\n30天無感退費35天內申請\n退費不退貨",
             patent_title: "專利技術與品質認證",
-            team_title: "專業團隊優勢",
+            team_title: "整座大型研發實驗大樓\n專業博士團隊\n超過十億新建的藥品級高規格生產工廠",
             family_title: "全家人的健康守護者",
             product_title: "本月熱賣破萬商品",
             testimonial_title: "客戶真實體驗分享",
@@ -1553,7 +2592,8 @@ DHA 到底是啥？
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909a367533eb.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909a36f474cf.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909a37d8afd0.webp',
-                'https://unitedbio.com.tw/upload/3552/home/3552_6909a38722657.webp'
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909a38722657.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909a37d8afd0.webp'
             ], // Patent 2 images
             '3': [
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909ab8f339ba.webp',
@@ -1645,7 +2685,8 @@ DHA 到底是啥？
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b3c17acc3.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b3cabd80a.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b3db094f5.webp',
-                'https://unitedbio.com.tw/upload/3552/home/3552_6909b3e6df99d.webp'
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909b3e6df99d.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909b3db094f5.webp'
             ], // Patent 5 images
             '6': [
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b5292771c.webp',
@@ -1663,7 +2704,8 @@ DHA 到底是啥？
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b4fe8793c.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b507acd2d.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b51298223.webp',
-                'https://unitedbio.com.tw/upload/3552/home/3552_6909b51d1c3c2.webp'
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909b51d1c3c2.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909b51298223.webp'
             ]  // Patent 6 images
         };
 
@@ -1671,25 +2713,268 @@ DHA 到底是啥？
         function getImagesPerPage() {
             const width = window.innerWidth;
             if (width >= 1536) return 6; // 2xl
-            if (width >= 1280) return 5; // xl
-            if (width >= 1024) return 4; // lg
-            if (width >= 768) return 3;  // md
-            if (width >= 640) return 2;  // sm
+            if (width >= 1280) return 6; // xl
+            if (width >= 1024) return 5; // lg
+            if (width >= 768) return 5;  // md
+            if (width >= 640) return 4;  // sm
             return 1; // xs
         }
 
         // Initialize all patent carousels
         function initializePatentCarousels() {
-            // Use a more reliable approach - wait for DOM to be fully loaded
+            // Use a more reliable approach - wait for window load to ensure CSS is applied
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', function() {
+                window.addEventListener('load', function() {
                     createCarouselsForPatents();
                     addResizeListener();
                 });
             } else {
-                createCarouselsForPatents();
-                addResizeListener();
+                window.addEventListener('load', function() {
+                    createCarouselsForPatents();
+                    addResizeListener();
+                });
             }
+        }
+
+        // Initialize mobile patent 1 carousel
+        function initializeMobilePatent1Carousel() {
+            const images = patentImages['1'] || [];
+            if (images.length === 0) return;
+
+            let currentIndex = 0;
+            const imgElement = document.getElementById('mobile-patent-1-img');
+            const prevBtn = document.getElementById('mobile-patent-1-prev');
+            const nextBtn = document.getElementById('mobile-patent-1-next');
+
+            if (!imgElement || !prevBtn || !nextBtn) return;
+
+            function updateImage() {
+                imgElement.src = images[currentIndex];
+                imgElement.alt = `專利1圖片 ${currentIndex + 1}`;
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === images.length - 1;
+            }
+
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateImage();
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < images.length - 1) {
+                    currentIndex++;
+                    updateImage();
+                }
+            });
+
+            // Initialize first image
+            updateImage();
+        }
+
+        // Initialize mobile patent 2 carousel
+        function initializeMobilePatent2Carousel() {
+            const images = patentImages['2'] || [];
+            if (images.length === 0) return;
+
+            let currentIndex = 0;
+            const imgElement = document.getElementById('mobile-patent-2-img');
+            const prevBtn = document.getElementById('mobile-patent-2-prev');
+            const nextBtn = document.getElementById('mobile-patent-2-next');
+
+            if (!imgElement || !prevBtn || !nextBtn) return;
+
+            function updateImage() {
+                imgElement.src = images[currentIndex];
+                imgElement.alt = `專利2圖片 ${currentIndex + 1}`;
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === images.length - 1;
+            }
+
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateImage();
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < images.length - 1) {
+                    currentIndex++;
+                    updateImage();
+                }
+            });
+
+            // Initialize first image
+            updateImage();
+        }
+
+        // Initialize mobile patent 3 carousel
+        function initializeMobilePatent3Carousel() {
+            const images = patentImages['3'] || [];
+            if (images.length === 0) return;
+
+            let currentIndex = 0;
+            const imgElement = document.getElementById('mobile-patent-3-img');
+            const prevBtn = document.getElementById('mobile-patent-3-prev');
+            const nextBtn = document.getElementById('mobile-patent-3-next');
+
+            if (!imgElement || !prevBtn || !nextBtn) return;
+
+            function updateImage() {
+                imgElement.src = images[currentIndex];
+                imgElement.alt = `專利3圖片 ${currentIndex + 1}`;
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === images.length - 1;
+            }
+
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateImage();
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < images.length - 1) {
+                    currentIndex++;
+                    updateImage();
+                }
+            });
+
+            // Initialize first image
+            updateImage();
+        }
+
+        // Initialize mobile patent 4 carousel
+        function initializeMobilePatent4Carousel() {
+            const images = patentImages['4'] || [];
+            if (images.length === 0) return;
+
+            let currentIndex = 0;
+            const imgElement = document.getElementById('mobile-patent-4-img');
+            const prevBtn = document.getElementById('mobile-patent-4-prev');
+            const nextBtn = document.getElementById('mobile-patent-4-next');
+
+            if (!imgElement || !prevBtn || !nextBtn) return;
+
+            function updateImage() {
+                imgElement.src = images[currentIndex];
+                imgElement.alt = `專利4圖片 ${currentIndex + 1}`;
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === images.length - 1;
+            }
+
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateImage();
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < images.length - 1) {
+                    currentIndex++;
+                    updateImage();
+                }
+            });
+
+            // Initialize first image
+            updateImage();
+        }
+
+        // Initialize mobile patent 5 carousel
+        function initializeMobilePatent5Carousel() {
+            const images = patentImages['5'] || [];
+            if (images.length === 0) return;
+
+            let currentIndex = 0;
+            const imgElement = document.getElementById('mobile-patent-5-img');
+            const prevBtn = document.getElementById('mobile-patent-5-prev');
+            const nextBtn = document.getElementById('mobile-patent-5-next');
+
+            if (!imgElement || !prevBtn || !nextBtn) return;
+
+            function updateImage() {
+                imgElement.src = images[currentIndex];
+                imgElement.alt = `專利5圖片 ${currentIndex + 1}`;
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === images.length - 1;
+            }
+
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateImage();
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < images.length - 1) {
+                    currentIndex++;
+                    updateImage();
+                }
+            });
+
+            // Initialize first image
+            updateImage();
+        }
+
+        // Initialize mobile patent 6 carousel
+        function initializeMobilePatent6Carousel() {
+            const images = patentImages['6'] || [];
+            if (images.length === 0) return;
+
+            let currentIndex = 0;
+            const imgElement = document.getElementById('mobile-patent-6-img');
+            const prevBtn = document.getElementById('mobile-patent-6-prev');
+            const nextBtn = document.getElementById('mobile-patent-6-next');
+
+            if (!imgElement || !prevBtn || !nextBtn) return;
+
+            function updateImage() {
+                imgElement.src = images[currentIndex];
+                imgElement.alt = `專利6圖片 ${currentIndex + 1}`;
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === images.length - 1;
+            }
+
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateImage();
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < images.length - 1) {
+                    currentIndex++;
+                    updateImage();
+                }
+            });
+
+            // Initialize first image
+            updateImage();
+        }
+
+        // Initialize mobile patent carousel when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeMobilePatent1Carousel();
+                initializeMobilePatent2Carousel();
+                initializeMobilePatent3Carousel();
+                initializeMobilePatent4Carousel();
+                initializeMobilePatent5Carousel();
+                initializeMobilePatent6Carousel();
+            });
+        } else {
+            initializeMobilePatent1Carousel();
+            initializeMobilePatent2Carousel();
+            initializeMobilePatent3Carousel();
+            initializeMobilePatent4Carousel();
+            initializeMobilePatent5Carousel();
+            initializeMobilePatent6Carousel();
         }
 
         function addResizeListener() {
@@ -1697,8 +2982,8 @@ DHA 到底是啥？
             window.addEventListener('resize', function() {
                 clearTimeout(resizeTimeout);
                 resizeTimeout = setTimeout(function() {
-                    // Clear existing carousels
-                    document.querySelectorAll('.patent-carousel').forEach(carousel => carousel.remove());
+                    // Clear existing dynamically generated desktop carousels
+                    document.querySelectorAll('.patent-carousel-generated').forEach(carousel => carousel.remove());
                     // Recreate carousels with new dimensions
                     createCarouselsForPatents();
                 }, 250); // Debounce resize events
@@ -1720,18 +3005,18 @@ DHA 到底是啥？
             let currentPage = 0;
 
             // Create carousel container
-            const carouselContainer = document.createElement('div');
+            let carouselContainer = document.createElement('div');
             carouselContainer.className = `mt-8 mb-12 patent-carousel patent-${patentId}`;
             carouselContainer.style.width = '100%';
             carouselContainer.innerHTML = `
-                <div class="relative">
-                    <button class="patent-prev-btn-${patentId} absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+                <div class="relative px-8 md:px-8 lg:px-12">
+                    <button class="patent-prev-btn-${patentId} absolute left-2 md:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
                     </button>
-                    <div class="patent-images-grid-${patentId} flex gap-4 px-16 overflow-x-auto" style="width: 100%;"></div>
-                    <button class="patent-next-btn-${patentId} absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                    <div class="patent-images-grid-${patentId} flex gap-4 px-12 md:px-8 lg:px-16 overflow-x-auto" style="width: 100%;"></div>
+                    <button class="patent-next-btn-${patentId} absolute right-2 md:right-4 lg:right-6 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
@@ -1739,19 +3024,26 @@ DHA 到底是啥？
                 </div>
                 <div class="patent-page-indicators-${patentId} flex justify-center mt-6 space-x-2"></div>
             `;
+            carouselContainer.classList.add('patent-carousel-generated');
 
-            // Find the patent text container and insert carousel after it
-            // Use a more specific selector for the first patent
-            let patentTextContainer;
-            if (patentId === 1) {
-                patentTextContainer = document.querySelector('.space-y-8 > div:first-child p');
+            // Find the patent carousel container
+            let patentContainer;
+            if (window.innerWidth < 768) {
+                patentContainer = document.querySelector(`.mobile-patent-carousel-${patentId}`);
             } else {
-                patentTextContainer = document.querySelector(`.space-y-8 > div:nth-child(${patentId}) p`);
+                patentContainer = document.querySelector(`[data-patent-id="${patentId}"]`);
             }
-            
-            if (patentTextContainer) {
-                // Insert carousel after the patent text container
-                patentTextContainer.insertAdjacentElement('afterend', carouselContainer);
+
+            if (patentContainer) {
+                if (window.innerWidth < 768) {
+                    // Mobile: reuse existing wrapper so responsive classes (e.g. md:hidden) stay intact
+                    patentContainer.innerHTML = carouselContainer.innerHTML;
+                    patentContainer.classList.add('patent-carousel', `patent-${patentId}`);
+                    carouselContainer = patentContainer;
+                } else {
+                    // Desktop: insert carousel right after the patent summary block
+                    patentContainer.insertAdjacentElement('afterend', carouselContainer);
+                }
             } else {
                 console.log(`Patent ${patentId} container not found`);
             }
@@ -1778,14 +3070,19 @@ DHA 到底是啥？
 
                 currentImages.forEach((imageUrl, index) => {
                     const imageContainer = document.createElement('div');
-                    imageContainer.className = 'relative group flex-shrink-0';
-                    imageContainer.style.width = `${100 / getImagesPerPage()}%`;
+                    imageContainer.className = 'relative group flex-shrink-0 patent-image-wrapper';
+                    const perPage = getImagesPerPage();
+                    const widthPercentage = 100 / perPage;
+                    imageContainer.style.width = `${widthPercentage}%`;
+                    imageContainer.style.minWidth = `${widthPercentage}%`;
 
-                const img = document.createElement('img');
-                img.src = imageUrl;
-                img.alt = `專利${patentId}圖片 ${startIndex + index + 1}`;
-                img.className = 'w-full h-64 object-contain rounded-lg border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer';
-                img.loading = 'lazy';                    imageContainer.appendChild(img);
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = `專利${patentId}圖片 ${startIndex + index + 1}`;
+                    img.className = 'w-full h-full object-contain rounded-lg border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer';
+                    img.loading = 'eager';
+
+                    imageContainer.appendChild(img);
                     grid.appendChild(imageContainer);
                 });
 
@@ -1836,6 +3133,273 @@ DHA 到底是啥？
         initializePatentCarousels();
         // Hero min-height still uses --total-nav-height with the default fallback (0px).
     </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        (function initCustomYouTubePlayer() {
+            const shell = document.getElementById('yt-rd-player-shell');
+            if (!shell) return;
+
+            const controls = document.getElementById('yt-rd-controls');
+            if (!controls) return;
+
+            const playerGroup = shell.parentElement || shell;
+            const poster = shell.querySelector('.yt-poster');
+            const playButton = controls.querySelector('[data-yt-control="play-pause"]');
+            const muteButton = controls.querySelector('[data-yt-control="mute"]');
+            const fullscreenButton = controls.querySelector('[data-yt-control="fullscreen"]');
+            let rdPlayer = null;
+            let playerReady = false;
+            let queuedAction = null;
+            let targetQuality = null;
+            let hasStartedPlayback = false;
+            let queuedMuteState = null;
+            let expectedMuteState = false;
+            let pendingMuteSync = null;
+            if (muteButton) {
+                expectedMuteState = muteButton.dataset.state === 'muted';
+            }
+
+            function isPlayingState(state) {
+                return state === YT.PlayerState.PLAYING || state === YT.PlayerState.BUFFERING;
+            }
+
+            function updatePlayState(state) {
+                if (!playButton) return;
+                const playing = isPlayingState(state);
+                playButton.dataset.state = playing ? 'playing' : 'paused';
+                playButton.setAttribute('aria-label', playing ? '暫停影片' : '播放影片');
+                
+                // 更新手機版覆蓋按鈕的狀態
+                const mobileOverlay = document.querySelector('.yt-mobile-overlay');
+                if (mobileOverlay) {
+                    mobileOverlay.dataset.state = playing ? 'playing' : 'paused';
+                }
+            }
+
+            function applyMuteUIState(muted) {
+                if (!muteButton) return;
+                muteButton.dataset.state = muted ? 'muted' : 'unmuted';
+                muteButton.setAttribute('aria-label', muted ? '取消靜音' : '靜音');
+            }
+
+            function updateMuteState() {
+                if (!rdPlayer || !muteButton) return;
+                const muted = rdPlayer.isMuted();
+                applyMuteUIState(muted);
+                expectedMuteState = muted;
+                if (queuedMuteState !== null && queuedMuteState === muted) {
+                    queuedMuteState = null;
+                }
+            }
+
+            function updateFullscreenState() {
+                if (!fullscreenButton) return;
+                const isFullscreen = document.fullscreenElement === playerGroup;
+                fullscreenButton.dataset.state = isFullscreen ? 'active' : 'inactive';
+                fullscreenButton.textContent = isFullscreen ? '退出全螢幕' : '全螢幕';
+                fullscreenButton.setAttribute('aria-label', isFullscreen ? '退出全螢幕' : '切換全螢幕');
+            }
+
+            function applyHighestQuality() {
+                if (!rdPlayer || typeof rdPlayer.getAvailableQualityLevels !== 'function') return;
+                const levels = rdPlayer.getAvailableQualityLevels();
+                if (Array.isArray(levels) && levels.length > 0) {
+                    const preferred = levels.find(level => level !== 'auto') || levels[0];
+                    targetQuality = preferred;
+                    rdPlayer.setPlaybackQuality(targetQuality);
+                } else {
+                    targetQuality = 'highres';
+                    rdPlayer.setPlaybackQuality(targetQuality);
+                }
+            }
+
+            function updatePoster(state) {
+                if (!poster) return;
+
+                if (state === YT.PlayerState.PLAYING) {
+                    hasStartedPlayback = true;
+                }
+
+                if (state === YT.PlayerState.ENDED) {
+                    hasStartedPlayback = false;
+                    poster.classList.remove('is-hidden');
+                    return;
+                }
+
+                if (!hasStartedPlayback || state === YT.PlayerState.UNSTARTED || state === YT.PlayerState.CUED) {
+                    poster.classList.remove('is-hidden');
+                    return;
+                }
+
+                poster.classList.add('is-hidden');
+            }
+
+            function toggleFullscreen() {
+                const isFullscreen = document.fullscreenElement === playerGroup;
+                if (!isFullscreen) {
+                    const request = playerGroup.requestFullscreen || playerGroup.webkitRequestFullscreen || playerGroup.msRequestFullscreen;
+                    if (request) request.call(playerGroup);
+                } else if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+                setTimeout(updateFullscreenState, 100);
+            }
+
+            function scheduleMuteSync() {
+                if (pendingMuteSync) clearTimeout(pendingMuteSync);
+                pendingMuteSync = setTimeout(() => {
+                    updateMuteState();
+                    pendingMuteSync = null;
+                }, 150);
+            }
+
+            function performAction(control, options = {}) {
+                if (control === 'mute') {
+                    const useQueuedTarget = options.useQueued && queuedMuteState !== null;
+                    const canReadMute = rdPlayer && typeof rdPlayer.isMuted === 'function';
+                    const currentMuted = canReadMute ? rdPlayer.isMuted() : expectedMuteState;
+                    const targetMuted = useQueuedTarget ? queuedMuteState : !currentMuted;
+
+                    applyMuteUIState(targetMuted);
+                    expectedMuteState = targetMuted;
+
+                    if (!rdPlayer || !playerReady) {
+                        queuedAction = control;
+                        queuedMuteState = targetMuted;
+                        return;
+                    }
+
+                    if (targetMuted) {
+                        rdPlayer.mute();
+                    } else {
+                        rdPlayer.unMute();
+                    }
+
+                    queuedMuteState = null;
+                    scheduleMuteSync();
+                    return;
+                }
+
+                if (!rdPlayer || !playerReady) {
+                    queuedAction = control;
+                    return;
+                }
+
+                if (control === 'play-pause') {
+                    const state = rdPlayer.getPlayerState();
+                    if (isPlayingState(state)) {
+                        rdPlayer.pauseVideo();
+                    } else {
+                        rdPlayer.playVideo();
+                    }
+                } else if (control === 'fullscreen') {
+                    toggleFullscreen();
+                }
+            }
+
+            function handleControlClick(event) {
+                const action = event.target.closest('[data-yt-control]');
+                if (!action) return;
+                event.preventDefault();
+
+                performAction(action.dataset.ytControl);
+            }
+
+            function onPlayerReady() {
+                playerReady = true;
+                updatePlayState(rdPlayer.getPlayerState());
+                updateMuteState();
+                applyHighestQuality();
+                updatePoster(rdPlayer.getPlayerState());
+                if (queuedAction) {
+                    const actionToRun = queuedAction;
+                    queuedAction = null;
+                    performAction(actionToRun, { useQueued: true });
+                } else {
+                    rdPlayer.playVideo();
+                    rdPlayer.pauseVideo();
+                }
+            }
+
+            function onPlayerStateChange(event) {
+                updatePlayState(event.data);
+                updateMuteState();
+                if (isPlayingState(event.data)) {
+                    applyHighestQuality();
+                }
+                updatePoster(event.data);
+            }
+
+            function onPlaybackQualityChange(event) {
+                if (!event) return;
+                if (targetQuality && event.data !== targetQuality) {
+                    setTimeout(applyHighestQuality, 200);
+                }
+            }
+
+            function createPlayer() {
+                if (rdPlayer || typeof YT === 'undefined' || typeof YT.Player !== 'function') return;
+                rdPlayer = new YT.Player('yt-rd-player', {
+                    videoId: 'MGC4aC8J610',
+                    playerVars: {
+                        controls: 0,
+                        modestbranding: 1,
+                        rel: 0,
+                        fs: 0,
+                        playsinline: 1,
+                        iv_load_policy: 3
+                    },
+                    events: {
+                        onReady: onPlayerReady,
+                        onStateChange: onPlayerStateChange,
+                        onPlaybackQualityChange: onPlaybackQualityChange
+                    }
+                });
+
+                if (rdPlayer && typeof rdPlayer.addEventListener === 'function') {
+                    try {
+                        rdPlayer.addEventListener('onVolumeChange', updateMuteState);
+                    } catch (err) {
+                        // 某些宿主環境可能不支援此事件，忽略即可
+                    }
+                }
+            }
+
+            if (controls) {
+                controls.addEventListener('click', handleControlClick);
+            }
+
+            // 為手機版覆蓋按鈕添加點擊事件
+            const mobileOverlay = document.querySelector('.yt-mobile-overlay');
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', handleControlClick);
+            }
+
+            document.addEventListener('fullscreenchange', updateFullscreenState);
+            document.addEventListener('webkitfullscreenchange', updateFullscreenState);
+            document.addEventListener('msfullscreenchange', updateFullscreenState);
+
+            function registerYouTubeReady(callback) {
+                const previous = window.onYouTubeIframeAPIReady;
+                if (typeof previous === 'function') {
+                    window.onYouTubeIframeAPIReady = function() {
+                        previous();
+                        callback();
+                    };
+                } else {
+                    window.onYouTubeIframeAPIReady = callback;
+                }
+            }
+
+            if (window.YT && typeof window.YT.Player === 'function') {
+                createPlayer();
+            } else {
+                registerYouTubeReady(createPlayer);
+            }
+        })();
+    </script>
     <script>
         // testimonial avatar fallback: hide initials overlay when image loads successfully,
         // show initials if image fails to load.
@@ -1850,6 +3414,120 @@ DHA 到底是啥？
                 img.addEventListener('load', hideInitials);
                 img.addEventListener('error', showInitials);
             });
+        })();
+    </script>
+    <script>
+        (function manageDoctorMobileSpacing() {
+            function applySpacing() {
+                const containers = document.querySelectorAll('.doctor-mobile-primary, .doctor-mobile-grid-wrapper');
+                if (!containers.length) return;
+                const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+                if (!viewportWidth) return;
+                const margin = viewportWidth * 0.08;
+                containers.forEach(container => {
+                    container.style.marginLeft = `${margin}px`;
+                    container.style.marginRight = `${margin}px`;
+                });
+            }
+
+            window.addEventListener('resize', applySpacing, { passive: true });
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', applySpacing, { once: true });
+            } else {
+                applySpacing();
+            }
+        })();
+    </script>
+    <script>
+        (function neutralizeHostGutter() {
+            const root = document.getElementById('ycc-root');
+            if (!root) return;
+
+            let pending = false;
+
+            function applyAdjustments() {
+                pending = false;
+                if (!root.isConnected) return;
+
+                const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+                if (!viewportWidth) return;
+
+                const previous = {
+                    marginLeft: root.style.marginLeft,
+                    marginRight: root.style.marginRight,
+                    width: root.style.width,
+                    maxWidth: root.style.maxWidth,
+                    boxSizing: root.style.boxSizing,
+                    marginTop: root.style.marginTop
+                };
+
+                root.style.marginLeft = '';
+                root.style.marginRight = '';
+                root.style.marginTop = '';
+                root.style.width = '';
+                root.style.maxWidth = '';
+                root.style.boxSizing = '';
+
+                const rect = root.getBoundingClientRect();
+                const leftGap = Math.max(0, rect.left);
+                const rightGap = Math.max(0, viewportWidth - rect.right);
+                const topGap = Math.max(0, rect.top);
+                const customNav = document.querySelector('.HD_NAV_site-nav');
+                const navStyle = customNav ? window.getComputedStyle(customNav) : null;
+                const navRect = customNav ? customNav.getBoundingClientRect() : null;
+                const navVisible = !!customNav && navStyle && navStyle.display !== 'none' && navRect && navRect.height > 0;
+                const totalGap = leftGap + rightGap;
+
+                if (totalGap <= 0.5) {
+                    root.style.marginLeft = previous.marginLeft;
+                    root.style.marginRight = previous.marginRight;
+                    root.style.marginTop = previous.marginTop;
+                    root.style.width = previous.width;
+                    root.style.maxWidth = previous.maxWidth;
+                    root.style.boxSizing = previous.boxSizing;
+                } else {
+                    if (leftGap > 0) {
+                        root.style.marginLeft = `${-leftGap}px`;
+                    } else {
+                        root.style.marginLeft = previous.marginLeft;
+                    }
+
+                    if (rightGap > 0) {
+                        root.style.marginRight = `${-rightGap}px`;
+                    } else {
+                        root.style.marginRight = previous.marginRight;
+                    }
+
+                    root.style.width = `calc(100% + ${totalGap}px)`;
+                    root.style.maxWidth = 'none';
+                    root.style.boxSizing = 'border-box';
+                }
+
+                if (!navVisible && topGap > 0.5) {
+                    root.style.marginTop = `${-topGap}px`;
+                } else if (!totalGap || totalGap <= 0.5) {
+                    root.style.marginTop = previous.marginTop;
+                } else {
+                    root.style.marginTop = previous.marginTop;
+                }
+            }
+
+            function scheduleApply() {
+                if (pending) return;
+                pending = true;
+                requestAnimationFrame(applyAdjustments);
+            }
+
+            window.addEventListener('resize', () => {
+                pending = false;
+                scheduleApply();
+            }, { passive: true });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', scheduleApply, { once: true });
+            } else {
+                scheduleApply();
+            }
         })();
     </script>
 </div>

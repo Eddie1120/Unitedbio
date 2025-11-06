@@ -12,6 +12,7 @@
             margin-bottom: 12px;
         }
         
+        /* 使用獨特前綴避免CSS衝突 */
         .ub-medical-hero-wrapper {
             width: 100%;
             height: 50vh;
@@ -111,6 +112,7 @@
             50% { transform: scale(1.05); }
         }
         
+        /* 響應式設計 */
         @media (max-width: 768px) {
             .ub-medical-hero-title {
                 font-size: 2rem;
@@ -917,7 +919,7 @@
         </svg>
         <div class="ub-medical-hero-content">
             <div class="ub-medical-hero-heading">
-                <span class="ub-medical-hero-tagline">賀得生醫</span>
+                <span class="ub-medical-hero-tagline">U能生醫</span>
                 <h1 class="ub-medical-hero-title">給您最新的<br>醫療健康知識</h1>
             </div>
             <p class="ub-medical-hero-subtitle">
@@ -959,7 +961,7 @@
                                 <span class="ub-article-keyword">藍光防護</span>
                                 <span class="ub-article-keyword">護眼營養</span>
                                 <span class="ub-article-keyword">植物性DHA</span>
-                                <span class="ub-article-keyword">賀得生醫</span>
+                                <span class="ub-article-keyword">U能生醫</span>
                             </div>
                         </header>
 
@@ -1406,7 +1408,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>賀得生醫</td>
+                                        <td>U能生醫</td>
                                         <td>350 mg</td>
                                         <td>無/極低</td>
                                         <td>SGS、ISO、HACCP（以品牌公示為準）</td>
@@ -2036,7 +2038,100 @@
         });
     })();
     </script>
+    <script>
+        (function neutralizeHostGutter() {
+            const root = document.getElementById('ycc-root');
+            if (!root) return;
+
+            let pending = false;
+
+            function applyAdjustments() {
+                pending = false;
+                if (!root.isConnected) return;
+
+                const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+                if (!viewportWidth) return;
+
+                const previous = {
+                    marginLeft: root.style.marginLeft,
+                    marginRight: root.style.marginRight,
+                    width: root.style.width,
+                    maxWidth: root.style.maxWidth,
+                    boxSizing: root.style.boxSizing,
+                    marginTop: root.style.marginTop
+                };
+
+                root.style.marginLeft = '';
+                root.style.marginRight = '';
+                root.style.marginTop = '';
+                root.style.width = '';
+                root.style.maxWidth = '';
+                root.style.boxSizing = '';
+
+                const rect = root.getBoundingClientRect();
+                const leftGap = Math.max(0, rect.left);
+                const rightGap = Math.max(0, viewportWidth - rect.right);
+                const topGap = Math.max(0, rect.top);
+                const customNav = document.querySelector('.HD_NAV_site-nav');
+                const navStyle = customNav ? window.getComputedStyle(customNav) : null;
+                const navRect = customNav ? customNav.getBoundingClientRect() : null;
+                const navVisible = !!customNav && navStyle && navStyle.display !== 'none' && navRect && navRect.height > 0;
+                const totalGap = leftGap + rightGap;
+
+                if (totalGap <= 0.5) {
+                    root.style.marginLeft = previous.marginLeft;
+                    root.style.marginRight = previous.marginRight;
+                    root.style.marginTop = previous.marginTop;
+                    root.style.width = previous.width;
+                    root.style.maxWidth = previous.maxWidth;
+                    root.style.boxSizing = previous.boxSizing;
+                } else {
+                    if (leftGap > 0) {
+                        root.style.marginLeft = `${-leftGap}px`;
+                    } else {
+                        root.style.marginLeft = previous.marginLeft;
+                    }
+
+                    if (rightGap > 0) {
+                        root.style.marginRight = `${-rightGap}px`;
+                    } else {
+                        root.style.marginRight = previous.marginRight;
+                    }
+
+                    root.style.width = `calc(100% + ${totalGap}px)`;
+                    root.style.maxWidth = 'none';
+                    root.style.boxSizing = 'border-box';
+                }
+
+                if (!navVisible && topGap > 0.5) {
+                    root.style.marginTop = `${-topGap}px`;
+                } else if (!totalGap || totalGap <= 0.5) {
+                    root.style.marginTop = previous.marginTop;
+                } else {
+                    root.style.marginTop = previous.marginTop;
+                }
+            }
+
+            function scheduleApply() {
+                if (pending) return;
+                pending = true;
+                requestAnimationFrame(applyAdjustments);
+            }
+
+            window.addEventListener('resize', () => {
+                pending = false;
+                scheduleApply();
+            }, { passive: true });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', scheduleApply, { once: true });
+            } else {
+                scheduleApply();
+            }
+        })();
+    </script>
 </body>
+
 
 
 
