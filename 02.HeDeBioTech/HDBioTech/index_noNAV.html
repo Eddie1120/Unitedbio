@@ -98,12 +98,9 @@
         
         .hero-bg {
             background: linear-gradient(180deg, var(--ycc-bg, #1a1a1a) 0%, var(--ycc-bg-end, #2d2d2d) 100%);
-            min-height: calc(100svh - var(--total-nav-height, 0px) + var(--hero-extra-height));
-        }
-        @supports not (height: 100svh) {
-            .hero-bg {
-                min-height: calc(100vh - var(--total-nav-height, 0px) + var(--hero-extra-height));
-            }
+                    /* hero 高度為視窗高度減去所有頂部導覽列總高度（--total-nav-height），
+                        並額外增加 --hero-extra-height 讓 hero 在所有裝置上更高一些。當沒有 header 時 var 為 0px。 */
+                    min-height: calc(100vh - var(--total-nav-height, 0px) + var(--hero-extra-height));
         }
 
         /* Site navigation styles removed because the header/nav HTML was removed.
@@ -887,9 +884,8 @@
  </head>
  <body class="font-sans"><div id="ycc-root">
     <section class="hero-bg text-white min-h-screen flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(180deg, #1a1a1a 0%, #171717 100%) !important;">
-   <video class="hero-video" autoplay loop muted playsinline data-dual-source="true" poster="https://image.bvshop.tw/3552/post/3552_681f5fcc7e26c.jpg.webp" data-poster="https://image.bvshop.tw/3552/post/3552_681f5fcc7e26c.jpg.webp">
-     <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/HDBio_hero_01.webm" type="video/webm">
-     <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/HDBio_hero_01.mp4" type="video/mp4">
+   <video class="hero-video" autoplay loop muted playsinline>
+     <source src="https://image.bvshop.tw/3552/home/3552_690cc588e9888.mp4" type="video/mp4">
      您的瀏覽器不支持影片播放。
     </video>
     <div class="hero-copy">
@@ -922,9 +918,8 @@
     <div class="grid md:grid-cols-3 gap-12">
     <article class="card-hover group p-8">
      <div class="h-64 bg-gray-100 mb-6 overflow-hidden rounded-xl">
-    <video class="article-card-video" loop muted playsinline aria-hidden="true" preload="metadata" data-autoplay="visible" data-dual-source="true">
-     <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/HDB_a_01.webm" type="video/webm">
-     <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/HDB_a_01.mp4" type="video/mp4">
+    <video class="article-card-video" loop muted playsinline aria-hidden="true" preload="metadata" data-autoplay="visible">
+     <source src="https://image.bvshop.tw/3552/home/3552_690cc09f12dd9.mp4" type="video/mp4">
      您的瀏覽器不支持影片播放。
     </video>
      </div>
@@ -936,9 +931,8 @@
      </article>
     <article class="card-hover group p-8">
      <div class="h-64 bg-gray-100 mb-6 overflow-hidden rounded-xl">
-    <video class="article-card-video" loop muted playsinline aria-hidden="true" preload="metadata" data-autoplay="visible" data-dual-source="true">
-     <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/HDB_a_02.webm" type="video/webm">
-     <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/HDB_a_02.mp4" type="video/mp4">
+    <video class="article-card-video" loop muted playsinline aria-hidden="true" preload="metadata" data-autoplay="visible">
+     <source src="https://image.bvshop.tw/3552/home/3552_690cc0b267bb4.mp4" type="video/mp4">
      您的瀏覽器不支持影片播放。
     </video>
      </div>
@@ -950,9 +944,8 @@
      </article>
     <article class="card-hover group p-8">
      <div class="h-64 bg-gray-100 mb-6 overflow-hidden rounded-xl">
-    <video class="article-card-video" loop muted playsinline aria-hidden="true" preload="metadata" data-autoplay="visible" data-dual-source="true">
-     <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/HDB_a_03.webm" type="video/webm">
-     <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/HDB_a_03.mp4" type="video/mp4">
+    <video class="article-card-video" loop muted playsinline aria-hidden="true" preload="metadata" data-autoplay="visible">
+     <source src="https://image.bvshop.tw/3552/home/3552_690cc0c4259ad.mp4" type="video/mp4">
      您的瀏覽器不支持影片播放。
     </video>
      </div>
@@ -1251,16 +1244,12 @@
     <p class="text-sm md:text-base text-gray-700 leading-none mb-2 text-center max-w-4xl mx-auto px-4">
         賀得生醫博士團隊堅持「數據先於宣傳，實證高於行銷」的原則。每項產品皆遵循國際食品安全體系（FSSC、HACCP、ISO 22000）規範，並以第三方檢測（COA／IFOS 檢驗報告）驗證原料品質。從原料挑選、製程控制到最終產品檢驗，團隊以實驗數據為依據，建立出透明可信的生技品質標準。
     </p>
-    <p class="text-sm md:text-base text-gray-700 leading-none mb-2 text-center max-w-4xl mx-auto px-4">
-        博士團隊不僅追求理論與實驗的突破，更重視產品在人體的實際效益。他們以「以人體科學為起點、以日常健康為終點」為設計思維，持續投入植物性 Omega-3（DHA、EPA、DPA）、葉黃素、玉米黃素、藻紅素等營養素的應用研究，並以嚴謹態度推動保健食品的科學化與國際化。
-    </p>
     <div class="mb-16 w-full max-w-7xl mx-auto">
       <div class="flex border-4 border-black border-opacity-70 rounded-l-2xl rounded-r-2xl overflow-hidden doctor-videos-container">
                 <div class="relative overflow-hidden flex-1 aspect-[9/16]">
-                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-6" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/1陳偉翰-OK.webm" type="video/webm">
-                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/1陳偉翰-OK.mp4" type="video/mp4">
-                                                
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-6" muted loop playsinline preload="metadata" data-autoplay="visible">
+                                                <source src="https://image.bvshop.tw/3552/home/3552_690cba5ca36a8.mp4" type="video/mp4">
+                        
                         您的瀏覽器不支持影片播放。
                     </video>
           <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 1rem;">
@@ -1278,10 +1267,9 @@
         </div>
         <div class="border-l border-dashed border-black border-opacity-50"></div>
                 <div class="relative overflow-hidden flex-1 aspect-[9/16]">
-                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 -translate-y-4" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/2陳家榮-OK.webm" type="video/webm">
-                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/2陳家榮-OK.mp4" type="video/mp4">
-                                                
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 -translate-y-4" muted loop playsinline preload="metadata" data-autoplay="visible">
+                                                <source src="https://image.bvshop.tw/3552/home/3552_690cbfb6cb1d9.mp4" type="video/mp4">
+                        
                         您的瀏覽器不支持影片播放。
                     </video>
           <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 1rem;">
@@ -1299,10 +1287,9 @@
         </div>
         <div class="border-l border-dashed border-black border-opacity-50"></div>
                 <div class="relative overflow-hidden flex-1 aspect-[9/16]">
-                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-150 translate-y-6" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/3田介昌-OK.webm" type="video/webm">
-                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/3田介昌-OK.mp4" type="video/mp4">
-                                                
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-150 translate-y-6" muted loop playsinline preload="metadata" data-autoplay="visible">
+                                                <source src="https://image.bvshop.tw/3552/home/3552_690cbfdb02320.mp4" type="video/mp4">
+                        
                         您的瀏覽器不支持影片播放。
                     </video>
           <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 1rem;">
@@ -1320,10 +1307,9 @@
         </div>
         <div class="border-l border-dashed border-black border-opacity-50"></div>
                 <div class="relative overflow-hidden flex-1 aspect-[9/16]">
-                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-150 translate-y-4" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/4鍾云隆-OK.webm" type="video/webm">
-                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/4鍾云隆-OK.mp4" type="video/mp4">
-                                                
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-150 translate-y-4" muted loop playsinline preload="metadata" data-autoplay="visible">
+                                                <source src="https://image.bvshop.tw/3552/home/3552_690cbfefddd3a.mp4" type="video/mp4">
+                        
                         您的瀏覽器不支持影片播放。
                     </video>
           <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 1rem;">
@@ -1341,10 +1327,9 @@
         </div>
         <div class="border-l border-dashed border-black border-opacity-50"></div>
                 <div class="relative overflow-hidden flex-1 aspect-[9/16]">
-                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-4" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/5陳宏岳-OK.webm" type="video/webm">
-                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/5陳宏岳-OK.mp4" type="video/mp4">
-                                                
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-4" muted loop playsinline preload="metadata" data-autoplay="visible">
+                                                <source src="https://image.bvshop.tw/3552/home/3552_690cc001b71ea.mp4" type="video/mp4">
+                        
                         您的瀏覽器不支持影片播放。
                     </video>
           <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 1rem;">
@@ -1359,18 +1344,17 @@
               </ul>
             </div>
           </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
     <!-- 手機版博士影片區塊 -->
         <div class="doctor-videos-mobile w-full max-w-7xl mx-auto mb-16" style="display: none;">
             <div class="space-y-6">
             <!-- 田介昌博士 -->
                 <div class="doctor-mobile-primary">
                     <div class="doctor-card relative overflow-hidden rounded-2xl border-4 border-black border-opacity-70" style="min-height: 300px; height: 300px; box-sizing: border-box; width: 100%; max-width: 100%;">
-                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg" style="object-position: center;" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/3田介昌-OK.webm" type="video/webm">
-                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/3田介昌-OK.mp4" type="video/mp4">
+                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg" style="object-position: center;" muted loop playsinline preload="metadata" data-autoplay="visible">
+                                                <source src="https://image.bvshop.tw/3552/home/3552_690cbfdb02320.mp4" type="video/mp4">
                         
                                                 您的瀏覽器不支持影片播放。
                                         </video>
@@ -1391,9 +1375,8 @@
                 <div class="doctor-mobile-grid-wrapper">
                 <!-- 陳偉翰博士 -->
                                 <div class="doctor-card relative overflow-hidden rounded-2xl border-4 border-black border-opacity-70" style="aspect-ratio: 9/16; min-height: 260px; box-sizing: border-box;">
-                                                                                <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-6" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                                                                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/1陳偉翰-OK.webm" type="video/webm">
-                                                                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/1陳偉翰-OK.mp4" type="video/mp4">
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-6" muted loop playsinline preload="metadata" data-autoplay="visible">
+                                                <source src="https://image.bvshop.tw/3552/home/3552_690cba5ca36a8.mp4" type="video/mp4">
                                                 
                                                 您的瀏覽器不支持影片播放。
                                         </video>
@@ -1412,9 +1395,8 @@
                                 </div>
                 <!-- 陳家榮博士 -->
                                 <div class="doctor-card relative overflow-hidden rounded-2xl border-4 border-black border-opacity-70" style="aspect-ratio: 9/16; min-height: 260px; box-sizing: border-box;">
-                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 -translate-y-4" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/2陳家榮-OK.webm" type="video/webm">
-                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/2陳家榮-OK.mp4" type="video/mp4">
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 -translate-y-4" muted loop playsinline preload="metadata" data-autoplay="visible">
+                                                <source src="https://image.bvshop.tw/3552/home/3552_690cbfb6cb1d9.mp4" type="video/mp4">
                         
                                                 您的瀏覽器不支持影片播放。
                                         </video>
@@ -1432,12 +1414,11 @@
                 </div>
                 <!-- 鍾云隆博士 -->
                                 <div class="doctor-card relative overflow-hidden rounded-2xl border-4 border-black border-opacity-70" style="aspect-ratio: 9/16; min-height: 260px; box-sizing: border-box;">
-                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-150 translate-y-4" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/4鍾云隆-OK.webm" type="video/webm">
-                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/4鍾云隆-OK.mp4" type="video/mp4">
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-150 translate-y-4" muted loop playsinline preload="metadata" data-autoplay="visible">
+                                                <source src="https://image.bvshop.tw/3552/home/3552_690cbfefddd3a.mp4" type="video/mp4">
                         
-                                                您的瀏覽器不支持影片播放。
-                                        </video>
+                        您的瀏覽器不支持影片播放。
+                    </video>
                     <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0.5rem 0.75rem;">
                         <div style="color: rgb(31 41 55);">
                             <h3 style="margin: 0; font-size: clamp(0.75rem, 2.5vw, 1rem); font-weight: 700; line-height: 1.05; white-space: nowrap;">鍾云隆博士</h3>
@@ -1452,10 +1433,9 @@
                     </div>
                 </div>
                 <!-- 陳宏岳博士 -->
-                                <div class="doctor-card relative overflow-hidden rounded-2xl border-4 border-black border-opacity-70" style="aspect-ratio: 9/16; min-height: 260px; box-sizing: border-box;">
-                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-4" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                                                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/5陳宏岳-OK.webm" type="video/webm">
-                                                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/5陳宏岳-OK.mp4" type="video/mp4">
+                <div class="doctor-card relative overflow-hidden rounded-2xl border-4 border-black border-opacity-70" style="aspect-ratio: 9/16; min-height: 260px; box-sizing: border-box;">
+                                        <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-4" muted loop playsinline preload="metadata" data-autoplay="visible">
+                                                <source src="https://image.bvshop.tw/3552/home/3552_690cc001b71ea.mp4" type="video/mp4">
                         
                                                 您的瀏覽器不支持影片播放。
                                         </video>
@@ -1474,6 +1454,10 @@
                 </div>
             </div>
         </div>
+    </div>
+<p class="text-sm md:text-base text-gray-700 leading-relaxed text-center max-w-4xl mx-auto px-4 mb-6">
+    博士團隊不僅追求理論與實驗的突破，更重視產品在人體的實際效益。他們以「以人體科學為起點、以日常健康為終點」為設計思維，持續投入植物性 Omega-3（DHA、EPA、DPA）、葉黃素、玉米黃素、藻紅素等營養素的應用研究，並以嚴謹態度推動保健食品的科學化與國際化。
+</p>
     <p class="text-sm text-gray-500 text-center" style="margin: 0 auto 0.5rem;">R&D Building and Scaled Production Base</p>
         <h3 class="text-xl md:text-2xl font-semibold text-center text-gray-800" style="margin: 0 0 2rem;">研發大樓與規模化的生產基地</h3>
         <div class="mb-8 w-full max-w-4xl md:max-w-5xl lg:max-w-6xl mx-auto">
@@ -1535,9 +1519,8 @@
     <div class="grid md:grid-cols-2 gap-12 items-center family-split">
     <div class="text-center family-left">
          <div class="family-video-wrapper bg-gray-100 mx-auto mb-8 flex items-center justify-center rounded-2xl overflow-hidden" style="max-width:100%;">
-          <video id="family-video" class="w-full h-full object-cover" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-           <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/wholeFamily.webm" type="video/webm">
-           <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/wholeFamily.mp4" type="video/mp4">
+          <video id="family-video" class="w-full h-full object-cover" muted loop playsinline preload="metadata" data-autoplay="visible">
+           <source src="https://image.bvshop.tw/3552/home/3552_690cc07dac0fe.mp4" type="video/mp4">
           您的瀏覽器不支持影片播放。
           </video>
          </div>
@@ -1546,9 +1529,8 @@
         <div class="space-y-10">
         <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
          <div style="width:144px;height:144px;min-width:144px;min-height:144px;flex-shrink:0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
-            <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/ChildJump.webm" type="video/webm">
-                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/ChildJump.mp4" type="video/mp4">
+            <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="metadata" data-autoplay="visible">
+                <source src="https://image.bvshop.tw/3552/home/3552_690cc01438bf5.mp4" type="video/mp4">
                 您的瀏覽器不支持影片播放。
             </video>
          </div>
@@ -1562,9 +1544,8 @@
         </div>
         <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
          <div style="width:144px;height:144px;min-width:144px;min-height:144px;flex-shrink:0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
-            <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/healthyCouple.webm" type="video/webm">
-                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/healthyCouple.mp4" type="video/mp4">
+            <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="metadata" data-autoplay="visible">
+                <source src="https://image.bvshop.tw/3552/home/3552_690cc060a0df3.mp4" type="video/mp4">
                 您的瀏覽器不支持影片播放。
             </video>
          </div>
@@ -1578,9 +1559,8 @@
         </div>
         <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
          <div style="width:144px;height:144px;min-width:144px;min-height:144px;flex-shrink:0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
-            <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/elderlyCouple.webm" type="video/webm">
-                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/elderlyCouple.mp4" type="video/mp4">
+            <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="metadata" data-autoplay="visible">
+                <source src="https://image.bvshop.tw/3552/home/3552_690cc02a4cefc.mp4" type="video/mp4">
                 您的瀏覽器不支持影片播放。
             </video>
          </div>
@@ -1594,9 +1574,8 @@
         </div>
         <div style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
          <div style="width:144px;height:144px;min-width:144px;min-height:144px;flex-shrink:0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
-            <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="metadata" data-dual-source="true" data-autoplay="visible">
-                <source data-format="webm" src="https://www.joyhopelifes.com.tw/pics/pregnantWoman.webm" type="video/webm">
-                <source data-format="mp4" src="https://www.joyhopelifes.com.tw/pics/pregnantWoman.mp4" type="video/mp4">
+            <video style="width:100%;height:100%;object-fit:cover;" muted loop playsinline preload="metadata" data-autoplay="visible">
+                <source src="https://image.bvshop.tw/3552/home/3552_690cc047615a4.mp4" type="video/mp4">
                 您的瀏覽器不支持影片播放。
             </video>
          </div>
@@ -1916,211 +1895,6 @@ DHA 到底是啥？
     </div>
    </div>
   </section>
-    <script>
-        (function initialiseDualSourceVideos(){
-            const MAX_ATTEMPTS = 3;
-
-            function canPlayWebM() {
-                const probe = document.createElement('video');
-                return !!probe.canPlayType && probe.canPlayType('video/webm; codecs="vp9,vorbis"') !== '';
-            }
-
-            function waitForEvent(video, event) {
-                return new Promise(resolve => {
-                    if ((event === 'loadeddata' && video.readyState >= 2) ||
-                        (event === 'canplay' && video.readyState >= 3)) {
-                        resolve();
-                        return;
-                    }
-                    const handler = () => {
-                        video.removeEventListener(event, handler);
-                        resolve();
-                    };
-                    video.addEventListener(event, handler, { once: true });
-                });
-            }
-
-            function setActiveSource(video, source) {
-                if (!source) return;
-                if (video.firstElementChild !== source) {
-                    video.insertBefore(source, video.firstElementChild);
-                }
-            }
-
-            function restoreOrder(video, preferred, originalOrder, webmSource, mp4Source) {
-                const queue = [];
-                if (preferred === 'webm' && webmSource) queue.push(webmSource);
-                if (preferred === 'mp4' && mp4Source && !queue.includes(mp4Source)) queue.push(mp4Source);
-                originalOrder.forEach(src => {
-                    if (!queue.includes(src)) queue.push(src);
-                });
-                queue.forEach(src => {
-                    if (src.parentElement === video) {
-                        video.appendChild(src);
-                    }
-                });
-            }
-
-            function ensureMp4FirstFrame(video, mp4Source) {
-                if (!mp4Source) return Promise.resolve();
-
-                return new Promise(resolve => {
-                    setActiveSource(video, mp4Source);
-                    if (!video.getAttribute('poster') && video.dataset.poster) {
-                        video.setAttribute('poster', video.dataset.poster);
-                    }
-
-                    waitForEvent(video, 'loadeddata').then(() => {
-                        try {
-                            video.pause();
-                            video.currentTime = 0;
-                        } catch (err) {}
-                        resolve();
-                    });
-
-                    video.load();
-                });
-            }
-
-            function attemptPlay(video) {
-                return new Promise(resolve => {
-                    let resolved = false;
-                    const startTime = video.currentTime;
-
-                    const cleanup = (result) => {
-                        if (resolved) return;
-                        resolved = true;
-                        clearTimeout(timeoutId);
-                        video.removeEventListener('playing', onPlaying);
-                        video.removeEventListener('timeupdate', onTimeUpdate);
-                        video.removeEventListener('error', onError);
-                        resolve(result);
-                    };
-
-                    const onPlaying = () => cleanup(true);
-                    const onTimeUpdate = () => {
-                        if (video.currentTime > startTime + 0.05) cleanup(true);
-                    };
-                    const onError = () => cleanup(false);
-
-                    const timeoutId = setTimeout(() => {
-                        cleanup(!video.paused && video.currentTime > startTime + 0.05);
-                    }, 1600);
-
-                    video.addEventListener('playing', onPlaying);
-                    video.addEventListener('timeupdate', onTimeUpdate);
-                    video.addEventListener('error', onError, { once: true });
-
-                    const playPromise = video.play();
-                    if (playPromise && typeof playPromise.then === 'function') {
-                        playPromise.catch(() => {});
-                    }
-                });
-            }
-
-            function playWithRetries(video, source, attempts) {
-                if (!source) return Promise.resolve(false);
-
-                return new Promise(resolve => {
-                    const tryOnce = (remaining) => {
-                        if (remaining === 0) {
-                            resolve(false);
-                            return;
-                        }
-
-                        setActiveSource(video, source);
-                        video.load();
-
-                        waitForEvent(video, 'canplay').then(() => {
-                            attemptPlay(video).then(success => {
-                                if (success) {
-                                    resolve(true);
-                                } else {
-                                    tryOnce(remaining - 1);
-                                }
-                            });
-                        });
-                    };
-
-                    tryOnce(attempts);
-                });
-            }
-
-            document.addEventListener('DOMContentLoaded', function(){
-                const supportsWebM = canPlayWebM();
-                const videos = Array.from(document.querySelectorAll('video[data-dual-source="true"]'))
-                    .filter(video => video.dataset.autoplay !== 'visible');
-
-                videos.forEach(video => {
-                    const sources = Array.from(video.querySelectorAll('source[data-format]'));
-                    if (sources.length === 0) return;
-
-                    const originalOrder = sources.slice();
-                    const webmSource = sources.find(src => src.dataset.format === 'webm');
-                    const mp4Source = sources.find(src => src.dataset.format === 'mp4');
-                    const indicator = ensureIndicator(video);
-                    if (!video.dataset.poster && video.getAttribute('poster')) {
-                        video.dataset.poster = video.getAttribute('poster');
-                    }
-
-                    ensureMp4FirstFrame(video, mp4Source).then(() => {
-                        if (supportsWebM && webmSource) {
-                            playWithRetries(video, webmSource, MAX_ATTEMPTS).then(webmSuccess => {
-                                if (webmSuccess) {
-                                    restoreOrder(video, 'webm', originalOrder, webmSource, mp4Source);
-                                    video.removeAttribute('poster');
-                                    showIndicator(indicator, 'webm');
-                                    return;
-                                }
-
-                                playWithRetries(video, mp4Source, MAX_ATTEMPTS).then(mp4Success => {
-                                    if (mp4Success) {
-                                        restoreOrder(video, 'mp4', originalOrder, webmSource, mp4Source);
-                                        video.removeAttribute('poster');
-                                        showIndicator(indicator, 'mp4');
-                                    } else if (mp4Source) {
-                                        setActiveSource(video, mp4Source);
-                                        video.load();
-                                        waitForEvent(video, 'loadeddata').then(() => {
-                                            if (video.dataset.poster) {
-                                                video.setAttribute('poster', video.dataset.poster);
-                                            }
-                                            try {
-                                                video.pause();
-                                                video.currentTime = 0;
-                                            } catch (err) {}
-                                            showIndicator(indicator, 'mp4');
-                                        });
-                                    }
-                                });
-                            });
-                        } else {
-                            playWithRetries(video, mp4Source, MAX_ATTEMPTS).then(mp4Success => {
-                                if (mp4Success) {
-                                    restoreOrder(video, 'mp4', originalOrder, webmSource, mp4Source);
-                                    video.removeAttribute('poster');
-                                    showIndicator(indicator, 'mp4');
-                                } else if (mp4Source) {
-                                    setActiveSource(video, mp4Source);
-                                    video.load();
-                                    waitForEvent(video, 'loadeddata').then(() => {
-                                        if (video.dataset.poster) {
-                                            video.setAttribute('poster', video.dataset.poster);
-                                        }
-                                        try {
-                                            video.pause();
-                                            video.currentTime = 0;
-                                        } catch (err) {}
-                                        showIndicator(indicator, 'mp4');
-                                    });
-                                }
-                            });
-                        }
-                    });
-                });
-            });
-        })();
-    </script>
   <script>
         (function enableLazyVideoAutoplay(){
             const videos = Array.from(document.querySelectorAll('video[data-autoplay="visible"]'));
