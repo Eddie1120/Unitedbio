@@ -10,71 +10,45 @@
     </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-      // Adjust family video wrapper size based on video's intrinsic dimensions
       (function() {
-            function fitFamilyVideo() {
-                const video = document.getElementById('family-video');
-                const wrapper = document.querySelector('.family-video-wrapper');
-                const right = document.querySelector('.family-right');
-                if (!video || !wrapper || !right) return;
+          function fitFamilyVideo() {
+              const video = document.getElementById('family-video');
+              const wrapper = document.querySelector('.family-video-wrapper');
+              const right = document.querySelector('.family-right');
+              if (!video || !wrapper || !right) return;
 
-                function applySizing() {
-                    const vw = window.innerWidth;
-                    const vidW = video.videoWidth || 0;
-                    const vidH = video.videoHeight || 0;
-                    if (!vidW || !vidH) return;
+              const applySizing = function() {
+                  const videoWidth = video.videoWidth || video.clientWidth;
+                  const videoHeight = video.videoHeight || video.clientHeight;
+                  const targetWidth = right.clientWidth || wrapper.clientWidth;
 
-                    // Use percentage-based layout on md and up: left 58% / right 38%
-                    // and make the video wrapper keep the video's intrinsic aspect ratio via aspect-ratio
-                    if (vw >= 768) {
-                        // set CSS variable / inline aspect-ratio so wrapper height follows its column width
-                        wrapper.style.width = '100%';
-                        wrapper.style.boxSizing = 'border-box';
-                        // aspect-ratio expects width / height
-                        wrapper.style.aspectRatio = vidW + ' / ' + vidH;
+                  if (!videoWidth || !videoHeight || !targetWidth) return;
 
-                        // Ensure the right column does not shrink and visually matches height
-                        // We'll set the right column's height to the computed height of the wrapper
-                        // (computed after layout). Use requestAnimationFrame to ensure layout settled.
-                        requestAnimationFrame(() => {
-                            const wrapperRect = wrapper.getBoundingClientRect();
-                            if (wrapperRect && wrapperRect.height) {
-                                right.style.minHeight = wrapperRect.height + 'px';
-                                right.style.height = '';
-                                right.style.boxSizing = 'border-box';
-                                right.style.overflow = '';
-                            }
-                        });
-                    } else {
-                        // On small screens, remove inline sizing so elements stack naturally
-                        wrapper.style.width = '';
-                        wrapper.style.height = '';
-                        wrapper.style.aspectRatio = '';
-                        right.style.width = '';
-                        right.style.height = '';
-                        right.style.minHeight = '';
-                        right.style.overflow = '';
-                    }
-                }
+                  const aspectRatio = videoHeight / videoWidth;
+                  const computedHeight = targetWidth * aspectRatio;
 
-                if (video.readyState >= 1 && video.videoWidth) {
-                    applySizing();
-                } else {
-                    video.addEventListener('loadedmetadata', applySizing, { once: true });
-                }
+                  wrapper.style.width = `${targetWidth}px`;
+                  wrapper.style.height = `${computedHeight}px`;
+              };
 
-                // Recalculate on resize (debounced)
-                window.addEventListener('resize', function() {
-                    clearTimeout(window._familyVideoResize);
-                    window._familyVideoResize = setTimeout(applySizing, 120);
-                });
-            }
+              const scheduleSizing = function() {
+                  requestAnimationFrame(applySizing);
+              };
 
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', fitFamilyVideo);
-            } else {
-                fitFamilyVideo();
-            }
+              if (video.readyState >= 1) {
+                  scheduleSizing();
+              } else {
+                  video.addEventListener('loadedmetadata', scheduleSizing, { once: true });
+              }
+
+              window.addEventListener('resize', scheduleSizing);
+          }
+
+          if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', fitFamilyVideo);
+          } else {
+              fitFamilyVideo();
+          }
       })();
   </script>
   <style>
@@ -113,6 +87,14 @@
         .card-hover:hover {
             transform: translateY(-8px);
             box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        .mobile-linebreak {
+            display: inline;
+        }
+
+        .desktop-comma {
+            display: inline;
         }
 
         /* 針對「最新醫療健康知識」區塊的文章卡片：
@@ -281,6 +263,21 @@
             .hero-copy #hero-subtitle {
                 transform: translateY(-6px) !important;
             }
+
+            .mobile-linebreak {
+                display: block;
+            }
+
+            .desktop-comma {
+                display: none;
+            }
+
+            #team-title,
+            #family-title {
+                font-size: 1.7rem !important;
+                line-height: 1.15 !important;
+                letter-spacing: -0.02em !important;
+            }
         }
 
         @media (max-width: 420px) {
@@ -356,20 +353,6 @@
             }
         }
 
-        .patent-carousel .patent-image-wrapper {
-            position: relative;
-            flex: 0 0 auto;
-            width: 100%;
-            aspect-ratio: 9 / 16;
-        }
-
-        .patent-carousel .patent-image-wrapper::before {
-            content: "";
-            display: block;
-            width: 100%;
-            padding-top: calc(16 / 9 * 100%);
-        }
-
         @supports (aspect-ratio: 9 / 16) {
             .patent-carousel .patent-image-wrapper::before {
                 display: none;
@@ -383,6 +366,311 @@
             height: 100%;
             object-fit: contain;
             background-color: #ffffff;
+        }
+
+        .patent1-desktop-gallery-shell,
+        .patent2-desktop-gallery-shell,
+        .patent3-desktop-gallery-shell,
+        .patent4-desktop-gallery-shell,
+        .patent5-desktop-gallery-shell,
+        .patent6-desktop-gallery-shell {
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .patent1-desktop-gallery-wrapper,
+        .patent2-desktop-gallery-wrapper,
+        .patent3-desktop-gallery-wrapper,
+        .patent4-desktop-gallery-wrapper,
+        .patent5-desktop-gallery-wrapper,
+        .patent6-desktop-gallery-wrapper {
+            position: relative;
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .patent1-desktop-gallery-wrapper::-webkit-scrollbar,
+        .patent2-desktop-gallery-wrapper::-webkit-scrollbar,
+        .patent3-desktop-gallery-wrapper::-webkit-scrollbar,
+        .patent4-desktop-gallery-wrapper::-webkit-scrollbar,
+        .patent5-desktop-gallery-wrapper::-webkit-scrollbar,
+        .patent6-desktop-gallery-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .patent1-desktop-gallery,
+        .patent2-desktop-gallery,
+        .patent3-desktop-gallery,
+        .patent4-desktop-gallery,
+        .patent5-desktop-gallery,
+        .patent6-desktop-gallery {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 1rem;
+            min-width: max-content;
+            align-items: stretch;
+        }
+
+        .patent1-desktop-image,
+        .patent2-desktop-image,
+        .patent3-desktop-image,
+        .patent4-desktop-image,
+        .patent5-desktop-image,
+        .patent6-desktop-image {
+            flex: 0 0 auto;
+            min-width: clamp(240px, 26vw, 340px);
+            max-width: clamp(240px, 26vw, 340px);
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .patent1-desktop-image img,
+        .patent2-desktop-image img,
+        .patent3-desktop-image img,
+        .patent4-desktop-image img,
+        .patent5-desktop-image img,
+        .patent6-desktop-image img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .patent1-mobile-gallery-shell,
+        .patent2-mobile-gallery-shell,
+        .patent3-mobile-gallery-shell,
+        .patent4-mobile-gallery-shell,
+        .patent5-mobile-gallery-shell,
+        .patent6-mobile-gallery-shell {
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+
+        .patent1-mobile-gallery-wrapper,
+        .patent2-mobile-gallery-wrapper,
+        .patent3-mobile-gallery-wrapper,
+        .patent4-mobile-gallery-wrapper,
+        .patent5-mobile-gallery-wrapper,
+        .patent6-mobile-gallery-wrapper {
+            position: relative;
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .patent1-mobile-gallery-wrapper::-webkit-scrollbar,
+        .patent2-mobile-gallery-wrapper::-webkit-scrollbar,
+        .patent3-mobile-gallery-wrapper::-webkit-scrollbar,
+        .patent4-mobile-gallery-wrapper::-webkit-scrollbar,
+        .patent5-mobile-gallery-wrapper::-webkit-scrollbar,
+        .patent6-mobile-gallery-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .patent1-mobile-gallery,
+        .patent2-mobile-gallery,
+        .patent3-mobile-gallery,
+        .patent4-mobile-gallery,
+        .patent5-mobile-gallery,
+        .patent6-mobile-gallery {
+            --patent-mobile-card-width: min(260px, calc(50vw - 1rem));
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 0.75rem;
+            min-width: max-content;
+            align-items: stretch;
+        }
+
+        .patent1-mobile-image,
+        .patent2-mobile-image,
+        .patent3-mobile-image,
+        .patent4-mobile-image,
+        .patent5-mobile-image,
+        .patent6-mobile-image {
+            flex: 0 0 var(--patent-mobile-card-width);
+            min-width: var(--patent-mobile-card-width);
+            max-width: var(--patent-mobile-card-width);
+            margin: 0;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .patent1-mobile-image img,
+        .patent2-mobile-image img,
+        .patent3-mobile-image img,
+        .patent4-mobile-image img,
+        .patent5-mobile-image img,
+        .patent6-mobile-image img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .patent1-mobile-scrollbar,
+        .patent2-mobile-scrollbar,
+        .patent3-mobile-scrollbar,
+        .patent4-mobile-scrollbar,
+        .patent5-mobile-scrollbar,
+        .patent6-mobile-scrollbar {
+            margin-top: 0.75rem;
+            height: 14px;
+            width: calc(100% + 2px);
+            margin-left: -1px;
+            margin-right: -1px;
+            background-color: #f1f5f9;
+            border-radius: 999px;
+            position: relative;
+            overflow: visible;
+            cursor: pointer;
+            border: 1px dashed rgba(17, 24, 39, 0.45);
+            transition: border-color 120ms ease;
+        }
+
+        .patent1-mobile-scrollbar:hover,
+        .patent2-mobile-scrollbar:hover,
+        .patent3-mobile-scrollbar:hover,
+        .patent4-mobile-scrollbar:hover,
+        .patent5-mobile-scrollbar:hover,
+        .patent6-mobile-scrollbar:hover {
+            border-color: rgba(17, 24, 39, 0.8);
+        }
+
+        .patent1-mobile-scrollbar-thumb,
+        .patent2-mobile-scrollbar-thumb,
+        .patent3-mobile-scrollbar-thumb,
+        .patent4-mobile-scrollbar-thumb,
+        .patent5-mobile-scrollbar-thumb,
+        .patent6-mobile-scrollbar-thumb {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 30%;
+            background-color: #f97316;
+            border-radius: inherit;
+            transition: width 120ms ease, left 120ms ease, transform 120ms ease;
+            cursor: grab;
+            transform-origin: center;
+        }
+
+        .patent1-mobile-scrollbar-thumb:hover,
+        .patent1-mobile-scrollbar:hover .patent1-mobile-scrollbar-thumb,
+        .patent2-mobile-scrollbar-thumb:hover,
+        .patent2-mobile-scrollbar:hover .patent2-mobile-scrollbar-thumb,
+        .patent3-mobile-scrollbar-thumb:hover,
+        .patent3-mobile-scrollbar:hover .patent3-mobile-scrollbar-thumb,
+        .patent4-mobile-scrollbar-thumb:hover,
+        .patent4-mobile-scrollbar:hover .patent4-mobile-scrollbar-thumb,
+        .patent5-mobile-scrollbar-thumb:hover,
+        .patent5-mobile-scrollbar:hover .patent5-mobile-scrollbar-thumb,
+        .patent6-mobile-scrollbar-thumb:hover,
+        .patent6-mobile-scrollbar:hover .patent6-mobile-scrollbar-thumb {
+            transform: scaleY(1.4) scaleX(1.08);
+        }
+
+        .patent-gallery-image-indicator {
+            position: absolute;
+            left: 50%;
+            bottom: 0.45rem;
+            transform: translateX(-50%);
+            background-color: rgba(17, 24, 39, 0.8);
+            color: #ffffff;
+            font-size: 0.68rem;
+            line-height: 1;
+            padding: 0.22rem 0.55rem;
+            border-radius: 999px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .patent1-scrollbar,
+        .patent2-scrollbar,
+        .patent3-scrollbar,
+        .patent4-scrollbar,
+        .patent5-scrollbar,
+        .patent6-scrollbar {
+            margin-top: 0.75rem;
+            height: 14px;
+            width: calc(100% + 2px);
+            margin-left: -1px;
+            margin-right: -1px;
+            background-color: #f1f5f9;
+            border-radius: 999px;
+            position: relative;
+            overflow: visible;
+            cursor: pointer;
+            border: 1px dashed rgba(17, 24, 39, 0.45);
+            transition: border-color 120ms ease;
+        }
+
+        .patent1-scrollbar:hover,
+        .patent2-scrollbar:hover,
+        .patent3-scrollbar:hover,
+        .patent4-scrollbar:hover,
+        .patent5-scrollbar:hover,
+        .patent6-scrollbar:hover {
+            border-color: rgba(17, 24, 39, 0.8);
+        }
+
+        .patent1-scrollbar-thumb,
+        .patent2-scrollbar-thumb,
+        .patent3-scrollbar-thumb,
+        .patent4-scrollbar-thumb,
+        .patent5-scrollbar-thumb,
+        .patent6-scrollbar-thumb {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 20%;
+            background-color: #f97316;
+            border-radius: inherit;
+            transition: width 120ms ease, left 120ms ease, transform 120ms ease, background-color 120ms ease;
+            cursor: grab;
+            transform-origin: center;
+        }
+
+        .patent1-scrollbar-thumb:hover,
+        .patent1-scrollbar:hover .patent1-scrollbar-thumb,
+        .patent2-scrollbar-thumb:hover,
+        .patent2-scrollbar:hover .patent2-scrollbar-thumb,
+        .patent3-scrollbar-thumb:hover,
+        .patent3-scrollbar:hover .patent3-scrollbar-thumb,
+        .patent4-scrollbar-thumb:hover,
+        .patent4-scrollbar:hover .patent4-scrollbar-thumb,
+        .patent5-scrollbar-thumb:hover,
+        .patent5-scrollbar:hover .patent5-scrollbar-thumb,
+        .patent6-scrollbar-thumb:hover,
+        .patent6-scrollbar:hover .patent6-scrollbar-thumb {
+            transform: scaleY(1.4) scaleX(1.08);
+        }
+
+        /* 確保專利輪播容器保留瀏覽器原生水平捲動條 */
+        .patent-carousel [class*="patent-images-grid-"] {
+            overflow-x: scroll !important;
+            overflow-y: hidden;
+            scrollbar-width: auto;
+            -ms-overflow-style: auto;
         }
 
         /* 已將大螢幕行為整合入基本的 fluid clamp（避免中段視窗出現衝突）。
@@ -883,78 +1171,78 @@
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
  <body class="font-sans"><div id="ycc-root">
-    <section class="hero-bg text-white min-h-screen flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(180deg, #1a1a1a 0%, #171717 100%) !important;">
-   <video class="hero-video" autoplay loop muted playsinline>
-     <source src="https://image.bvshop.tw/3552/home/3552_690cc588e9888.mp4" type="video/mp4">
-     您的瀏覽器不支持影片播放。
-    </video>
-    <div class="hero-copy">
-    <h1 id="hero-title" class="hero-title font-thin mb-6 tracking-tight text-shadow">最高有效含量<br>有效最高感受</h1>
-     <div id="hero-subtitle" class="text-lg md:text-xl opacity-90 leading-relaxed">
-      <div class="flex flex-col items-center justify-center text-center space-y-1">
-        <div class="w-full flex justify-center"><span class="block font-black">賀得生醫退款不退貨</span></div>
-        <div class="w-full flex justify-center"><span class="block font-normal text-xl sm:text-2xl md:text-3xl">享30天無感退費保障</span></div>
-      </div>
-     </div>
-    </div>
-    <div class="hero-cta-wrapper"><button id="hero-bounce-button" class="flex flex-col items-center text-white hover:text-gray-200 transition-colors group w-full">
-    <div class="text-center text-sm font-light leading-tight" style="margin-bottom:0.5rem;">
-      <div>
-       探索賀得生醫的業界突破
-      </div>
-      <div>
-       透明公開的檢測與真實的有效含量
-      </div>
+        <section class="hero-bg text-white min-h-screen flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(180deg, #1a1a1a 0%, #171717 100%) !important;">
+     <video class="hero-video" autoplay loop muted playsinline>
+         <source src="https://www.joyhopelifes.com.tw/pics/HDBio_hero_01.mp4" type="video/mp4">
+         您的瀏覽器不支持影片播放。
+        </video>
+        <div class="hero-copy">
+        <h1 id="hero-title" class="hero-title font-thin mb-6 tracking-tight text-shadow">最高有效含量<br>有效最高感受</h1>
+         <div id="hero-subtitle" class="text-lg md:text-xl opacity-90 leading-relaxed">
+            <div class="flex flex-col items-center justify-center text-center space-y-1">
+                <div class="w-full flex justify-center"><span class="block font-black">賀得生醫退款不退貨</span></div>
+                <div class="w-full flex justify-center"><span class="block font-normal text-xl sm:text-2xl md:text-3xl">享30天無感退費保障</span></div>
+            </div>
          </div>
-         <div class="flex justify-center">
-    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" style="margin-top:-0.25rem;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-    </svg>
-     </div></button>
-   </div>
-    </section>
-        <section class="section-spacing bg-white border-t border-dashed" style="border-color: rgba(0,0,0,0.9); padding-top:24px !important; padding-bottom:24px !important;">
+        </div>
+        <div class="hero-cta-wrapper"><button id="hero-bounce-button" class="flex flex-col items-center text-white hover:text-gray-200 transition-colors group w-full">
+        <div class="text-center text-sm font-light leading-tight" style="margin-bottom:0.5rem;">
+            <div>
+             探索賀得生醫的業界突破
+            </div>
+            <div>
+             透明公開的檢測與真實的有效含量
+            </div>
+                 </div>
+                 <div class="flex justify-center">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" style="margin-top:-0.25rem;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+         </div></button>
+     </div>
+        </section>
+       <section class="section-spacing bg-white border-t border-dashed" style="border-color: rgba(0,0,0,0.9); padding-top:24px !important; padding-bottom:24px !important;">
    <div class="container mx-auto px-6 max-w-6xl">
     <h2 id="article-title" class="text-3xl md:text-4xl font-light text-center mb-20 text-gray-900 tracking-tight">最新醫療健康知識</h2>
     <div class="grid md:grid-cols-3 gap-12">
     <article class="card-hover group p-8">
-     <div class="h-64 bg-gray-100 mb-6 overflow-hidden rounded-xl">
+    <div class="h-64 bg-gray-100 mb-6 overflow-hidden rounded-xl">
     <video class="article-card-video" loop muted playsinline aria-hidden="true" preload="metadata" data-autoplay="visible">
-     <source src="https://image.bvshop.tw/3552/home/3552_690cc09f12dd9.mp4" type="video/mp4">
-     您的瀏覽器不支持影片播放。
+    <source src="https://www.joyhopelifes.com.tw/pics/HDB_a_01.mp4" type="video/mp4">
+    您的瀏覽器不支持影片播放。
     </video>
-     </div>
+    </div>
     <h3 class="text-xl font-medium mb-4 text-gray-900 group-hover:text-blue-600 transition-colors">如何挑選保護眼睛的保健食品？醫師與營養師聯合解析『葉黃素 × 玉米黃素 × DHA × 藻紅素』黃金防護力</h3>
     <p class="text-sm text-gray-500 mb-1">林宜宏 榮譽醫學博士</p>
     <p class="text-sm text-gray-500 mb-3">2025-10-17</p>
     <p class="text-gray-600 mb-4 leading-relaxed">三大關鍵營養：葉黃素＋玉米黃素、藻油 DHA、藻紅素；DHA 可協同提升葉黃素吸收與黃斑部保護，選購重點包含型態、來源與第三方檢測（COA）。</p>
     <button onclick="window.open('U_articles.html#article-ocular-nutrition','_blank','noopener,noreferrer')" class="text-blue-600 hover:text-blue-800 font-medium text-sm tracking-wide">閱讀更多 →</button>
-     </article>
+    </article>
     <article class="card-hover group p-8">
-     <div class="h-64 bg-gray-100 mb-6 overflow-hidden rounded-xl">
+    <div class="h-64 bg-gray-100 mb-6 overflow-hidden rounded-xl">
     <video class="article-card-video" loop muted playsinline aria-hidden="true" preload="metadata" data-autoplay="visible">
-     <source src="https://image.bvshop.tw/3552/home/3552_690cc0b267bb4.mp4" type="video/mp4">
-     您的瀏覽器不支持影片播放。
+    <source src="https://www.joyhopelifes.com.tw/pics/HDB_a_02.mp4" type="video/mp4">
+    您的瀏覽器不支持影片播放。
     </video>
-     </div>
+    </div>
     <h3 class="text-xl font-medium mb-4 text-gray-900 group-hover:text-blue-600 transition-colors">DHA預防失智不夠？醫師解密「 DHA + DPA + PS 」黃金組合，打造大腦防護力</h3>
     <p class="text-sm text-gray-500 mb-1">陳家榮 博士</p>
     <p class="text-sm text-gray-500 mb-3">2025-03-17</p>
     <p class="text-gray-600 mb-4 leading-relaxed">本文說明為何 DHA 需與 DPA 與 PS 協同使用以形成完整大腦防護網，並建議 DHA:DPA 約 6:1 的比例與選購要點（來源安全、比例標示、COA）。</p>
     <button onclick="window.open('U_articles.html#article-dha-dpa-ps','_blank','noopener,noreferrer')" class="text-blue-600 hover:text-blue-800 font-medium text-sm tracking-wide">閱讀更多 →</button>
-     </article>
+    </article>
     <article class="card-hover group p-8">
-     <div class="h-64 bg-gray-100 mb-6 overflow-hidden rounded-xl">
+    <div class="h-64 bg-gray-100 mb-6 overflow-hidden rounded-xl">
     <video class="article-card-video" loop muted playsinline aria-hidden="true" preload="metadata" data-autoplay="visible">
-     <source src="https://image.bvshop.tw/3552/home/3552_690cc0c4259ad.mp4" type="video/mp4">
-     您的瀏覽器不支持影片播放。
+    <source src="https://www.joyhopelifes.com.tw/pics/HDB_a_03.mp4" type="video/mp4">
+    您的瀏覽器不支持影片播放。
     </video>
-     </div>
+    </div>
     <h3 class="text-xl font-medium mb-4 text-gray-900 group-hover:text-blue-600 transition-colors">【2025】DHA 藻油推薦｜藻油 vs. 魚油，哪種更適合你？</h3>
     <p class="text-sm text-gray-500 mb-1">審稿：林安民醫師</p>
     <p class="text-sm text-gray-500 mb-3">2025-03-17</p>
     <p class="text-gray-600 mb-4 leading-relaxed">比較藻油與魚油的差異、適合族群與挑選要點（型態、COA、劑量），並提供實用選購建議，協助您選擇最適合的 DHA 來源。</p>
     <button onclick="window.open('U_articles.html#article-dha-algae-oil','_blank','noopener,noreferrer')" class="text-blue-600 hover:text-blue-800 font-medium text-sm tracking-wide">閱讀更多 →</button>
-     </article>
+    </article>
     </div>
    </div>
     </section>
@@ -974,9 +1262,9 @@
      <div class="flex justify-center mt-16"><button onclick="window.open('https://unitedbio.com.tw/page/refund', '_blank', 'noopener,noreferrer')" class="apple-button border-4 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white font-medium py-3 px-8 text-sm tracking-wide"> 簡易退款機制 ▶ </button>
      </div>
     </div>
-    <div class="grid md:grid-cols-4 gap-16 mt-24">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-16 mt-6 md:mt-16">
      <div class="text-center group">
-            <div class="w-16 h-16 mx-auto mb-8 flex items-center justify-center">
+            <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
              <!-- Calendar with check (試用期較長) -->
             <svg role="img" aria-labelledby="hd-svg-trial-title" class="w-12 h-12 text-gray-700 group-hover:text-orange-500 transition-colors transform duration-300 group-hover:scale-150" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                  <title id="hd-svg-trial-title">試用期較長 - 35天試用期</title>
@@ -986,11 +1274,11 @@
                  <path d="M9 15l2 2 4-4" />
              </svg>
             </div>
-    <h3 class="text-lg font-medium mb-4 text-gray-900 group-hover:text-orange-500 transform duration-200 group-hover:scale-105">試用期較長</h3>
-    <p class="text-gray-600 leading-relaxed text-sm group-hover:text-orange-500 transform duration-200 group-hover:scale-105">35天試用期<br>比一般7-14天更充裕</p>
+    <h3 class="text-lg font-medium text-gray-900 group-hover:text-orange-500 transform duration-200 group-hover:scale-105" style="margin: 0;">試用期較長</h3>
+    <p class="text-gray-600 leading-tight text-sm group-hover:text-orange-500 transform duration-200 group-hover:scale-105" style="margin: 0;">35天試用期<br>比一般7-14天更充裕</p>
      </div>
      <div class="text-center group">
-                    <div class="w-16 h-16 mx-auto mb-8 flex items-center justify-center">
+                    <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                      <!-- Logistics truck (免退貨便利) -->
                     <svg role="img" aria-labelledby="hd-svg-truck-title" class="w-12 h-12 text-gray-700 group-hover:text-orange-500 transition-colors transform duration-300 group-hover:scale-150" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <title id="hd-svg-truck-title">免退貨便利 - 紙箱</title>
@@ -998,11 +1286,11 @@
                         <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
                     </svg>
                     </div>
-    <h3 class="text-lg font-medium mb-4 text-gray-900 group-hover:text-orange-500 transform duration-200 group-hover:scale-105">免退貨便利</h3>
-    <p class="text-gray-600 leading-relaxed text-sm group-hover:text-orange-500 transform duration-200 group-hover:scale-105">無需寄回商品<br>省去包裝運送麻煩</p>
+    <h3 class="text-lg font-medium text-gray-900 group-hover:text-orange-500 transform duration-200 group-hover:scale-105" style="margin: 0;">免退貨便利</h3>
+    <p class="text-gray-600 leading-tight text-sm group-hover:text-orange-500 transform duration-200 group-hover:scale-105" style="margin: 0;">無需寄回商品<br>省去包裝運送麻煩</p>
      </div>
      <div class="text-center group">
-                    <div class="w-16 h-16 mx-auto mb-8 flex items-center justify-center">
+                    <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                      <!-- Dollar / price (全額退費) -->
                      <svg role="img" aria-labelledby="hd-svg-dollar-title" class="w-12 h-12 text-gray-700 group-hover:text-orange-500 transition-colors transform duration-300 group-hover:scale-150" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                          <title id="hd-svg-dollar-title">全額退費 - 金錢</title>
@@ -1012,11 +1300,11 @@
   <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/>
                      </svg>
                     </div>
-    <h3 class="text-lg font-medium mb-4 text-gray-900 group-hover:text-orange-500 transform duration-200 group-hover:scale-105">全額退費</h3>
-    <p class="text-gray-600 leading-relaxed text-sm group-hover:text-orange-500 transform duration-200 group-hover:scale-105">承諾100%<br>退還商品價格</p>
+    <h3 class="text-lg font-medium text-gray-900 group-hover:text-orange-500 transform duration-200 group-hover:scale-105" style="margin: 0;">全額退費</h3>
+    <p class="text-gray-600 leading-tight text-sm group-hover:text-orange-500 transform duration-200 group-hover:scale-105" style="margin: 0;">承諾100%<br>退還商品價格</p>
      </div>
      <div class="text-center group">
-                    <div class="w-16 h-16 mx-auto mb-8 flex items-center justify-center">
+                    <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                      <!-- iPhone (申請簡便) -->
                      <svg role="img" aria-labelledby="hd-svg-phone-title" class="w-12 h-12 text-gray-700 group-hover:text-orange-500 transition-colors transform duration-300 group-hover:scale-150" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <title id="hd-svg-phone-title">申請簡便 - QR 掃描/申請</title>
@@ -1027,20 +1315,22 @@
   <path d="M12 9h2V8h-2z"/>
                      </svg>
                     </div>
-    <h3 class="text-lg font-medium mb-4 text-gray-900 group-hover:text-orange-500 transform duration-200 group-hover:scale-105">申請簡便</h3>
-    <p class="text-gray-600 leading-relaxed text-sm group-hover:text-orange-500 transform duration-200 group-hover:scale-105">電話或LINE即可申請<br>流程簡單</p>
+    <h3 class="text-lg font-medium text-gray-900 group-hover:text-orange-500 transform duration-200 group-hover:scale-105" style="margin: 0;">申請簡便</h3>
+    <p class="text-gray-600 leading-tight text-sm group-hover:text-orange-500 transform duration-200 group-hover:scale-105" style="margin: 0;">電話或LINE即可申請<br>流程簡單</p>
      </div>
     </div>
    </div>
     </section>
   <section class="section-spacing bg-white border-t border-dashed" style="border-color: rgba(0,0,0,0.9);">
    <div class="container mx-auto px-6 max-w-6xl">
-    <h2 id="patent-title" class="text-3xl md:text-4xl font-light text-center mb-20 text-gray-900 tracking-tight">專利技術與品質認證</h2>
+    <p class="text-orange-500 text-center" style="font-size: 0.9rem; margin: 0 auto 0.2rem;">【 科学に裏づけられた特許技術と信頼の品質 】</p>
+    <h2 id="patent-title" class="text-3xl md:text-4xl font-light text-center text-gray-900 tracking-tight" style="margin: 0 0 0.35rem;">專利技術與品質認證</h2>
+    <p class="text-sm text-gray-500 text-center" style="margin: 0 0 1.5rem;">Cutting-Edge Patents, World-Class Quality</p>
     <div class="grid grid-cols-1 gap-20 items-start">
      <div>
-      <h3 class="text-xl font-medium mb-12 text-gray-900">國際專利技術</h3>
+      <h3 class="text-xl font-medium mb-12 text-gray-900 text-center mt-10">國際專利技術</h3>
       <div class="space-y-8">
-                         <div data-patent-id="1" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
+                        <div data-patent-id="1" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                                         <div class="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"><span class="text-white font-medium text-xs">1</span></div>
                                 </div>
@@ -1049,24 +1339,22 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這份專利的核心內容與其對應的美國專利 US9745539B2 與 US11198891B2 基本一致，主要描述一種 「無溶劑、濕式、整合式的一鍋法油脂萃取技術」，專門用於 藻類與類似微生物（如 Thraustochytrium 屬） 的油脂提取。這項技術被廣泛應用於 高純度 DHA、EPA 藻油 的生產領域。</p>
                                 </div>
                          </div>
-                         <!-- 手機版專利1圖片carousel -->
-                         <div class="mobile-patent-carousel-1 mt-4 md:hidden">
-                           <div class="relative max-w-xs mx-auto">
-                             <div class="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-300">
-                               <img id="mobile-patent-1-img" src="https://unitedbio.com.tw/upload/3552/home/3552_690977501b0cd.webp" alt="專利1圖片" class="absolute inset-0 w-full h-full object-contain">
-                             </div>
-                             <button id="mobile-patent-1-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
-                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                               </svg>
-                             </button>
-                             <button id="mobile-patent-1-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
-                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                               </svg>
-                             </button>
-                           </div>
-                         </div>
+                        <div class="patent1-mobile-gallery-shell mt-4 md:hidden">
+                            <div class="patent1-mobile-gallery-wrapper">
+                                <div id="patent1-mobile-gallery" class="patent1-mobile-gallery"></div>
+                            </div>
+                            <div class="patent1-mobile-scrollbar">
+                                <div class="patent1-mobile-scrollbar-thumb"></div>
+                            </div>
+                        </div>
+                                                                                                <div class="patent1-desktop-gallery-shell hidden md:block">
+                                                                                                    <div class="patent1-desktop-gallery-wrapper">
+                                                                                                        <div id="patent1-desktop-gallery" class="patent1-desktop-gallery"></div>
+                                                                                                    </div>
+                                                                                                    <div class="patent1-scrollbar">
+                                                                                                        <div class="patent1-scrollbar-thumb"></div>
+                                                                                                    </div>
+                                                                                                </div>
 
                          <div data-patent-id="2" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -1077,24 +1365,22 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這已經是最新且進一步擴展到：高濃度碳源、多階段補料與低 pH 無菌控制的藻油發酵生產技術。這是 EP3146060B1 的「上游生產技術版本」，著重 如何培養與控制微生物以達高產油量與低污染風險。</p>
                                 </div>
                 </div>
-                         <!-- 手機版專利2圖片carousel -->
-                         <div class="mobile-patent-carousel-2 mt-4 md:hidden">
-                           <div class="relative max-w-xs mx-auto">
-                             <div class="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-300">
-                               <img id="mobile-patent-2-img" src="https://unitedbio.com.tw/upload/3552/home/3552_6909a39495db4.webp" alt="專利2圖片" class="absolute inset-0 w-full h-full object-contain">
-                             </div>
-                             <button id="mobile-patent-2-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
-                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                               </svg>
-                             </button>
-                             <button id="mobile-patent-2-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
-                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                               </svg>
-                             </button>
-                           </div>
-                         </div>
+                                                <div class="patent2-mobile-gallery-shell mt-4 md:hidden">
+                                                        <div class="patent2-mobile-gallery-wrapper">
+                                                                <div id="patent2-mobile-gallery" class="patent2-mobile-gallery"></div>
+                                                        </div>
+                                                        <div class="patent2-mobile-scrollbar">
+                                                                <div class="patent2-mobile-scrollbar-thumb"></div>
+                                                        </div>
+                                                </div>
+                                                <div class="patent2-desktop-gallery-shell hidden md:block">
+                                                        <div class="patent2-desktop-gallery-wrapper">
+                                                                <div id="patent2-desktop-gallery" class="patent2-desktop-gallery"></div>
+                                                        </div>
+                                                        <div class="patent2-scrollbar">
+                                                                <div class="patent2-scrollbar-thumb"></div>
+                                                        </div>
+                                                </div>
                          <div data-patent-id="3" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                                         <div class="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"><span class="text-white font-medium text-xs">3</span></div>
@@ -1104,24 +1390,22 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">日本版授權專利，屬於與 EP3146060B1 / EP3626806B1 / US11198891B2 / US11466297B2 同族的延伸授權文件。其內容主要承襲自同族歐洲與美國版本，但根據日本特許廳審查要求，文本更聚焦於「濕式油脂回收法（wet recovery of oils from microorganisms）」的具體操作條件與實驗結果。</p>
                                 </div>
                 </div>
-                         <!-- 手機版專利3圖片carousel -->
-                         <div class="mobile-patent-carousel-3 mt-4 md:hidden">
-                           <div class="relative max-w-xs mx-auto">
-                             <div class="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-300">
-                               <img id="mobile-patent-3-img" src="https://unitedbio.com.tw/upload/3552/home/3552_6909ab8f339ba.webp" alt="專利3圖片" class="absolute inset-0 w-full h-full object-contain">
-                             </div>
-                             <button id="mobile-patent-3-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
-                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                               </svg>
-                             </button>
-                             <button id="mobile-patent-3-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
-                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                               </svg>
-                             </button>
-                           </div>
-                         </div>
+                                <div class="patent3-mobile-gallery-shell mt-4 md:hidden">
+                                    <div class="patent3-mobile-gallery-wrapper">
+                                        <div id="patent3-mobile-gallery" class="patent3-mobile-gallery"></div>
+                                    </div>
+                                    <div class="patent3-mobile-scrollbar">
+                                        <div class="patent3-mobile-scrollbar-thumb"></div>
+                                    </div>
+                                </div>
+                                <div class="patent3-desktop-gallery-shell hidden md:block">
+                                    <div class="patent3-desktop-gallery-wrapper">
+                                        <div id="patent3-desktop-gallery" class="patent3-desktop-gallery"></div>
+                                    </div>
+                                    <div class="patent3-scrollbar">
+                                        <div class="patent3-scrollbar-thumb"></div>
+                                    </div>
+                                </div>
                          <div data-patent-id="4" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                                         <div class="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"><span class="text-white font-medium text-xs">4</span></div>
@@ -1131,24 +1415,22 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這份專利以「無溶劑濕式酵素破壁法（Solvent-free wet enzymatic extraction of lipids from microorganisms）」為主軸，是業界首批能於發酵液中直接回收 DHA/EPA 藻油的工業級製程。</p>
                                 </div>
                 </div>
-                         <!-- 手機版專利4圖片carousel -->
-                         <div class="mobile-patent-carousel-4 mt-4 md:hidden">
-                           <div class="relative max-w-xs mx-auto">
-                             <div class="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-300">
-                               <img id="mobile-patent-4-img" src="https://unitedbio.com.tw/upload/3552/home/3552_6909aedbe7210.webp" alt="專利4圖片" class="absolute inset-0 w-full h-full object-contain">
-                             </div>
-                             <button id="mobile-patent-4-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
-                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                               </svg>
-                             </button>
-                             <button id="mobile-patent-4-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
-                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                               </svg>
-                             </button>
-                           </div>
-                         </div>
+                                <div class="patent4-mobile-gallery-shell mt-4 md:hidden">
+                                    <div class="patent4-mobile-gallery-wrapper">
+                                        <div id="patent4-mobile-gallery" class="patent4-mobile-gallery"></div>
+                                    </div>
+                                    <div class="patent4-mobile-scrollbar">
+                                        <div class="patent4-mobile-scrollbar-thumb"></div>
+                                    </div>
+                                </div>
+                                <div class="patent4-desktop-gallery-shell hidden md:block">
+                                    <div class="patent4-desktop-gallery-wrapper">
+                                        <div id="patent4-desktop-gallery" class="patent4-desktop-gallery"></div>
+                                    </div>
+                                    <div class="patent4-scrollbar">
+                                        <div class="patent4-scrollbar-thumb"></div>
+                                    </div>
+                                </div>
                  <div data-patent-id="5" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                             <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                         <div class="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"><span class="text-white font-medium text-xs">5</span></div>
@@ -1158,24 +1440,22 @@
               <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">整個「藻油發酵與萃取」專利族群的 工業級整合版。它結合了前代的 US9745539B2（濕式萃取法） 與 EP3626806B1（高糖多段發酵控制），形成完整的「非無菌高產油發酵 + 濕式酵素回收系統」。</p>
             </div>
              </div>
-                         <!-- 手機版專利5圖片carousel -->
-                         <div class="mobile-patent-carousel-5 mt-4 md:hidden">
-                           <div class="relative max-w-xs mx-auto">
-                             <div class="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-300">
-                               <img id="mobile-patent-5-img" src="https://unitedbio.com.tw/upload/3552/home/3552_6909b3f0cfe05.webp" alt="專利5圖片" class="absolute inset-0 w-full h-full object-contain">
-                             </div>
-                             <button id="mobile-patent-5-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
-                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                               </svg>
-                             </button>
-                             <button id="mobile-patent-5-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
-                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                               </svg>
-                             </button>
-                           </div>
-                         </div>
+                                <div class="patent5-mobile-gallery-shell mt-4 md:hidden">
+                                    <div class="patent5-mobile-gallery-wrapper">
+                                        <div id="patent5-mobile-gallery" class="patent5-mobile-gallery"></div>
+                                    </div>
+                                    <div class="patent5-mobile-scrollbar">
+                                        <div class="patent5-mobile-scrollbar-thumb"></div>
+                                    </div>
+                                </div>
+                                <div class="patent5-desktop-gallery-shell hidden md:block">
+                                    <div class="patent5-desktop-gallery-wrapper">
+                                        <div id="patent5-desktop-gallery" class="patent5-desktop-gallery"></div>
+                                    </div>
+                                    <div class="patent5-scrollbar">
+                                        <div class="patent5-scrollbar-thumb"></div>
+                                    </div>
+                                </div>
                                  <div data-patent-id="6" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                                                 <div class="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"><span class="text-white font-medium text-xs">6</span></div>
@@ -1185,46 +1465,45 @@
                                             <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">於 US11198891B2（非無菌高糖發酵） 的延伸升級版本。重點在於導入 「自動補料與過程控制系統（Automated Feed and Control System）」，使整個發酵 → 油脂生成 → 酵素破壁 → 萃取流程能在工業規模下全自動運作。</p>
                                         </div>
                                         </div>
-                         <!-- 手機版專利6圖片carousel -->
-                         <div class="mobile-patent-carousel-6 mt-4 md:hidden">
-                           <div class="relative max-w-xs mx-auto">
-                             <div class="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-300">
-                               <img id="mobile-patent-6-img" src="https://unitedbio.com.tw/upload/3552/home/3552_6909b5292771c.webp" alt="專利6圖片" class="absolute inset-0 w-full h-full object-contain">
-                             </div>
-                             <button id="mobile-patent-6-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
-                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                               </svg>
-                             </button>
-                             <button id="mobile-patent-6-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
-                               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                               </svg>
-                             </button>
-                           </div>
-                         </div>
+                                <div class="patent6-mobile-gallery-shell mt-4 md:hidden">
+                                    <div class="patent6-mobile-gallery-wrapper">
+                                        <div id="patent6-mobile-gallery" class="patent6-mobile-gallery"></div>
+                                    </div>
+                                    <div class="patent6-mobile-scrollbar">
+                                        <div class="patent6-mobile-scrollbar-thumb"></div>
+                                    </div>
+                                </div>
+                                <div class="patent6-desktop-gallery-shell hidden md:block">
+                                    <div class="patent6-desktop-gallery-wrapper">
+                                        <div id="patent6-desktop-gallery" class="patent6-desktop-gallery"></div>
+                                    </div>
+                                    <div class="patent6-scrollbar">
+                                        <div class="patent6-scrollbar-thumb"></div>
+                                    </div>
+                                </div>
+                        
         </div>
       </div>
       <div>
-      <h3 class="text-xl font-medium mb-12 text-gray-900">品質認證</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-       <div class="text-center p-8 border border-gray-200 hover:border-gray-300 transition-colors rounded-xl">
-        <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center"><span class="text-gray-900 font-bold text-lg">FSSC</span>
+      <h3 class="text-xl font-medium mb-12 text-gray-900 text-center">品質認證</h3>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
+       <div class="text-center px-4 py-4 border border-gray-200 hover:border-gray-300 transition-colors rounded-xl">
+        <div class="w-12 h-12 mx-auto mb-2 flex items-center justify-center"><span class="text-gray-900 font-bold text-lg">FSSC</span>
         </div>
                 <p class="text-sm text-gray-600 text-justify cert-desc" style="text-align-last:left;"><span lang="en">Food Safety System Certification</span>，食品安全系統驗證，是目前全球最嚴謹、最被國際食品品牌採用的食品安全標準之一。它是依據 <span lang="en">ISO 22000</span> 國際食品安全管理體系 並結合 <span lang="en">HACCP</span> 危害分析與關鍵管制點 原則所建立，並經 全球食品安全倡議 <span lang="en">GFSI</span>  官方認可。</p>
        </div>
-       <div class="text-center p-8 border border-gray-200 hover:border-gray-300 transition-colors rounded-xl">
-        <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center"><span class="text-gray-900 font-bold text-lg">HACCP</span>
+       <div class="text-center px-4 py-4 border border-gray-200 hover:border-gray-300 transition-colors rounded-xl">
+        <div class="w-12 h-12 mx-auto mb-2 flex items-center justify-center"><span class="text-gray-900 font-bold text-lg">HACCP</span>
         </div>
                 <p class="text-sm text-gray-600 text-justify cert-desc" style="text-align-last:left;"><span lang="en">Hazard Analysis and Critical Control Point</span> 危害分析與關鍵管制點，是全球公認最核心的食品安全制度。它不只是檢查成品，而是從原料、製程到出貨的每一個步驟，都預先找出可能的風險並嚴格管控，確保食物在生產過程中沒有任何安全隱患。</p>
        </div>
-       <div class="text-center p-8 border border-gray-200 hover:border-gray-300 transition-colors rounded-xl">
-        <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center"><span class="text-gray-900 font-bold text-lg">ISO22000</span>
+       <div class="text-center px-4 py-4 border border-gray-200 hover:border-gray-300 transition-colors rounded-xl">
+        <div class="w-12 h-12 mx-auto mb-2 flex items-center justify-center"><span class="text-gray-900 font-bold text-lg">ISO22000</span>
         </div>
-                <p class="text-sm text-gray-600 text-justify cert-desc" style="text-align-last:left;"><span lang="en">ISO 22000</span> 是由 國際標準化組織（<span lang="en">ISO</span>） 制定的全球食品安全管理系統標準，它整合了 <span lang="en">HACCP</span> 的嚴格風險控管精神，並要求企業在原料、製程、環境、人員與設備各面都建立完整的追蹤與預防機制。</p>
+                <p class="text-sm text-gray-600 text-justify cert-desc" style="text-align-last:left;"><span lang="en">ISO 22000</span> 是由 國際標準化組織 <span lang="en">ISO</span> 制定的全球食品安全管理系統標準，它整合了 <span lang="en">HACCP</span> 的嚴格風險控管精神，並要求企業在原料、製程、環境、人員與設備各面都建立完整的追蹤與預防機制。</p>
        </div>
-       <div class="text-center p-8 border border-gray-200 hover:border-gray-300 transition-colors rounded-xl">
-        <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center"><span class="text-gray-900 font-bold text-lg">COA</span>
+       <div class="text-center px-4 py-4 border border-gray-200 hover:border-gray-300 transition-colors rounded-xl">
+        <div class="w-12 h-12 mx-auto mb-2 flex items-center justify-center"><span class="text-gray-900 font-bold text-lg">COA</span>
         </div>
                 <p class="text-sm text-gray-600 text-justify cert-desc" style="text-align-last:left;"><span lang="en">Certificate of Analysis</span> 產品分析證明是由具公信力的第三方實驗室所出具的正式檢驗報告，每一批產品上市前，都必須經過專業檢測並核發 <span lang="en">COA</span>，才能確保其成分含量、純度與安全性皆符合國際標準。</p>
        </div>
@@ -1235,16 +1514,16 @@
     </section>
   <section class="section-spacing bg-gray-50 border-t border-dashed" style="border-color: rgba(0,0,0,0.9);">
    <div class="container mx-auto px-6 max-w-6xl">
-    <h2 id="team-title" style="font-size: 2.5rem; font-weight: 1000; letter-spacing: -0.025em; line-height: 1.25; margin-bottom: 4rem; text-align: center; color: rgba(0,0,0,0.7);">整座大型研發實驗大樓<br>專業博士團隊<br>超過十億新建的藥品級高規格生產工廠</h2>
+    <h2 id="team-title" style="font-size: 2.5rem; font-weight: 1000; letter-spacing: -0.025em; line-height: 1.25; margin-bottom: 4rem; text-align: center; color: rgba(0,0,0,0.7); white-space: pre;">整座大型研發實驗大樓<br>專業博士團隊<br>超過十億新建的&nbsp;<span class="mobile-linebreak">藥品級高規格生產工廠</span></h2>
     <p class="text-sm text-gray-500 text-center" style="margin: 0 auto 0.5rem;">Advancing Health Protection Through Evidence-Based Science</p>
-    <h3 class="text-xl md:text-2xl font-semibold text-center text-gray-800" style="margin: 0 0 2rem;">營養學博士團隊</h3>
+    <h3 class="text-xl md:text-2xl font-semibold text-center text-gray-800" style="margin: 0 0 15px;">營養學博士團隊</h3>
     <p class="text-sm md:text-base text-gray-700 leading-none mb-2 text-center max-w-4xl mx-auto px-4">
         賀得生醫的核心研發團隊由五位具備博士學位的專家組成，橫跨 食品科技、生物化學、分子生物學、植物科學、微生物學及營養機能原料研發 等多重領域。他們共同以「從科學研究到臨床實證」為使命，建立嚴謹的研發、檢驗與安全管控流程，確保每一項產品都具備國際級的品質與科學依據。
     </p>
     <p class="text-sm md:text-base text-gray-700 leading-none mb-2 text-center max-w-4xl mx-auto px-4">
         賀得生醫博士團隊堅持「數據先於宣傳，實證高於行銷」的原則。每項產品皆遵循國際食品安全體系（FSSC、HACCP、ISO 22000）規範，並以第三方檢測（COA／IFOS 檢驗報告）驗證原料品質。從原料挑選、製程控制到最終產品檢驗，團隊以實驗數據為依據，建立出透明可信的生技品質標準。
     </p>
-    <div class="mb-16 w-full max-w-7xl mx-auto">
+    <div class="w-full max-w-7xl mx-auto" style="margin-bottom: 0;">
       <div class="flex border-4 border-black border-opacity-70 rounded-l-2xl rounded-r-2xl overflow-hidden doctor-videos-container">
                 <div class="relative overflow-hidden flex-1 aspect-[9/16]">
                                         <video class="absolute inset-0 w-full h-full object-cover shadow-lg scale-125 translate-y-6" muted loop playsinline preload="metadata" data-autoplay="visible">
@@ -1348,7 +1627,7 @@
             </div>
         </div>
     <!-- 手機版博士影片區塊 -->
-        <div class="doctor-videos-mobile w-full max-w-7xl mx-auto mb-16" style="display: none;">
+        <div class="doctor-videos-mobile w-full max-w-7xl mx-auto" style="display: none; margin-bottom: 0;">
             <div class="space-y-6">
             <!-- 田介昌博士 -->
                 <div class="doctor-mobile-primary">
@@ -1455,7 +1734,7 @@
             </div>
         </div>
     </div>
-<p class="text-sm md:text-base text-gray-700 leading-relaxed text-center max-w-4xl mx-auto px-4 mb-6">
+<p class="text-sm md:text-base text-gray-700 leading-relaxed text-center max-w-4xl mx-auto px-4 mb-10" style="margin: 10px auto 3rem;">
     博士團隊不僅追求理論與實驗的突破，更重視產品在人體的實際效益。他們以「以人體科學為起點、以日常健康為終點」為設計思維，持續投入植物性 Omega-3（DHA、EPA、DPA）、葉黃素、玉米黃素、藻紅素等營養素的應用研究，並以嚴謹態度推動保健食品的科學化與國際化。
 </p>
     <p class="text-sm text-gray-500 text-center" style="margin: 0 auto 0.5rem;">R&D Building and Scaled Production Base</p>
@@ -1485,35 +1764,35 @@
         </div>
         <div class="grid md:grid-cols-3 gap-16">
      <div class="text-center group">
-      <div class="w-20 h-20 bg-gray-100 mx-auto mb-8 flex items-center justify-center group-hover:bg-gray-200 transition-colors rounded-xl">
+      <div class="w-20 h-20 bg-gray-100 mx-auto mb-4 flex items-center justify-center group-hover:bg-gray-200 transition-colors rounded-xl">
        <svg class="w-10 h-10 text-gray-700" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
        </svg>
       </div>
-      <h3 class="text-lg font-medium mb-4 text-gray-900">營養學博士團隊</h3>
-      <p class="text-gray-600 leading-relaxed text-sm">擁有15年以上營養學研究經驗，專精於功能性食品開發</p>
+      <h3 class="text-lg font-medium text-gray-900" style="margin: 0;">營養學博士團隊</h3>
+      <p class="text-gray-600 leading-tight text-sm" style="margin: 0;">擁有15年以上營養學研究經驗，專精於功能性食品開發</p>
      </div>
      <div class="text-center group">
-      <div class="w-20 h-20 bg-gray-100 mx-auto mb-8 flex items-center justify-center group-hover:bg-gray-200 transition-colors rounded-xl">
+      <div class="w-20 h-20 bg-gray-100 mx-auto mb-4 flex items-center justify-center group-hover:bg-gray-200 transition-colors rounded-xl">
        <svg class="w-10 h-10 text-gray-700" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
        </svg>
       </div>
-      <h3 class="text-lg font-medium mb-4 text-gray-900">研發創新實驗室</h3>
-      <p class="text-gray-600 leading-relaxed text-sm">配備先進設備的研發中心，持續創新產品配方與技術</p>
+      <h3 class="text-lg font-medium text-gray-900" style="margin: 0;">研發創新實驗室</h3>
+      <p class="text-gray-600 leading-tight text-sm" style="margin: 0;">配備先進設備的研發中心，持續創新產品配方與技術</p>
      </div>
      <div class="text-center group">
-      <div class="w-20 h-20 bg-gray-100 mx-auto mb-8 flex items-center justify-center group-hover:bg-gray-200 transition-colors rounded-xl">
+      <div class="w-20 h-20 bg-gray-100 mx-auto mb-4 flex items-center justify-center group-hover:bg-gray-200 transition-colors rounded-xl">
        <svg class="w-10 h-10 text-gray-700" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
        </svg>
       </div>
-      <h3 class="text-lg font-medium mb-4 text-gray-900">專業客服團隊</h3>
-      <p class="text-gray-600 leading-relaxed text-sm">營養師與健康顧問組成的專業團隊，提供個人化健康建議</p>
+      <h3 class="text-lg font-medium text-gray-900" style="margin: 0;">專業客服團隊</h3>
+      <p class="text-gray-600 leading-tight text-sm" style="margin: 0;">營養師與健康顧問組成的專業團隊，提供個人化健康建議</p>
      </div>
     </div>
    </div>
     </section>
   <section class="section-spacing bg-white border-t border-dashed" style="border-color: rgba(0,0,0,0.9);">
    <div class="container mx-auto px-6 max-w-6xl">
-    <p class="text-sm text-orange-500 text-center" style="margin: 0 auto 0.5rem; font-size: 1.15rem;">【 家族の健康のためのスマートな選択 】</p>
+    <p class="text-sm text-orange-500 text-center" style="margin: 0 auto 0.5rem; font-size: 0.95rem;">【 家族の健康のためのスマートな選択 】</p>
     <h2 id="family-title" style="font-size: 2.5rem; font-weight: 1000; letter-spacing: -0.025em; line-height: 1.25; margin: 0 0 0.5rem; text-align: center; color: rgba(0,0,0,0.7);">全家人的健康守護者</h2>
     <p class="text-sm text-gray-500 text-center" style="margin: 0 auto 2.5rem;">Empowering Every Family with Better Health</p>
     <div class="grid md:grid-cols-2 gap-12 items-center family-split">
@@ -1591,9 +1870,9 @@
          </div>
         </div>
             <div class="mt-10">
-             <p class="text-sm text-orange-500 text-center" style="margin: 0 auto 0.5rem;">【 世代を超えて、家族の健康を支えるブランド 】</p>
-             <p class="text-gray-700 font-light text-center" style="margin: 1rem 0 0; font-size: 2.25rem; line-height: 1.2; letter-spacing: -0.01em;">一個品牌，守護全家健康</p>
-             <p class="text-sm text-gray-500 text-center" style="margin: 0 auto 0.5rem;">One Trusted Brand for Your Family’s Wellness</p>
+             <p class="text-sm text-orange-500 text-center" style="margin: 0 auto 0.5rem; font-size: 0.95rem;">【 世代を超えて、家族の健康を支えるブランド 】</p>
+             <p class="text-gray-700 font-light text-center" style="margin: 1rem 0 0; font-size: 2.25rem; line-height: 1.2; letter-spacing: -0.01em;">一個品牌<span class="desktop-comma">，</span><span class="mobile-linebreak">守護全家健康</span></p>
+             <p class="text-sm text-gray-500 text-center" style="margin: 0 auto 0.5rem;">One Trusted Brand for<span class="mobile-linebreak"> Your Family’s Wellness</span></p>
             </div>
    </div>
     </section>
@@ -2339,7 +2618,7 @@ DHA 到底是啥？
                 'https://unitedbio.com.tw/upload/3552/home/3552_690977358550c.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909773d84fd3.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909774723589.webp'
-            ], // Patent 1 images
+            ], // Patent 1 images for desktop gallery
             '2': [
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909a39495db4.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909a39d5a405.webp',
@@ -2483,428 +2762,1604 @@ DHA 到底是啥？
             ]  // Patent 6 images
         };
 
-        // Configuration
-        function getImagesPerPage() {
-            const width = window.innerWidth;
-            if (width >= 1536) return 6; // 2xl
-            if (width >= 1280) return 6; // xl
-            if (width >= 1024) return 5; // lg
-            if (width >= 768) return 5;  // md
-            if (width >= 640) return 4;  // sm
-            return 1; // xs
-        }
+        function renderPatent1DesktopGallery() {
+            const gallery = document.getElementById('patent1-desktop-gallery');
+            if (!gallery) return;
 
-        // Initialize all patent carousels
-        function initializePatentCarousels() {
-            // Use a more reliable approach - wait for window load to ensure CSS is applied
-            if (document.readyState === 'loading') {
-                window.addEventListener('load', function() {
-                    createCarouselsForPatents();
-                    addResizeListener();
-                });
-            } else {
-                window.addEventListener('load', function() {
-                    createCarouselsForPatents();
-                    addResizeListener();
-                });
-            }
-        }
-
-        // Initialize mobile patent 1 carousel
-        function initializeMobilePatent1Carousel() {
             const images = patentImages['1'] || [];
-            if (images.length === 0) return;
+            gallery.innerHTML = '';
 
-            let currentIndex = 0;
-            const imgElement = document.getElementById('mobile-patent-1-img');
-            const prevBtn = document.getElementById('mobile-patent-1-prev');
-            const nextBtn = document.getElementById('mobile-patent-1-next');
+            images.forEach((imageUrl, index) => {
+                const figure = document.createElement('figure');
+                figure.className = 'patent1-desktop-image';
 
-            if (!imgElement || !prevBtn || !nextBtn) return;
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利1圖片 ${index + 1}`;
+                img.loading = 'lazy';
 
-            function updateImage() {
-                imgElement.src = images[currentIndex];
-                imgElement.alt = `專利1圖片 ${currentIndex + 1}`;
-                prevBtn.disabled = currentIndex === 0;
-                nextBtn.disabled = currentIndex === images.length - 1;
-            }
-
-            prevBtn.addEventListener('click', function() {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateImage();
-                }
+                figure.appendChild(img);
+                const indicator = document.createElement('span');
+                indicator.className = 'patent-gallery-image-indicator';
+                indicator.textContent = `${index + 1}/${images.length}`;
+                figure.appendChild(indicator);
+                gallery.appendChild(figure);
             });
 
-            nextBtn.addEventListener('click', function() {
-                if (currentIndex < images.length - 1) {
-                    currentIndex++;
-                    updateImage();
-                }
-            });
+            const imageElements = Array.from(gallery.querySelectorAll('img'));
+            const loadPromises = imageElements.map(waitForImage);
 
-            // Initialize first image
-            updateImage();
+            Promise.all(loadPromises).then(function() {
+                adjustPatent1DesktopCardHeight();
+                ensurePatent1DesktopResizeListener();
+
+                requestAnimationFrame(function() {
+                    adjustPatent1DesktopCardHeight();
+                    initPatent1Scroller(
+                        '.patent1-desktop-gallery-shell',
+                        '.patent1-desktop-gallery-wrapper',
+                        '.patent1-scrollbar',
+                        '.patent1-scrollbar-thumb'
+                    );
+                });
+            });
         }
 
-        // Initialize mobile patent 2 carousel
-        function initializeMobilePatent2Carousel() {
+        function renderPatent2DesktopGallery() {
+            const gallery = document.getElementById('patent2-desktop-gallery');
+            if (!gallery) return;
+
             const images = patentImages['2'] || [];
-            if (images.length === 0) return;
+            gallery.innerHTML = '';
 
-            let currentIndex = 0;
-            const imgElement = document.getElementById('mobile-patent-2-img');
-            const prevBtn = document.getElementById('mobile-patent-2-prev');
-            const nextBtn = document.getElementById('mobile-patent-2-next');
+            images.forEach((imageUrl, index) => {
+                const figure = document.createElement('figure');
+                figure.className = 'patent2-desktop-image';
 
-            if (!imgElement || !prevBtn || !nextBtn) return;
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利2圖片 ${index + 1}`;
+                img.loading = 'lazy';
 
-            function updateImage() {
-                imgElement.src = images[currentIndex];
-                imgElement.alt = `專利2圖片 ${currentIndex + 1}`;
-                prevBtn.disabled = currentIndex === 0;
-                nextBtn.disabled = currentIndex === images.length - 1;
-            }
-
-            prevBtn.addEventListener('click', function() {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateImage();
-                }
+                figure.appendChild(img);
+                const indicator = document.createElement('span');
+                indicator.className = 'patent-gallery-image-indicator';
+                indicator.textContent = `${index + 1}/${images.length}`;
+                figure.appendChild(indicator);
+                gallery.appendChild(figure);
             });
 
-            nextBtn.addEventListener('click', function() {
-                if (currentIndex < images.length - 1) {
-                    currentIndex++;
-                    updateImage();
-                }
-            });
+            const imageElements = Array.from(gallery.querySelectorAll('img'));
+            const loadPromises = imageElements.map(waitForImage);
 
-            // Initialize first image
-            updateImage();
+            Promise.all(loadPromises).then(function() {
+                adjustPatent2DesktopCardHeight();
+                ensurePatent2DesktopResizeListener();
+
+                requestAnimationFrame(function() {
+                    adjustPatent2DesktopCardHeight();
+                    initPatent2Scroller(
+                        '.patent2-desktop-gallery-shell',
+                        '.patent2-desktop-gallery-wrapper',
+                        '.patent2-scrollbar',
+                        '.patent2-scrollbar-thumb'
+                    );
+                });
+            });
         }
 
-        // Initialize mobile patent 3 carousel
-        function initializeMobilePatent3Carousel() {
+        function renderPatent3DesktopGallery() {
+            const gallery = document.getElementById('patent3-desktop-gallery');
+            if (!gallery) return;
+
             const images = patentImages['3'] || [];
-            if (images.length === 0) return;
+            gallery.innerHTML = '';
 
-            let currentIndex = 0;
-            const imgElement = document.getElementById('mobile-patent-3-img');
-            const prevBtn = document.getElementById('mobile-patent-3-prev');
-            const nextBtn = document.getElementById('mobile-patent-3-next');
+            images.forEach((imageUrl, index) => {
+                const figure = document.createElement('figure');
+                figure.className = 'patent3-desktop-image';
 
-            if (!imgElement || !prevBtn || !nextBtn) return;
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利3圖片 ${index + 1}`;
+                img.loading = 'lazy';
 
-            function updateImage() {
-                imgElement.src = images[currentIndex];
-                imgElement.alt = `專利3圖片 ${currentIndex + 1}`;
-                prevBtn.disabled = currentIndex === 0;
-                nextBtn.disabled = currentIndex === images.length - 1;
-            }
-
-            prevBtn.addEventListener('click', function() {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateImage();
-                }
+                figure.appendChild(img);
+                const indicator = document.createElement('span');
+                indicator.className = 'patent-gallery-image-indicator';
+                indicator.textContent = `${index + 1}/${images.length}`;
+                figure.appendChild(indicator);
+                gallery.appendChild(figure);
             });
 
-            nextBtn.addEventListener('click', function() {
-                if (currentIndex < images.length - 1) {
-                    currentIndex++;
-                    updateImage();
-                }
-            });
+            const imageElements = Array.from(gallery.querySelectorAll('img'));
+            const loadPromises = imageElements.map(waitForImage);
 
-            // Initialize first image
-            updateImage();
+            Promise.all(loadPromises).then(function() {
+                adjustPatent3DesktopCardHeight();
+                ensurePatent3DesktopResizeListener();
+
+                requestAnimationFrame(function() {
+                    adjustPatent3DesktopCardHeight();
+                    initPatent3Scroller(
+                        '.patent3-desktop-gallery-shell',
+                        '.patent3-desktop-gallery-wrapper',
+                        '.patent3-scrollbar',
+                        '.patent3-scrollbar-thumb'
+                    );
+                });
+            });
         }
 
-        // Initialize mobile patent 4 carousel
-        function initializeMobilePatent4Carousel() {
+        function renderPatent4DesktopGallery() {
+            const gallery = document.getElementById('patent4-desktop-gallery');
+            if (!gallery) return;
+
             const images = patentImages['4'] || [];
-            if (images.length === 0) return;
+            gallery.innerHTML = '';
 
-            let currentIndex = 0;
-            const imgElement = document.getElementById('mobile-patent-4-img');
-            const prevBtn = document.getElementById('mobile-patent-4-prev');
-            const nextBtn = document.getElementById('mobile-patent-4-next');
+            images.forEach((imageUrl, index) => {
+                const figure = document.createElement('figure');
+                figure.className = 'patent4-desktop-image';
 
-            if (!imgElement || !prevBtn || !nextBtn) return;
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利4圖片 ${index + 1}`;
+                img.loading = 'lazy';
 
-            function updateImage() {
-                imgElement.src = images[currentIndex];
-                imgElement.alt = `專利4圖片 ${currentIndex + 1}`;
-                prevBtn.disabled = currentIndex === 0;
-                nextBtn.disabled = currentIndex === images.length - 1;
-            }
-
-            prevBtn.addEventListener('click', function() {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateImage();
-                }
+                figure.appendChild(img);
+                const indicator = document.createElement('span');
+                indicator.className = 'patent-gallery-image-indicator';
+                indicator.textContent = `${index + 1}/${images.length}`;
+                figure.appendChild(indicator);
+                gallery.appendChild(figure);
             });
 
-            nextBtn.addEventListener('click', function() {
-                if (currentIndex < images.length - 1) {
-                    currentIndex++;
-                    updateImage();
-                }
-            });
+            const imageElements = Array.from(gallery.querySelectorAll('img'));
+            const loadPromises = imageElements.map(waitForImage);
 
-            // Initialize first image
-            updateImage();
+            Promise.all(loadPromises).then(function() {
+                adjustPatent4DesktopCardHeight();
+                ensurePatent4DesktopResizeListener();
+
+                requestAnimationFrame(function() {
+                    adjustPatent4DesktopCardHeight();
+                    initPatent4Scroller(
+                        '.patent4-desktop-gallery-shell',
+                        '.patent4-desktop-gallery-wrapper',
+                        '.patent4-scrollbar',
+                        '.patent4-scrollbar-thumb'
+                    );
+                });
+            });
         }
 
-        // Initialize mobile patent 5 carousel
-        function initializeMobilePatent5Carousel() {
+        function renderPatent5DesktopGallery() {
+            const gallery = document.getElementById('patent5-desktop-gallery');
+            if (!gallery) return;
+
             const images = patentImages['5'] || [];
-            if (images.length === 0) return;
+            gallery.innerHTML = '';
 
-            let currentIndex = 0;
-            const imgElement = document.getElementById('mobile-patent-5-img');
-            const prevBtn = document.getElementById('mobile-patent-5-prev');
-            const nextBtn = document.getElementById('mobile-patent-5-next');
+            images.forEach((imageUrl, index) => {
+                const figure = document.createElement('figure');
+                figure.className = 'patent5-desktop-image';
 
-            if (!imgElement || !prevBtn || !nextBtn) return;
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利5圖片 ${index + 1}`;
+                img.loading = 'lazy';
 
-            function updateImage() {
-                imgElement.src = images[currentIndex];
-                imgElement.alt = `專利5圖片 ${currentIndex + 1}`;
-                prevBtn.disabled = currentIndex === 0;
-                nextBtn.disabled = currentIndex === images.length - 1;
-            }
-
-            prevBtn.addEventListener('click', function() {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateImage();
-                }
+                figure.appendChild(img);
+                const indicator = document.createElement('span');
+                indicator.className = 'patent-gallery-image-indicator';
+                indicator.textContent = `${index + 1}/${images.length}`;
+                figure.appendChild(indicator);
+                gallery.appendChild(figure);
             });
 
-            nextBtn.addEventListener('click', function() {
-                if (currentIndex < images.length - 1) {
-                    currentIndex++;
-                    updateImage();
-                }
-            });
+            const imageElements = Array.from(gallery.querySelectorAll('img'));
+            const loadPromises = imageElements.map(waitForImage);
 
-            // Initialize first image
-            updateImage();
+            Promise.all(loadPromises).then(function() {
+                adjustPatent5DesktopCardHeight();
+                ensurePatent5DesktopResizeListener();
+
+                requestAnimationFrame(function() {
+                    adjustPatent5DesktopCardHeight();
+                    initPatent5Scroller(
+                        '.patent5-desktop-gallery-shell',
+                        '.patent5-desktop-gallery-wrapper',
+                        '.patent5-scrollbar',
+                        '.patent5-scrollbar-thumb'
+                    );
+                });
+            });
         }
 
-        // Initialize mobile patent 6 carousel
-        function initializeMobilePatent6Carousel() {
+        function renderPatent6DesktopGallery() {
+            const gallery = document.getElementById('patent6-desktop-gallery');
+            if (!gallery) return;
+
             const images = patentImages['6'] || [];
-            if (images.length === 0) return;
+            gallery.innerHTML = '';
 
-            let currentIndex = 0;
-            const imgElement = document.getElementById('mobile-patent-6-img');
-            const prevBtn = document.getElementById('mobile-patent-6-prev');
-            const nextBtn = document.getElementById('mobile-patent-6-next');
+            images.forEach((imageUrl, index) => {
+                const figure = document.createElement('figure');
+                figure.className = 'patent6-desktop-image';
 
-            if (!imgElement || !prevBtn || !nextBtn) return;
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利6圖片 ${index + 1}`;
+                img.loading = 'lazy';
 
-            function updateImage() {
-                imgElement.src = images[currentIndex];
-                imgElement.alt = `專利6圖片 ${currentIndex + 1}`;
-                prevBtn.disabled = currentIndex === 0;
-                nextBtn.disabled = currentIndex === images.length - 1;
+                figure.appendChild(img);
+                const indicator = document.createElement('span');
+                indicator.className = 'patent-gallery-image-indicator';
+                indicator.textContent = `${index + 1}/${images.length}`;
+                figure.appendChild(indicator);
+                gallery.appendChild(figure);
+            });
+
+            const imageElements = Array.from(gallery.querySelectorAll('img'));
+            const loadPromises = imageElements.map(waitForImage);
+
+            Promise.all(loadPromises).then(function() {
+                adjustPatent6DesktopCardHeight();
+                ensurePatent6DesktopResizeListener();
+
+                requestAnimationFrame(function() {
+                    adjustPatent6DesktopCardHeight();
+                    initPatent6Scroller(
+                        '.patent6-desktop-gallery-shell',
+                        '.patent6-desktop-gallery-wrapper',
+                        '.patent6-scrollbar',
+                        '.patent6-scrollbar-thumb'
+                    );
+                });
+            });
+        }
+
+        function waitForImage(img) {
+            if (!img) return Promise.resolve();
+            if (img.complete && img.naturalWidth) return Promise.resolve();
+
+            return new Promise(function(resolve) {
+                img.addEventListener('load', resolve, { once: true });
+                img.addEventListener('error', resolve, { once: true });
+            });
+        }
+
+        function adjustPatent1DesktopCardHeight() {
+            const shell = document.querySelector('.patent1-desktop-gallery-shell');
+            if (!shell) return;
+
+            const gallery = shell.querySelector('.patent1-desktop-gallery');
+            if (!gallery) return;
+
+            const figures = Array.from(gallery.querySelectorAll('.patent1-desktop-image'));
+            if (!figures.length) return;
+
+            const images = figures
+                .map(function(figure) { return figure.querySelector('img'); })
+                .filter(function(img) { return !!img; });
+
+            if (!images.length) return;
+
+            let maxRatio = 0;
+            images.forEach(function(img) {
+                const naturalWidth = img.naturalWidth || img.width;
+                const naturalHeight = img.naturalHeight || img.height;
+
+                if (naturalWidth > 0 && naturalHeight > 0) {
+                    const ratio = naturalHeight / naturalWidth;
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;
+                    }
+                }
+            });
+
+            if (maxRatio === 0) return;
+
+            const sampleFigure = figures[0];
+            const figureStyles = window.getComputedStyle(sampleFigure);
+            const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(figureStyles.paddingBottom) || 0;
+            const paddingLeft = Number.parseFloat(figureStyles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(figureStyles.paddingRight) || 0;
+            const usableWidth = sampleFigure.clientWidth - paddingLeft - paddingRight;
+
+            if (usableWidth <= 0) return;
+
+            const imageHeight = usableWidth * maxRatio;
+            const totalHeight = imageHeight + paddingTop + paddingBottom;
+
+            figures.forEach(function(figure) {
+                figure.style.height = `${totalHeight}px`;
+            });
+        }
+
+        let patent1DesktopResizeListenerAttached = false;
+
+        function ensurePatent1DesktopResizeListener() {
+            if (patent1DesktopResizeListenerAttached) return;
+            patent1DesktopResizeListenerAttached = true;
+
+            let resizeRaf = null;
+
+            window.addEventListener('resize', function() {
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(function() {
+                    adjustPatent1DesktopCardHeight();
+                });
+            });
+        }
+
+        function adjustPatent2DesktopCardHeight() {
+            const shell = document.querySelector('.patent2-desktop-gallery-shell');
+            if (!shell) return;
+
+            const gallery = shell.querySelector('.patent2-desktop-gallery');
+            if (!gallery) return;
+
+            const figures = Array.from(gallery.querySelectorAll('.patent2-desktop-image'));
+            if (!figures.length) return;
+
+            const images = figures
+                .map(function(figure) { return figure.querySelector('img'); })
+                .filter(function(img) { return !!img; });
+
+            if (!images.length) return;
+
+            let maxRatio = 0;
+            images.forEach(function(img) {
+                const naturalWidth = img.naturalWidth || img.width;
+                const naturalHeight = img.naturalHeight || img.height;
+
+                if (naturalWidth > 0 && naturalHeight > 0) {
+                    const ratio = naturalHeight / naturalWidth;
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;
+                    }
+                }
+            });
+
+            if (maxRatio === 0) return;
+
+            const sampleFigure = figures[0];
+            const figureStyles = window.getComputedStyle(sampleFigure);
+            const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(figureStyles.paddingBottom) || 0;
+            const paddingLeft = Number.parseFloat(figureStyles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(figureStyles.paddingRight) || 0;
+            const usableWidth = sampleFigure.clientWidth - paddingLeft - paddingRight;
+
+            if (usableWidth <= 0) return;
+
+            const imageHeight = usableWidth * maxRatio;
+            const totalHeight = imageHeight + paddingTop + paddingBottom;
+
+            figures.forEach(function(figure) {
+                figure.style.height = `${totalHeight}px`;
+            });
+        }
+
+        function adjustPatent3DesktopCardHeight() {
+            const shell = document.querySelector('.patent3-desktop-gallery-shell');
+            if (!shell) return;
+
+            const gallery = shell.querySelector('.patent3-desktop-gallery');
+            if (!gallery) return;
+
+            const figures = Array.from(gallery.querySelectorAll('.patent3-desktop-image'));
+            if (!figures.length) return;
+
+            const images = figures
+                .map(function(figure) { return figure.querySelector('img'); })
+                .filter(function(img) { return !!img; });
+
+            if (!images.length) return;
+
+            let maxRatio = 0;
+            images.forEach(function(img) {
+                const naturalWidth = img.naturalWidth || img.width;
+                const naturalHeight = img.naturalHeight || img.height;
+
+                if (naturalWidth > 0 && naturalHeight > 0) {
+                    const ratio = naturalHeight / naturalWidth;
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;
+                    }
+                }
+            });
+
+            if (maxRatio === 0) return;
+
+            const sampleFigure = figures[0];
+            const figureStyles = window.getComputedStyle(sampleFigure);
+            const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(figureStyles.paddingBottom) || 0;
+            const paddingLeft = Number.parseFloat(figureStyles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(figureStyles.paddingRight) || 0;
+            const usableWidth = sampleFigure.clientWidth - paddingLeft - paddingRight;
+
+            if (usableWidth <= 0) return;
+
+            const imageHeight = usableWidth * maxRatio;
+            const totalHeight = imageHeight + paddingTop + paddingBottom;
+
+            figures.forEach(function(figure) {
+                figure.style.height = `${totalHeight}px`;
+            });
+        }
+
+        function adjustPatent4DesktopCardHeight() {
+            const shell = document.querySelector('.patent4-desktop-gallery-shell');
+            if (!shell) return;
+
+            const gallery = shell.querySelector('.patent4-desktop-gallery');
+            if (!gallery) return;
+
+            const figures = Array.from(gallery.querySelectorAll('.patent4-desktop-image'));
+            if (!figures.length) return;
+
+            const images = figures
+                .map(function(figure) { return figure.querySelector('img'); })
+                .filter(function(img) { return !!img; });
+
+            if (!images.length) return;
+
+            let maxRatio = 0;
+            images.forEach(function(img) {
+                const naturalWidth = img.naturalWidth || img.width;
+                const naturalHeight = img.naturalHeight || img.height;
+
+                if (naturalWidth > 0 && naturalHeight > 0) {
+                    const ratio = naturalHeight / naturalWidth;
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;
+                    }
+                }
+            });
+
+            if (maxRatio === 0) return;
+
+            const sampleFigure = figures[0];
+            const figureStyles = window.getComputedStyle(sampleFigure);
+            const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(figureStyles.paddingBottom) || 0;
+            const paddingLeft = Number.parseFloat(figureStyles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(figureStyles.paddingRight) || 0;
+            const usableWidth = sampleFigure.clientWidth - paddingLeft - paddingRight;
+
+            if (usableWidth <= 0) return;
+
+            const imageHeight = usableWidth * maxRatio;
+            const totalHeight = imageHeight + paddingTop + paddingBottom;
+
+            figures.forEach(function(figure) {
+                figure.style.height = `${totalHeight}px`;
+            });
+        }
+
+        function adjustPatent5DesktopCardHeight() {
+            const shell = document.querySelector('.patent5-desktop-gallery-shell');
+            if (!shell) return;
+
+            const gallery = shell.querySelector('.patent5-desktop-gallery');
+            if (!gallery) return;
+
+            const figures = Array.from(gallery.querySelectorAll('.patent5-desktop-image'));
+            if (!figures.length) return;
+
+            const images = figures
+                .map(function(figure) { return figure.querySelector('img'); })
+                .filter(function(img) { return !!img; });
+
+            if (!images.length) return;
+
+            let maxRatio = 0;
+            images.forEach(function(img) {
+                const naturalWidth = img.naturalWidth || img.width;
+                const naturalHeight = img.naturalHeight || img.height;
+
+                if (naturalWidth > 0 && naturalHeight > 0) {
+                    const ratio = naturalHeight / naturalWidth;
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;
+                    }
+                }
+            });
+
+            if (maxRatio === 0) return;
+
+            const sampleFigure = figures[0];
+            const figureStyles = window.getComputedStyle(sampleFigure);
+            const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(figureStyles.paddingBottom) || 0;
+            const paddingLeft = Number.parseFloat(figureStyles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(figureStyles.paddingRight) || 0;
+            const usableWidth = sampleFigure.clientWidth - paddingLeft - paddingRight;
+
+            if (usableWidth <= 0) return;
+
+            const imageHeight = usableWidth * maxRatio;
+            const totalHeight = imageHeight + paddingTop + paddingBottom;
+
+            figures.forEach(function(figure) {
+                figure.style.height = `${totalHeight}px`;
+            });
+        }
+
+        function adjustPatent6DesktopCardHeight() {
+            const shell = document.querySelector('.patent6-desktop-gallery-shell');
+            if (!shell) return;
+
+            const gallery = shell.querySelector('.patent6-desktop-gallery');
+            if (!gallery) return;
+
+            const figures = Array.from(gallery.querySelectorAll('.patent6-desktop-image'));
+            if (!figures.length) return;
+
+            const images = figures
+                .map(function(figure) { return figure.querySelector('img'); })
+                .filter(function(img) { return !!img; });
+
+            if (!images.length) return;
+
+            let maxRatio = 0;
+            images.forEach(function(img) {
+                const naturalWidth = img.naturalWidth || img.width;
+                const naturalHeight = img.naturalHeight || img.height;
+
+                if (naturalWidth > 0 && naturalHeight > 0) {
+                    const ratio = naturalHeight / naturalWidth;
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;
+                    }
+                }
+            });
+
+            if (maxRatio === 0) return;
+
+            const sampleFigure = figures[0];
+            const figureStyles = window.getComputedStyle(sampleFigure);
+            const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(figureStyles.paddingBottom) || 0;
+            const paddingLeft = Number.parseFloat(figureStyles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(figureStyles.paddingRight) || 0;
+            const usableWidth = sampleFigure.clientWidth - paddingLeft - paddingRight;
+
+            if (usableWidth <= 0) return;
+
+            const imageHeight = usableWidth * maxRatio;
+            const totalHeight = imageHeight + paddingTop + paddingBottom;
+
+            figures.forEach(function(figure) {
+                figure.style.height = `${totalHeight}px`;
+            });
+        }
+
+        let patent2DesktopResizeListenerAttached = false;
+
+        function ensurePatent2DesktopResizeListener() {
+            if (patent2DesktopResizeListenerAttached) return;
+            patent2DesktopResizeListenerAttached = true;
+
+            let resizeRaf = null;
+
+            window.addEventListener('resize', function() {
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(function() {
+                    adjustPatent2DesktopCardHeight();
+                });
+            });
+        }
+
+        let patent3DesktopResizeListenerAttached = false;
+
+        function ensurePatent3DesktopResizeListener() {
+            if (patent3DesktopResizeListenerAttached) return;
+            patent3DesktopResizeListenerAttached = true;
+
+            let resizeRaf = null;
+
+            window.addEventListener('resize', function() {
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(function() {
+                    adjustPatent3DesktopCardHeight();
+                });
+            });
+        }
+
+        let patent4DesktopResizeListenerAttached = false;
+
+        function ensurePatent4DesktopResizeListener() {
+            if (patent4DesktopResizeListenerAttached) return;
+            patent4DesktopResizeListenerAttached = true;
+
+            let resizeRaf = null;
+
+            window.addEventListener('resize', function() {
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(function() {
+                    adjustPatent4DesktopCardHeight();
+                });
+            });
+        }
+
+        let patent5DesktopResizeListenerAttached = false;
+
+        function ensurePatent5DesktopResizeListener() {
+            if (patent5DesktopResizeListenerAttached) return;
+            patent5DesktopResizeListenerAttached = true;
+
+            let resizeRaf = null;
+
+            window.addEventListener('resize', function() {
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(function() {
+                    adjustPatent5DesktopCardHeight();
+                });
+            });
+        }
+
+        let patent6DesktopResizeListenerAttached = false;
+
+        function ensurePatent6DesktopResizeListener() {
+            if (patent6DesktopResizeListenerAttached) return;
+            patent6DesktopResizeListenerAttached = true;
+
+            let resizeRaf = null;
+
+            window.addEventListener('resize', function() {
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(function() {
+                    adjustPatent6DesktopCardHeight();
+                });
+            });
+        }
+
+        function renderPatent1MobileGallery() {
+            const gallery = document.getElementById('patent1-mobile-gallery');
+            if (!gallery) return;
+
+            const images = patentImages['1'] || [];
+            gallery.innerHTML = '';
+
+            images.forEach((imageUrl, index) => {
+                const figure = document.createElement('figure');
+                figure.className = 'patent1-mobile-image';
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利1圖片 ${index + 1}`;
+                img.loading = 'lazy';
+
+                figure.appendChild(img);
+                const indicator = document.createElement('span');
+                indicator.className = 'patent-gallery-image-indicator';
+                indicator.textContent = `${index + 1}/${images.length}`;
+                figure.appendChild(indicator);
+                gallery.appendChild(figure);
+            });
+
+            const imageElements = Array.from(gallery.querySelectorAll('img'));
+            const loadPromises = imageElements.map(waitForImage);
+
+            Promise.all(loadPromises).then(function() {
+                adjustPatent1MobileCardWidth();
+                adjustPatent1MobileCardHeight();
+                ensurePatent1MobileResizeListener();
+
+                requestAnimationFrame(function() {
+                    adjustPatent1MobileCardWidth();
+                    adjustPatent1MobileCardHeight();
+                    initPatent1Scroller(
+                        '.patent1-mobile-gallery-shell',
+                        '.patent1-mobile-gallery-wrapper',
+                        '.patent1-mobile-scrollbar',
+                        '.patent1-mobile-scrollbar-thumb'
+                    );
+                });
+            });
+        }
+
+        function renderPatent2MobileGallery() {
+            const gallery = document.getElementById('patent2-mobile-gallery');
+            if (!gallery) return;
+
+            const images = patentImages['2'] || [];
+            gallery.innerHTML = '';
+
+            images.forEach((imageUrl, index) => {
+                const figure = document.createElement('figure');
+                figure.className = 'patent2-mobile-image';
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利2圖片 ${index + 1}`;
+                img.loading = 'lazy';
+
+                figure.appendChild(img);
+                const indicator = document.createElement('span');
+                indicator.className = 'patent-gallery-image-indicator';
+                indicator.textContent = `${index + 1}/${images.length}`;
+                figure.appendChild(indicator);
+                gallery.appendChild(figure);
+            });
+
+            const imageElements = Array.from(gallery.querySelectorAll('img'));
+            const loadPromises = imageElements.map(waitForImage);
+
+            Promise.all(loadPromises).then(function() {
+                adjustPatent2MobileCardWidth();
+                adjustPatent2MobileCardHeight();
+                ensurePatent2MobileResizeListener();
+
+                requestAnimationFrame(function() {
+                    adjustPatent2MobileCardWidth();
+                    adjustPatent2MobileCardHeight();
+                    initPatent2Scroller(
+                        '.patent2-mobile-gallery-shell',
+                        '.patent2-mobile-gallery-wrapper',
+                        '.patent2-mobile-scrollbar',
+                        '.patent2-mobile-scrollbar-thumb'
+                    );
+                });
+            });
+        }
+
+        function renderPatent3MobileGallery() {
+            const gallery = document.getElementById('patent3-mobile-gallery');
+            if (!gallery) return;
+
+            const images = patentImages['3'] || [];
+            gallery.innerHTML = '';
+
+            images.forEach((imageUrl, index) => {
+                const figure = document.createElement('figure');
+                figure.className = 'patent3-mobile-image';
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利3圖片 ${index + 1}`;
+                img.loading = 'lazy';
+
+                figure.appendChild(img);
+                const indicator = document.createElement('span');
+                indicator.className = 'patent-gallery-image-indicator';
+                indicator.textContent = `${index + 1}/${images.length}`;
+                figure.appendChild(indicator);
+                gallery.appendChild(figure);
+            });
+
+            const imageElements = Array.from(gallery.querySelectorAll('img'));
+            const loadPromises = imageElements.map(waitForImage);
+
+            Promise.all(loadPromises).then(function() {
+                adjustPatent3MobileCardWidth();
+                adjustPatent3MobileCardHeight();
+                ensurePatent3MobileResizeListener();
+
+                requestAnimationFrame(function() {
+                    adjustPatent3MobileCardWidth();
+                    adjustPatent3MobileCardHeight();
+                    initPatent3Scroller(
+                        '.patent3-mobile-gallery-shell',
+                        '.patent3-mobile-gallery-wrapper',
+                        '.patent3-mobile-scrollbar',
+                        '.patent3-mobile-scrollbar-thumb'
+                    );
+                });
+            });
+        }
+
+        function renderPatent4MobileGallery() {
+            const gallery = document.getElementById('patent4-mobile-gallery');
+            if (!gallery) return;
+
+            const images = patentImages['4'] || [];
+            gallery.innerHTML = '';
+
+            images.forEach((imageUrl, index) => {
+                const figure = document.createElement('figure');
+                figure.className = 'patent4-mobile-image';
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利4圖片 ${index + 1}`;
+                img.loading = 'lazy';
+
+                figure.appendChild(img);
+                const indicator = document.createElement('span');
+                indicator.className = 'patent-gallery-image-indicator';
+                indicator.textContent = `${index + 1}/${images.length}`;
+                figure.appendChild(indicator);
+                gallery.appendChild(figure);
+            });
+
+            const imageElements = Array.from(gallery.querySelectorAll('img'));
+            const loadPromises = imageElements.map(waitForImage);
+
+            Promise.all(loadPromises).then(function() {
+                adjustPatent4MobileCardWidth();
+                adjustPatent4MobileCardHeight();
+                ensurePatent4MobileResizeListener();
+
+                requestAnimationFrame(function() {
+                    adjustPatent4MobileCardWidth();
+                    adjustPatent4MobileCardHeight();
+                    initPatent4Scroller(
+                        '.patent4-mobile-gallery-shell',
+                        '.patent4-mobile-gallery-wrapper',
+                        '.patent4-mobile-scrollbar',
+                        '.patent4-mobile-scrollbar-thumb'
+                    );
+                });
+            });
+        }
+
+        function renderPatent5MobileGallery() {
+            const gallery = document.getElementById('patent5-mobile-gallery');
+            if (!gallery) return;
+
+            const images = patentImages['5'] || [];
+            gallery.innerHTML = '';
+
+            images.forEach((imageUrl, index) => {
+                const figure = document.createElement('figure');
+                figure.className = 'patent5-mobile-image';
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利5圖片 ${index + 1}`;
+                img.loading = 'lazy';
+
+                figure.appendChild(img);
+                const indicator = document.createElement('span');
+                indicator.className = 'patent-gallery-image-indicator';
+                indicator.textContent = `${index + 1}/${images.length}`;
+                figure.appendChild(indicator);
+                gallery.appendChild(figure);
+            });
+
+            const imageElements = Array.from(gallery.querySelectorAll('img'));
+            const loadPromises = imageElements.map(waitForImage);
+
+            Promise.all(loadPromises).then(function() {
+                adjustPatent5MobileCardWidth();
+                adjustPatent5MobileCardHeight();
+                ensurePatent5MobileResizeListener();
+
+                requestAnimationFrame(function() {
+                    adjustPatent5MobileCardWidth();
+                    adjustPatent5MobileCardHeight();
+                    initPatent5Scroller(
+                        '.patent5-mobile-gallery-shell',
+                        '.patent5-mobile-gallery-wrapper',
+                        '.patent5-mobile-scrollbar',
+                        '.patent5-mobile-scrollbar-thumb'
+                    );
+                });
+            });
+        }
+
+        function renderPatent6MobileGallery() {
+            const gallery = document.getElementById('patent6-mobile-gallery');
+            if (!gallery) return;
+
+            const images = patentImages['6'] || [];
+            gallery.innerHTML = '';
+
+            images.forEach((imageUrl, index) => {
+                const figure = document.createElement('figure');
+                figure.className = 'patent6-mobile-image';
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `專利6圖片 ${index + 1}`;
+                img.loading = 'lazy';
+
+                figure.appendChild(img);
+                const indicator = document.createElement('span');
+                indicator.className = 'patent-gallery-image-indicator';
+                indicator.textContent = `${index + 1}/${images.length}`;
+                figure.appendChild(indicator);
+                gallery.appendChild(figure);
+            });
+
+            const imageElements = Array.from(gallery.querySelectorAll('img'));
+            const loadPromises = imageElements.map(waitForImage);
+
+            Promise.all(loadPromises).then(function() {
+                adjustPatent6MobileCardWidth();
+                adjustPatent6MobileCardHeight();
+                ensurePatent6MobileResizeListener();
+
+                requestAnimationFrame(function() {
+                    adjustPatent6MobileCardWidth();
+                    adjustPatent6MobileCardHeight();
+                    initPatent6Scroller(
+                        '.patent6-mobile-gallery-shell',
+                        '.patent6-mobile-gallery-wrapper',
+                        '.patent6-mobile-scrollbar',
+                        '.patent6-mobile-scrollbar-thumb'
+                    );
+                });
+            });
+        }
+
+        function adjustPatent1MobileCardWidth() {
+            const shell = document.querySelector('.patent1-mobile-gallery-shell');
+            if (!shell) return;
+
+            const wrapper = shell.querySelector('.patent1-mobile-gallery-wrapper');
+            const gallery = shell.querySelector('.patent1-mobile-gallery');
+
+            if (!wrapper || !gallery) return;
+
+            const computedStyle = window.getComputedStyle(gallery);
+            const gapString = computedStyle.columnGap || computedStyle.gap || '0';
+            const gap = Number.parseFloat(gapString) || 0;
+            const wrapperWidth = wrapper.clientWidth;
+
+            if (wrapperWidth <= 0) return;
+
+            const cardWidth = (wrapperWidth - gap) / 2;
+            if (cardWidth <= 0) return;
+
+            gallery.style.setProperty('--patent-mobile-card-width', `${cardWidth}px`);
+        }
+
+        function adjustPatent2MobileCardWidth() {
+            const shell = document.querySelector('.patent2-mobile-gallery-shell');
+            if (!shell) return;
+
+            const wrapper = shell.querySelector('.patent2-mobile-gallery-wrapper');
+            const gallery = shell.querySelector('.patent2-mobile-gallery');
+
+            if (!wrapper || !gallery) return;
+
+            const computedStyle = window.getComputedStyle(gallery);
+            const gapString = computedStyle.columnGap || computedStyle.gap || '0';
+            const gap = Number.parseFloat(gapString) || 0;
+            const wrapperWidth = wrapper.clientWidth;
+
+            if (wrapperWidth <= 0) return;
+
+            const cardWidth = (wrapperWidth - gap) / 2;
+            if (cardWidth <= 0) return;
+
+            gallery.style.setProperty('--patent-mobile-card-width', `${cardWidth}px`);
+        }
+
+        function adjustPatent3MobileCardWidth() {
+            const shell = document.querySelector('.patent3-mobile-gallery-shell');
+            if (!shell) return;
+
+            const wrapper = shell.querySelector('.patent3-mobile-gallery-wrapper');
+            const gallery = shell.querySelector('.patent3-mobile-gallery');
+
+            if (!wrapper || !gallery) return;
+
+            const computedStyle = window.getComputedStyle(gallery);
+            const gapString = computedStyle.columnGap || computedStyle.gap || '0';
+            const gap = Number.parseFloat(gapString) || 0;
+            const wrapperWidth = wrapper.clientWidth;
+
+            if (wrapperWidth <= 0) return;
+
+            const cardWidth = (wrapperWidth - gap) / 2;
+            if (cardWidth <= 0) return;
+
+            gallery.style.setProperty('--patent-mobile-card-width', `${cardWidth}px`);
+        }
+
+        function adjustPatent4MobileCardWidth() {
+            const shell = document.querySelector('.patent4-mobile-gallery-shell');
+            if (!shell) return;
+
+            const wrapper = shell.querySelector('.patent4-mobile-gallery-wrapper');
+            const gallery = shell.querySelector('.patent4-mobile-gallery');
+
+            if (!wrapper || !gallery) return;
+
+            const computedStyle = window.getComputedStyle(gallery);
+            const gapString = computedStyle.columnGap || computedStyle.gap || '0';
+            const gap = Number.parseFloat(gapString) || 0;
+            const wrapperWidth = wrapper.clientWidth;
+
+            if (wrapperWidth <= 0) return;
+
+            const cardWidth = (wrapperWidth - gap) / 2;
+            if (cardWidth <= 0) return;
+
+            gallery.style.setProperty('--patent-mobile-card-width', `${cardWidth}px`);
+        }
+
+        function adjustPatent5MobileCardWidth() {
+            const shell = document.querySelector('.patent5-mobile-gallery-shell');
+            if (!shell) return;
+
+            const wrapper = shell.querySelector('.patent5-mobile-gallery-wrapper');
+            const gallery = shell.querySelector('.patent5-mobile-gallery');
+
+            if (!wrapper || !gallery) return;
+
+            const computedStyle = window.getComputedStyle(gallery);
+            const gapString = computedStyle.columnGap || computedStyle.gap || '0';
+            const gap = Number.parseFloat(gapString) || 0;
+            const wrapperWidth = wrapper.clientWidth;
+
+            if (wrapperWidth <= 0) return;
+
+            const cardWidth = (wrapperWidth - gap) / 2;
+            if (cardWidth <= 0) return;
+
+            gallery.style.setProperty('--patent-mobile-card-width', `${cardWidth}px`);
+        }
+
+        function adjustPatent6MobileCardWidth() {
+            const shell = document.querySelector('.patent6-mobile-gallery-shell');
+            if (!shell) return;
+
+            const wrapper = shell.querySelector('.patent6-mobile-gallery-wrapper');
+            const gallery = shell.querySelector('.patent6-mobile-gallery');
+
+            if (!wrapper || !gallery) return;
+
+            const computedStyle = window.getComputedStyle(gallery);
+            const gapString = computedStyle.columnGap || computedStyle.gap || '0';
+            const gap = Number.parseFloat(gapString) || 0;
+            const wrapperWidth = wrapper.clientWidth;
+
+            if (wrapperWidth <= 0) return;
+
+            const cardWidth = (wrapperWidth - gap) / 2;
+            if (cardWidth <= 0) return;
+
+            gallery.style.setProperty('--patent-mobile-card-width', `${cardWidth}px`);
+        }
+
+        let patent1MobileResizeListenerAttached = false;
+
+        function ensurePatent1MobileResizeListener() {
+            if (patent1MobileResizeListenerAttached) return;
+            patent1MobileResizeListenerAttached = true;
+
+            let resizeRaf = null;
+
+            window.addEventListener('resize', function() {
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(function() {
+                    adjustPatent1MobileCardWidth();
+                    adjustPatent1MobileCardHeight();
+                });
+            });
+        }
+
+        let patent2MobileResizeListenerAttached = false;
+
+        function ensurePatent2MobileResizeListener() {
+            if (patent2MobileResizeListenerAttached) return;
+            patent2MobileResizeListenerAttached = true;
+
+            let resizeRaf = null;
+
+            window.addEventListener('resize', function() {
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(function() {
+                    adjustPatent2MobileCardWidth();
+                    adjustPatent2MobileCardHeight();
+                });
+            });
+        }
+
+        let patent3MobileResizeListenerAttached = false;
+
+        function ensurePatent3MobileResizeListener() {
+            if (patent3MobileResizeListenerAttached) return;
+            patent3MobileResizeListenerAttached = true;
+
+            let resizeRaf = null;
+
+            window.addEventListener('resize', function() {
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(function() {
+                    adjustPatent3MobileCardWidth();
+                    adjustPatent3MobileCardHeight();
+                });
+            });
+        }
+
+        let patent4MobileResizeListenerAttached = false;
+
+        function ensurePatent4MobileResizeListener() {
+            if (patent4MobileResizeListenerAttached) return;
+            patent4MobileResizeListenerAttached = true;
+
+            let resizeRaf = null;
+
+            window.addEventListener('resize', function() {
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(function() {
+                    adjustPatent4MobileCardWidth();
+                    adjustPatent4MobileCardHeight();
+                });
+            });
+        }
+
+        let patent5MobileResizeListenerAttached = false;
+
+        function ensurePatent5MobileResizeListener() {
+            if (patent5MobileResizeListenerAttached) return;
+            patent5MobileResizeListenerAttached = true;
+
+            let resizeRaf = null;
+
+            window.addEventListener('resize', function() {
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(function() {
+                    adjustPatent5MobileCardWidth();
+                    adjustPatent5MobileCardHeight();
+                });
+            });
+        }
+
+        let patent6MobileResizeListenerAttached = false;
+
+        function ensurePatent6MobileResizeListener() {
+            if (patent6MobileResizeListenerAttached) return;
+            patent6MobileResizeListenerAttached = true;
+
+            let resizeRaf = null;
+
+            window.addEventListener('resize', function() {
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(function() {
+                    adjustPatent6MobileCardWidth();
+                    adjustPatent6MobileCardHeight();
+                });
+            });
+        }
+
+        function adjustPatent1MobileCardHeight() {
+            const shell = document.querySelector('.patent1-mobile-gallery-shell');
+            if (!shell) return;
+
+            const gallery = shell.querySelector('.patent1-mobile-gallery');
+            if (!gallery) return;
+
+            const figures = Array.from(gallery.querySelectorAll('.patent1-mobile-image'));
+            if (!figures.length) return;
+
+            const images = figures
+                .map(function(figure) { return figure.querySelector('img'); })
+                .filter(function(img) { return !!img; });
+
+            if (!images.length) return;
+
+            let maxRatio = 0;
+            images.forEach(function(img) {
+                const naturalWidth = img.naturalWidth || img.width;
+                const naturalHeight = img.naturalHeight || img.height;
+
+                if (naturalWidth > 0 && naturalHeight > 0) {
+                    const ratio = naturalHeight / naturalWidth;
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;
+                    }
+                }
+            });
+
+            if (maxRatio === 0) return;
+
+            const sampleFigure = figures[0];
+            const figureStyles = window.getComputedStyle(sampleFigure);
+            const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(figureStyles.paddingBottom) || 0;
+            const paddingLeft = Number.parseFloat(figureStyles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(figureStyles.paddingRight) || 0;
+            const usableWidth = sampleFigure.clientWidth - paddingLeft - paddingRight;
+
+            if (usableWidth <= 0) return;
+
+            const imageHeight = usableWidth * maxRatio;
+            const totalHeight = imageHeight + paddingTop + paddingBottom;
+
+            figures.forEach(function(figure) {
+                figure.style.height = `${totalHeight}px`;
+            });
+        }
+
+        function adjustPatent2MobileCardHeight() {
+            const shell = document.querySelector('.patent2-mobile-gallery-shell');
+            if (!shell) return;
+
+            const gallery = shell.querySelector('.patent2-mobile-gallery');
+            if (!gallery) return;
+
+            const figures = Array.from(gallery.querySelectorAll('.patent2-mobile-image'));
+            if (!figures.length) return;
+
+            const images = figures
+                .map(function(figure) { return figure.querySelector('img'); })
+                .filter(function(img) { return !!img; });
+
+            if (!images.length) return;
+
+            let maxRatio = 0;
+            images.forEach(function(img) {
+                const naturalWidth = img.naturalWidth || img.width;
+                const naturalHeight = img.naturalHeight || img.height;
+
+                if (naturalWidth > 0 && naturalHeight > 0) {
+                    const ratio = naturalHeight / naturalWidth;
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;
+                    }
+                }
+            });
+
+            if (maxRatio === 0) return;
+
+            const sampleFigure = figures[0];
+            const figureStyles = window.getComputedStyle(sampleFigure);
+            const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(figureStyles.paddingBottom) || 0;
+            const paddingLeft = Number.parseFloat(figureStyles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(figureStyles.paddingRight) || 0;
+            const usableWidth = sampleFigure.clientWidth - paddingLeft - paddingRight;
+
+            if (usableWidth <= 0) return;
+
+            const imageHeight = usableWidth * maxRatio;
+            const totalHeight = imageHeight + paddingTop + paddingBottom;
+
+            figures.forEach(function(figure) {
+                figure.style.height = `${totalHeight}px`;
+            });
+        }
+
+        function adjustPatent3MobileCardHeight() {
+            const shell = document.querySelector('.patent3-mobile-gallery-shell');
+            if (!shell) return;
+
+            const gallery = shell.querySelector('.patent3-mobile-gallery');
+            if (!gallery) return;
+
+            const figures = Array.from(gallery.querySelectorAll('.patent3-mobile-image'));
+            if (!figures.length) return;
+
+            const images = figures
+                .map(function(figure) { return figure.querySelector('img'); })
+                .filter(function(img) { return !!img; });
+
+            if (!images.length) return;
+
+            let maxRatio = 0;
+            images.forEach(function(img) {
+                const naturalWidth = img.naturalWidth || img.width;
+                const naturalHeight = img.naturalHeight || img.height;
+
+                if (naturalWidth > 0 && naturalHeight > 0) {
+                    const ratio = naturalHeight / naturalWidth;
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;
+                    }
+                }
+            });
+
+            if (maxRatio === 0) return;
+
+            const sampleFigure = figures[0];
+            const figureStyles = window.getComputedStyle(sampleFigure);
+            const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(figureStyles.paddingBottom) || 0;
+            const paddingLeft = Number.parseFloat(figureStyles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(figureStyles.paddingRight) || 0;
+            const usableWidth = sampleFigure.clientWidth - paddingLeft - paddingRight;
+
+            if (usableWidth <= 0) return;
+
+            const imageHeight = usableWidth * maxRatio;
+            const totalHeight = imageHeight + paddingTop + paddingBottom;
+
+            figures.forEach(function(figure) {
+                figure.style.height = `${totalHeight}px`;
+            });
+        }
+
+        function adjustPatent4MobileCardHeight() {
+            const shell = document.querySelector('.patent4-mobile-gallery-shell');
+            if (!shell) return;
+
+            const gallery = shell.querySelector('.patent4-mobile-gallery');
+            if (!gallery) return;
+
+            const figures = Array.from(gallery.querySelectorAll('.patent4-mobile-image'));
+            if (!figures.length) return;
+
+            const images = figures
+                .map(function(figure) { return figure.querySelector('img'); })
+                .filter(function(img) { return !!img; });
+
+            if (!images.length) return;
+
+            let maxRatio = 0;
+            images.forEach(function(img) {
+                const naturalWidth = img.naturalWidth || img.width;
+                const naturalHeight = img.naturalHeight || img.height;
+
+                if (naturalWidth > 0 && naturalHeight > 0) {
+                    const ratio = naturalHeight / naturalWidth;
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;
+                    }
+                }
+            });
+
+            if (maxRatio === 0) return;
+
+            const sampleFigure = figures[0];
+            const figureStyles = window.getComputedStyle(sampleFigure);
+            const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(figureStyles.paddingBottom) || 0;
+            const paddingLeft = Number.parseFloat(figureStyles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(figureStyles.paddingRight) || 0;
+            const usableWidth = sampleFigure.clientWidth - paddingLeft - paddingRight;
+
+            if (usableWidth <= 0) return;
+
+            const imageHeight = usableWidth * maxRatio;
+            const totalHeight = imageHeight + paddingTop + paddingBottom;
+
+            figures.forEach(function(figure) {
+                figure.style.height = `${totalHeight}px`;
+            });
+        }
+
+        function adjustPatent5MobileCardHeight() {
+            const shell = document.querySelector('.patent5-mobile-gallery-shell');
+            if (!shell) return;
+
+            const gallery = shell.querySelector('.patent5-mobile-gallery');
+            if (!gallery) return;
+
+            const figures = Array.from(gallery.querySelectorAll('.patent5-mobile-image'));
+            if (!figures.length) return;
+
+            const images = figures
+                .map(function(figure) { return figure.querySelector('img'); })
+                .filter(function(img) { return !!img; });
+
+            if (!images.length) return;
+
+            let maxRatio = 0;
+            images.forEach(function(img) {
+                const naturalWidth = img.naturalWidth || img.width;
+                const naturalHeight = img.naturalHeight || img.height;
+
+                if (naturalWidth > 0 && naturalHeight > 0) {
+                    const ratio = naturalHeight / naturalWidth;
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;
+                    }
+                }
+            });
+
+            if (maxRatio === 0) return;
+
+            const sampleFigure = figures[0];
+            const figureStyles = window.getComputedStyle(sampleFigure);
+            const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(figureStyles.paddingBottom) || 0;
+            const paddingLeft = Number.parseFloat(figureStyles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(figureStyles.paddingRight) || 0;
+            const usableWidth = sampleFigure.clientWidth - paddingLeft - paddingRight;
+
+            if (usableWidth <= 0) return;
+
+            const imageHeight = usableWidth * maxRatio;
+            const totalHeight = imageHeight + paddingTop + paddingBottom;
+
+            figures.forEach(function(figure) {
+                figure.style.height = `${totalHeight}px`;
+            });
+        }
+
+        function adjustPatent6MobileCardHeight() {
+            const shell = document.querySelector('.patent6-mobile-gallery-shell');
+            if (!shell) return;
+
+            const gallery = shell.querySelector('.patent6-mobile-gallery');
+            if (!gallery) return;
+
+            const figures = Array.from(gallery.querySelectorAll('.patent6-mobile-image'));
+            if (!figures.length) return;
+
+            const images = figures
+                .map(function(figure) { return figure.querySelector('img'); })
+                .filter(function(img) { return !!img; });
+
+            if (!images.length) return;
+
+            let maxRatio = 0;
+            images.forEach(function(img) {
+                const naturalWidth = img.naturalWidth || img.width;
+                const naturalHeight = img.naturalHeight || img.height;
+
+                if (naturalWidth > 0 && naturalHeight > 0) {
+                    const ratio = naturalHeight / naturalWidth;
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;
+                    }
+                }
+            });
+
+            if (maxRatio === 0) return;
+
+            const sampleFigure = figures[0];
+            const figureStyles = window.getComputedStyle(sampleFigure);
+            const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(figureStyles.paddingBottom) || 0;
+            const paddingLeft = Number.parseFloat(figureStyles.paddingLeft) || 0;
+            const paddingRight = Number.parseFloat(figureStyles.paddingRight) || 0;
+            const usableWidth = sampleFigure.clientWidth - paddingLeft - paddingRight;
+
+            if (usableWidth <= 0) return;
+
+            const imageHeight = usableWidth * maxRatio;
+            const totalHeight = imageHeight + paddingTop + paddingBottom;
+
+            figures.forEach(function(figure) {
+                figure.style.height = `${totalHeight}px`;
+            });
+        }
+
+        function initPatentScroller(shellSelector, wrapperSelector, trackSelector, thumbSelector) {
+            const shell = document.querySelector(shellSelector);
+            const wrapper = shell && shell.querySelector(wrapperSelector);
+            const track = shell && shell.querySelector(trackSelector);
+            const thumb = track && track.querySelector(thumbSelector);
+
+            const minWidthPercent = 10;
+
+            if (!shell || !wrapper || !track || !thumb) return;
+
+            function syncThumb() {
+                const scrollWidth = wrapper.scrollWidth;
+                const clientWidth = wrapper.clientWidth;
+                const maxScroll = Math.max(scrollWidth - clientWidth, 0);
+
+                if (scrollWidth === 0) return;
+
+                const widthPercent = Math.min(100, Math.max(minWidthPercent, (clientWidth / scrollWidth) * 100));
+                const maxThumbOffset = 100 - widthPercent;
+                const leftPercent = maxScroll === 0 ? 0 : (wrapper.scrollLeft / maxScroll) * maxThumbOffset;
+
+                thumb.style.width = `${widthPercent}%`;
+                thumb.style.left = `${leftPercent}%`;
+                track.style.opacity = maxScroll > 0 ? '1' : '0.35';
+                track.style.pointerEvents = maxScroll > 0 ? 'auto' : 'none';
             }
 
-            prevBtn.addEventListener('click', function() {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateImage();
-                }
+            if (track.dataset.initialized === 'true') {
+                syncThumb();
+                return;
+            }
+
+            track.dataset.initialized = 'true';
+
+            function scrollToRatio(ratio) {
+                const clamped = Math.min(Math.max(ratio, 0), 1);
+                const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
+                wrapper.scrollLeft = clamped * Math.max(maxScroll, 0);
+            }
+
+            function updateFromPointer(clientX) {
+                const rect = track.getBoundingClientRect();
+                if (!rect.width) return;
+                const ratio = (clientX - rect.left) / rect.width;
+                scrollToRatio(ratio);
+            }
+
+            let isDragging = false;
+
+            const onMouseMove = function(event) {
+                if (!isDragging) return;
+                updateFromPointer(event.clientX);
+            };
+
+            const onMouseUp = function() {
+                isDragging = false;
+            };
+
+            const onTouchMove = function(event) {
+                if (!isDragging || !event.touches || !event.touches[0]) return;
+                updateFromPointer(event.touches[0].clientX);
+            };
+
+            const onTouchEnd = function() {
+                isDragging = false;
+            };
+
+            track.addEventListener('mousedown', function(event) {
+                isDragging = true;
+                updateFromPointer(event.clientX);
+                event.preventDefault();
             });
 
-            nextBtn.addEventListener('click', function() {
-                if (currentIndex < images.length - 1) {
-                    currentIndex++;
-                    updateImage();
-                }
-            });
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
 
-            // Initialize first image
-            updateImage();
-        }
+            track.addEventListener('touchstart', function(event) {
+                if (!event.touches || !event.touches[0]) return;
+                isDragging = true;
+                updateFromPointer(event.touches[0].clientX);
+                event.preventDefault();
+            }, { passive: false });
 
-        // Initialize mobile patent carousel when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() {
-                initializeMobilePatent1Carousel();
-                initializeMobilePatent2Carousel();
-                initializeMobilePatent3Carousel();
-                initializeMobilePatent4Carousel();
-                initializeMobilePatent5Carousel();
-                initializeMobilePatent6Carousel();
-            });
-        } else {
-            initializeMobilePatent1Carousel();
-            initializeMobilePatent2Carousel();
-            initializeMobilePatent3Carousel();
-            initializeMobilePatent4Carousel();
-            initializeMobilePatent5Carousel();
-            initializeMobilePatent6Carousel();
-        }
+            document.addEventListener('touchmove', onTouchMove, { passive: false });
+            document.addEventListener('touchend', onTouchEnd);
+            document.addEventListener('touchcancel', onTouchEnd);
 
-        function addResizeListener() {
+            wrapper.addEventListener('scroll', syncThumb);
+
             let resizeTimeout;
             window.addEventListener('resize', function() {
                 clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(function() {
-                    // Clear existing dynamically generated desktop carousels
-                    document.querySelectorAll('.patent-carousel-generated').forEach(carousel => carousel.remove());
-                    // Recreate carousels with new dimensions
-                    createCarouselsForPatents();
-                }, 250); // Debounce resize events
-            });
-        }
-
-        function createCarouselsForPatents() {
-            for (let patentId = 1; patentId <= 6; patentId++) {
-                const images = patentImages[patentId.toString()] || [];
-                if (images.length > 0) {
-                    createPatentCarousel(patentId, images);
-                }
-            }
-        }
-
-        function createPatentCarousel(patentId, images) {
-            const imagesPerPage = getImagesPerPage();
-            const totalPages = Math.ceil(images.length / imagesPerPage);
-            let currentPage = 0;
-
-            // Create carousel container
-            let carouselContainer = document.createElement('div');
-            carouselContainer.className = `mt-8 mb-12 patent-carousel patent-${patentId}`;
-            carouselContainer.style.width = '100%';
-            carouselContainer.innerHTML = `
-                <div class="relative px-8 md:px-8 lg:px-12">
-                    <button class="patent-prev-btn-${patentId} absolute left-2 md:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                        </svg>
-                    </button>
-                    <div class="patent-images-grid-${patentId} flex gap-4 px-12 md:px-8 lg:px-16 overflow-x-auto" style="width: 100%;"></div>
-                    <button class="patent-next-btn-${patentId} absolute right-2 md:right-4 lg:right-6 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
-                </div>
-                <div class="patent-page-indicators-${patentId} flex justify-center mt-6 space-x-2"></div>
-            `;
-            carouselContainer.classList.add('patent-carousel-generated');
-
-            // Find the patent carousel container
-            let patentContainer;
-            if (window.innerWidth < 768) {
-                patentContainer = document.querySelector(`.mobile-patent-carousel-${patentId}`);
-            } else {
-                patentContainer = document.querySelector(`[data-patent-id="${patentId}"]`);
-            }
-
-            if (patentContainer) {
-                if (window.innerWidth < 768) {
-                    // Mobile: reuse existing wrapper so responsive classes (e.g. md:hidden) stay intact
-                    patentContainer.innerHTML = carouselContainer.innerHTML;
-                    patentContainer.classList.add('patent-carousel', `patent-${patentId}`);
-                    carouselContainer = patentContainer;
-                } else {
-                    // Desktop: insert carousel right after the patent summary block
-                    patentContainer.insertAdjacentElement('afterend', carouselContainer);
-                }
-            } else {
-                console.log(`Patent ${patentId} container not found`);
-            }
-
-            // Create page indicators
-            const indicatorsContainer = carouselContainer.querySelector(`.patent-page-indicators-${patentId}`);
-            for (let i = 0; i < totalPages; i++) {
-                const indicator = document.createElement('div');
-                indicator.className = `w-3 h-3 rounded-full cursor-pointer transition-colors ${
-                    i === currentPage ? 'bg-orange-500' : 'bg-gray-300'
-                }`;
-                indicator.addEventListener('click', () => goToPage(patentId, i));
-                indicatorsContainer.appendChild(indicator);
-            }
-
-            // Update images function
-            function updateImages(page) {
-                const startIndex = page * imagesPerPage;
-                const endIndex = Math.min(startIndex + imagesPerPage, images.length);
-                const currentImages = images.slice(startIndex, endIndex);
-
-                const grid = carouselContainer.querySelector(`.patent-images-grid-${patentId}`);
-                grid.innerHTML = '';
-
-                currentImages.forEach((imageUrl, index) => {
-                    const imageContainer = document.createElement('div');
-                    imageContainer.className = 'relative group flex-shrink-0 patent-image-wrapper';
-                    const perPage = getImagesPerPage();
-                    const widthPercentage = 100 / perPage;
-                    imageContainer.style.width = `${widthPercentage}%`;
-                    imageContainer.style.minWidth = `${widthPercentage}%`;
-
-                    const img = document.createElement('img');
-                    img.src = imageUrl;
-                    img.alt = `專利${patentId}圖片 ${startIndex + index + 1}`;
-                    img.className = 'w-full h-full object-contain rounded-lg border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer';
-                    img.loading = 'eager';
-
-                    imageContainer.appendChild(img);
-                    grid.appendChild(imageContainer);
-                });
-
-                // Update button states
-                const prevBtn = carouselContainer.querySelector(`.patent-prev-btn-${patentId}`);
-                const nextBtn = carouselContainer.querySelector(`.patent-next-btn-${patentId}`);
-                prevBtn.disabled = page === 0;
-                nextBtn.disabled = page === totalPages - 1;
-
-                // Update page indicators
-                const indicators = indicatorsContainer.querySelectorAll('div');
-                indicators.forEach((indicator, index) => {
-                    indicator.className = `w-3 h-3 rounded-full cursor-pointer transition-colors ${
-                        index === page ? 'bg-orange-500' : 'bg-gray-300'
-                    }`;
-                });
-            }
-
-            // Navigation functions
-            function goToPage(patentId, page) {
-                currentPage = Math.max(0, Math.min(page, totalPages - 1));
-                updateImages(currentPage);
-            }
-
-            // Event listeners
-            const prevBtn = carouselContainer.querySelector(`.patent-prev-btn-${patentId}`);
-            const nextBtn = carouselContainer.querySelector(`.patent-next-btn-${patentId}`);
-
-            prevBtn.addEventListener('click', () => {
-                if (currentPage > 0) {
-                    currentPage--;
-                    updateImages(currentPage);
-                }
+                resizeTimeout = setTimeout(syncThumb, 120);
             });
 
-            nextBtn.addEventListener('click', () => {
-                if (currentPage < totalPages - 1) {
-                    currentPage++;
-                    updateImages(currentPage);
-                }
-            });
-
-            // Initialize
-            updateImages(currentPage);
+            syncThumb();
         }
 
-        // Initialize all carousels
-        initializePatentCarousels();
+        function initPatent1Scroller(shellSelector, wrapperSelector, trackSelector, thumbSelector) {
+            initPatentScroller(shellSelector, wrapperSelector, trackSelector, thumbSelector);
+        }
+
+        function initPatent2Scroller(shellSelector, wrapperSelector, trackSelector, thumbSelector) {
+            initPatentScroller(shellSelector, wrapperSelector, trackSelector, thumbSelector);
+        }
+
+        function initPatent3Scroller(shellSelector, wrapperSelector, trackSelector, thumbSelector) {
+            initPatentScroller(shellSelector, wrapperSelector, trackSelector, thumbSelector);
+        }
+
+        function initPatent4Scroller(shellSelector, wrapperSelector, trackSelector, thumbSelector) {
+            initPatentScroller(shellSelector, wrapperSelector, trackSelector, thumbSelector);
+        }
+
+        function initPatent5Scroller(shellSelector, wrapperSelector, trackSelector, thumbSelector) {
+            initPatentScroller(shellSelector, wrapperSelector, trackSelector, thumbSelector);
+        }
+
+        function initPatent6Scroller(shellSelector, wrapperSelector, trackSelector, thumbSelector) {
+            initPatentScroller(shellSelector, wrapperSelector, trackSelector, thumbSelector);
+        }
+
+        function initializePatentGalleries() {
+            renderPatent1DesktopGallery();
+            renderPatent1MobileGallery();
+            renderPatent2DesktopGallery();
+            renderPatent2MobileGallery();
+            renderPatent3DesktopGallery();
+            renderPatent3MobileGallery();
+            renderPatent4DesktopGallery();
+            renderPatent4MobileGallery();
+            renderPatent5DesktopGallery();
+            renderPatent5MobileGallery();
+            renderPatent6DesktopGallery();
+            renderPatent6MobileGallery();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePatentGalleries);
+        } else {
+            initializePatentGalleries();
+        }
         // Hero min-height still uses --total-nav-height with the default fallback (0px).
     </script>
     <script src="https://www.youtube.com/iframe_api"></script>
