@@ -452,6 +452,7 @@
             .patent4-desktop-gallery-wrapper,
             .patent5-desktop-gallery-wrapper,
             .patent6-desktop-gallery-wrapper {
+                width: min(100%, clamp(520px, 70vw, 960px));
                 max-width: clamp(520px, 70vw, 960px);
                 margin-left: auto;
                 margin-right: auto;
@@ -2777,9 +2778,42 @@ DHA 到底是啥？
             ]  // Patent 6 images
         };
 
+        function getPatentDesktopCardsPerView() {
+            const width = window.innerWidth;
+            if (width >= 1600) return 4;
+            if (width >= 1280) return 3;
+            if (width >= 1024) return 2;
+            return 1;
+        }
+
+        function applyPatentDesktopLayout(gallery, wrapper) {
+            if (!gallery) return;
+            const figures = Array.from(gallery.children);
+            if (!figures.length) return;
+            const hostWrapper = wrapper || gallery.parentElement;
+            const perView = Math.max(1, Math.min(getPatentDesktopCardsPerView(), figures.length));
+            const gapValue = (() => {
+                const styles = window.getComputedStyle(gallery);
+                const gap = parseFloat(styles.columnGap || styles.gap);
+                return Number.isFinite(gap) ? gap : 16;
+            })();
+            const containerWidth = (hostWrapper && hostWrapper.clientWidth) || gallery.getBoundingClientRect().width;
+            if (!containerWidth) return;
+            const usableWidth = Math.max(containerWidth - gapValue * (perView - 1), perView * 160);
+            const cardWidth = usableWidth / perView;
+
+            figures.forEach(function(figure) {
+                figure.style.flex = `0 0 ${cardWidth}px`;
+                figure.style.minWidth = `${cardWidth}px`;
+                figure.style.maxWidth = `${cardWidth}px`;
+            });
+        }
+
         function renderPatent1DesktopGallery() {
             const gallery = document.getElementById('patent1-desktop-gallery');
             if (!gallery) return;
+            const shell = gallery.closest('.patent1-desktop-gallery-shell');
+            const wrapper = shell ? shell.querySelector('.patent1-desktop-gallery-wrapper') : null;
 
             const images = patentImages['1'] || [];
             gallery.innerHTML = '';
@@ -2806,10 +2840,12 @@ DHA 到底是啥？
 
             Promise.all(loadPromises).then(function() {
                 adjustPatent1DesktopCardHeight();
+                applyPatentDesktopLayout(gallery, wrapper);
                 ensurePatent1DesktopResizeListener();
 
                 requestAnimationFrame(function() {
                     adjustPatent1DesktopCardHeight();
+                    applyPatentDesktopLayout(gallery, wrapper);
                     initPatent1Scroller(
                         '.patent1-desktop-gallery-shell',
                         '.patent1-desktop-gallery-wrapper',
@@ -2823,6 +2859,8 @@ DHA 到底是啥？
         function renderPatent2DesktopGallery() {
             const gallery = document.getElementById('patent2-desktop-gallery');
             if (!gallery) return;
+            const shell = gallery.closest('.patent2-desktop-gallery-shell');
+            const wrapper = shell ? shell.querySelector('.patent2-desktop-gallery-wrapper') : null;
 
             const images = patentImages['2'] || [];
             gallery.innerHTML = '';
@@ -2849,10 +2887,12 @@ DHA 到底是啥？
 
             Promise.all(loadPromises).then(function() {
                 adjustPatent2DesktopCardHeight();
+                applyPatentDesktopLayout(gallery, wrapper);
                 ensurePatent2DesktopResizeListener();
 
                 requestAnimationFrame(function() {
                     adjustPatent2DesktopCardHeight();
+                    applyPatentDesktopLayout(gallery, wrapper);
                     initPatent2Scroller(
                         '.patent2-desktop-gallery-shell',
                         '.patent2-desktop-gallery-wrapper',
@@ -2866,6 +2906,8 @@ DHA 到底是啥？
         function renderPatent3DesktopGallery() {
             const gallery = document.getElementById('patent3-desktop-gallery');
             if (!gallery) return;
+            const shell = gallery.closest('.patent3-desktop-gallery-shell');
+            const wrapper = shell ? shell.querySelector('.patent3-desktop-gallery-wrapper') : null;
 
             const images = patentImages['3'] || [];
             gallery.innerHTML = '';
@@ -2892,10 +2934,12 @@ DHA 到底是啥？
 
             Promise.all(loadPromises).then(function() {
                 adjustPatent3DesktopCardHeight();
+                applyPatentDesktopLayout(gallery, wrapper);
                 ensurePatent3DesktopResizeListener();
 
                 requestAnimationFrame(function() {
                     adjustPatent3DesktopCardHeight();
+                    applyPatentDesktopLayout(gallery, wrapper);
                     initPatent3Scroller(
                         '.patent3-desktop-gallery-shell',
                         '.patent3-desktop-gallery-wrapper',
@@ -2909,6 +2953,8 @@ DHA 到底是啥？
         function renderPatent4DesktopGallery() {
             const gallery = document.getElementById('patent4-desktop-gallery');
             if (!gallery) return;
+            const shell = gallery.closest('.patent4-desktop-gallery-shell');
+            const wrapper = shell ? shell.querySelector('.patent4-desktop-gallery-wrapper') : null;
 
             const images = patentImages['4'] || [];
             gallery.innerHTML = '';
@@ -2935,10 +2981,12 @@ DHA 到底是啥？
 
             Promise.all(loadPromises).then(function() {
                 adjustPatent4DesktopCardHeight();
+                applyPatentDesktopLayout(gallery, wrapper);
                 ensurePatent4DesktopResizeListener();
 
                 requestAnimationFrame(function() {
                     adjustPatent4DesktopCardHeight();
+                    applyPatentDesktopLayout(gallery, wrapper);
                     initPatent4Scroller(
                         '.patent4-desktop-gallery-shell',
                         '.patent4-desktop-gallery-wrapper',
@@ -2952,6 +3000,8 @@ DHA 到底是啥？
         function renderPatent5DesktopGallery() {
             const gallery = document.getElementById('patent5-desktop-gallery');
             if (!gallery) return;
+            const shell = gallery.closest('.patent5-desktop-gallery-shell');
+            const wrapper = shell ? shell.querySelector('.patent5-desktop-gallery-wrapper') : null;
 
             const images = patentImages['5'] || [];
             gallery.innerHTML = '';
@@ -2978,10 +3028,12 @@ DHA 到底是啥？
 
             Promise.all(loadPromises).then(function() {
                 adjustPatent5DesktopCardHeight();
+                applyPatentDesktopLayout(gallery, wrapper);
                 ensurePatent5DesktopResizeListener();
 
                 requestAnimationFrame(function() {
                     adjustPatent5DesktopCardHeight();
+                    applyPatentDesktopLayout(gallery, wrapper);
                     initPatent5Scroller(
                         '.patent5-desktop-gallery-shell',
                         '.patent5-desktop-gallery-wrapper',
@@ -2995,6 +3047,8 @@ DHA 到底是啥？
         function renderPatent6DesktopGallery() {
             const gallery = document.getElementById('patent6-desktop-gallery');
             if (!gallery) return;
+            const shell = gallery.closest('.patent6-desktop-gallery-shell');
+            const wrapper = shell ? shell.querySelector('.patent6-desktop-gallery-wrapper') : null;
 
             const images = patentImages['6'] || [];
             gallery.innerHTML = '';
@@ -3021,10 +3075,12 @@ DHA 到底是啥？
 
             Promise.all(loadPromises).then(function() {
                 adjustPatent6DesktopCardHeight();
+                applyPatentDesktopLayout(gallery, wrapper);
                 ensurePatent6DesktopResizeListener();
 
                 requestAnimationFrame(function() {
                     adjustPatent6DesktopCardHeight();
+                    applyPatentDesktopLayout(gallery, wrapper);
                     initPatent6Scroller(
                         '.patent6-desktop-gallery-shell',
                         '.patent6-desktop-gallery-wrapper',
@@ -3106,6 +3162,11 @@ DHA 到底是啥？
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
                     adjustPatent1DesktopCardHeight();
+                    const shell = document.querySelector('.patent1-desktop-gallery-shell');
+                    if (!shell) return;
+                    const gallery = shell.querySelector('.patent1-desktop-gallery');
+                    const wrapper = shell.querySelector('.patent1-desktop-gallery-wrapper');
+                    applyPatentDesktopLayout(gallery, wrapper);
                 });
             });
         }
@@ -3367,6 +3428,11 @@ DHA 到底是啥？
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
                     adjustPatent2DesktopCardHeight();
+                    const shell = document.querySelector('.patent2-desktop-gallery-shell');
+                    if (!shell) return;
+                    const gallery = shell.querySelector('.patent2-desktop-gallery');
+                    const wrapper = shell.querySelector('.patent2-desktop-gallery-wrapper');
+                    applyPatentDesktopLayout(gallery, wrapper);
                 });
             });
         }
@@ -3383,6 +3449,11 @@ DHA 到底是啥？
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
                     adjustPatent3DesktopCardHeight();
+                    const shell = document.querySelector('.patent3-desktop-gallery-shell');
+                    if (!shell) return;
+                    const gallery = shell.querySelector('.patent3-desktop-gallery');
+                    const wrapper = shell.querySelector('.patent3-desktop-gallery-wrapper');
+                    applyPatentDesktopLayout(gallery, wrapper);
                 });
             });
         }
@@ -3399,6 +3470,11 @@ DHA 到底是啥？
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
                     adjustPatent4DesktopCardHeight();
+                    const shell = document.querySelector('.patent4-desktop-gallery-shell');
+                    if (!shell) return;
+                    const gallery = shell.querySelector('.patent4-desktop-gallery');
+                    const wrapper = shell.querySelector('.patent4-desktop-gallery-wrapper');
+                    applyPatentDesktopLayout(gallery, wrapper);
                 });
             });
         }
@@ -3415,6 +3491,11 @@ DHA 到底是啥？
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
                     adjustPatent5DesktopCardHeight();
+                    const shell = document.querySelector('.patent5-desktop-gallery-shell');
+                    if (!shell) return;
+                    const gallery = shell.querySelector('.patent5-desktop-gallery');
+                    const wrapper = shell.querySelector('.patent5-desktop-gallery-wrapper');
+                    applyPatentDesktopLayout(gallery, wrapper);
                 });
             });
         }
@@ -3431,6 +3512,11 @@ DHA 到底是啥？
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
                     adjustPatent6DesktopCardHeight();
+                    const shell = document.querySelector('.patent6-desktop-gallery-shell');
+                    if (!shell) return;
+                    const gallery = shell.querySelector('.patent6-desktop-gallery');
+                    const wrapper = shell.querySelector('.patent6-desktop-gallery-wrapper');
+                    applyPatentDesktopLayout(gallery, wrapper);
                 });
             });
         }
@@ -4238,7 +4324,6 @@ DHA 到底是啥？
             const wrapper = shell && shell.querySelector(wrapperSelector);
             const track = shell && shell.querySelector(trackSelector);
             const thumb = track && track.querySelector(thumbSelector);
-
             const minWidthPercent = 10;
 
             if (!shell || !wrapper || !track || !thumb) return;
@@ -4327,6 +4412,18 @@ DHA 到底是啥？
                 clearTimeout(resizeTimeout);
                 resizeTimeout = setTimeout(syncThumb, 120);
             });
+
+            if (typeof ResizeObserver === 'function') {
+                const resizeObserver = new ResizeObserver(syncThumb);
+                resizeObserver.observe(wrapper);
+                const inner = wrapper.firstElementChild;
+                if (inner) resizeObserver.observe(inner);
+            }
+
+            if (typeof MutationObserver === 'function') {
+                const mutationObserver = new MutationObserver(syncThumb);
+                mutationObserver.observe(wrapper, { childList: true, subtree: true });
+            }
 
             syncThumb();
         }
