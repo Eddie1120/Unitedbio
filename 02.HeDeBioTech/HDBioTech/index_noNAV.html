@@ -445,6 +445,21 @@
             object-fit: contain;
         }
 
+        @media (min-width: 768px) {
+            .patent1-desktop-gallery-wrapper,
+            .patent2-desktop-gallery-wrapper,
+            .patent3-desktop-gallery-wrapper,
+            .patent4-desktop-gallery-wrapper,
+            .patent5-desktop-gallery-wrapper,
+            .patent6-desktop-gallery-wrapper {
+                max-width: clamp(520px, 70vw, 960px);
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: clamp(0.5rem, 2vw, 1.25rem);
+                padding-right: clamp(0.5rem, 2vw, 1.25rem);
+            }
+        }
+
         .patent1-mobile-gallery-shell,
         .patent2-mobile-gallery-shell,
         .patent3-mobile-gallery-shell,
