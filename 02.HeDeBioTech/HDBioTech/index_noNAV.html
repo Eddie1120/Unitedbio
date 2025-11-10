@@ -4868,6 +4868,78 @@ DHA 到底是啥？
             }
         })();
     </script>
+
+    <!-- Detect navigation height for hero positioning -->
+    <script>
+        (function detectNavHeight(){
+            const root = document.documentElement;
+
+            function updateHeroPadding(){
+                try {
+                    // Try to find navigation from HD_Nav.html
+                    const nav = document.querySelector('.HD_NAV_site-nav');
+                    let navHeight = 0;
+
+                    if(nav){
+                        navHeight = Math.max(0, Math.round(nav.getBoundingClientRect().height));
+                        console.log('Found navigation, height:', navHeight);
+                    } else {
+                        // Fallback: check if --total-nav-height is already set
+                        const existingHeight = getComputedStyle(root).getPropertyValue('--total-nav-height');
+                        if(existingHeight && existingHeight !== '0px'){
+                            navHeight = parseInt(existingHeight);
+                            console.log('Using existing --total-nav-height:', navHeight);
+                        } else {
+                            // Default fallback height
+                            navHeight = 50; // Default navigation height
+                            console.log('Using default navigation height:', navHeight);
+                        }
+                    }
+
+                    // Set the CSS variable
+                    root.style.setProperty('--total-nav-height', navHeight + 'px');
+
+                    // Update hero-copy padding immediately
+                    const heroCopy = document.querySelector('.hero-copy');
+                    if(heroCopy){
+                        heroCopy.style.paddingTop = navHeight + 'px';
+                    }
+
+                } catch(e) {
+                    console.error('Error detecting nav height:', e);
+                    root.style.setProperty('--total-nav-height', '50px');
+                }
+            }
+
+            // Run on load and resize
+            window.addEventListener('load', updateHeroPadding);
+            window.addEventListener('resize', updateHeroPadding);
+
+            // Also run immediately in case DOM is already loaded
+            if(document.readyState === 'loading'){
+                document.addEventListener('DOMContentLoaded', updateHeroPadding);
+            } else {
+                updateHeroPadding();
+            }
+
+            // Watch for navigation element if it loads later
+            if(typeof MutationObserver === 'function'){
+                const observer = new MutationObserver(function(mutations){
+                    mutations.forEach(function(mutation){
+                        if(mutation.type === 'childList'){
+                            const nav = document.querySelector('.HD_NAV_site-nav');
+                            if(nav && !nav.dataset.heightDetected){
+                                nav.dataset.heightDetected = 'true';
+                                updateHeroPadding();
+                            }
+                        }
+                    });
+                });
+                observer.observe(document.body, { childList: true, subtree: true });
+            }
+        })();
+    </script>
+
 </div>
     
 </body>
