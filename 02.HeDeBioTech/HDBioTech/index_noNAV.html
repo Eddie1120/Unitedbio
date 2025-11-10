@@ -3162,6 +3162,9 @@ DHA 到底是啥？
             let resizeRaf = null;
 
             window.addEventListener('resize', function() {
+                // Only apply resize adjustments on mobile (screen width < 768px)
+                if (window.innerWidth >= 768) return;
+
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
                     adjustPatent1DesktopCardHeight();
@@ -3428,6 +3431,9 @@ DHA 到底是啥？
             let resizeRaf = null;
 
             window.addEventListener('resize', function() {
+                // Only apply resize adjustments on mobile (screen width < 768px)
+                if (window.innerWidth >= 768) return;
+
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
                     adjustPatent2DesktopCardHeight();
@@ -3449,6 +3455,9 @@ DHA 到底是啥？
             let resizeRaf = null;
 
             window.addEventListener('resize', function() {
+                // Only apply resize adjustments on mobile (screen width < 768px)
+                if (window.innerWidth >= 768) return;
+
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
                     adjustPatent3DesktopCardHeight();
@@ -3470,6 +3479,9 @@ DHA 到底是啥？
             let resizeRaf = null;
 
             window.addEventListener('resize', function() {
+                // Only apply resize adjustments on mobile (screen width < 768px)
+                if (window.innerWidth >= 768) return;
+
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
                     adjustPatent4DesktopCardHeight();
@@ -3491,6 +3503,9 @@ DHA 到底是啥？
             let resizeRaf = null;
 
             window.addEventListener('resize', function() {
+                // Only apply resize adjustments on mobile (screen width < 768px)
+                if (window.innerWidth >= 768) return;
+
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
                     adjustPatent5DesktopCardHeight();
@@ -3512,6 +3527,9 @@ DHA 到底是啥？
             let resizeRaf = null;
 
             window.addEventListener('resize', function() {
+                // Only apply resize adjustments on mobile (screen width < 768px)
+                if (window.innerWidth >= 768) return;
+
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
                     adjustPatent6DesktopCardHeight();
