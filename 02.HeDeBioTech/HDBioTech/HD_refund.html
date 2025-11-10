@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +6,6 @@
     <style>
         body {
             box-sizing: border-box;
-        }
-        .professional-gradient {
-            background: #2d5016;
         }
         .section-card {
             transition: transform 220ms ease, box-shadow 220ms ease;
@@ -111,16 +105,6 @@
             color: inherit; /* 繼承 hero-copy 的 85% 黑 */
         }
 
-            /* 重要提醒：置中、細字、放大、85% 黑 */
-            .reminder-declaration {
-                text-align: center;
-                font-weight: 300 !important;
-                font-size: clamp(1.25rem, 2.2vw, 1.5rem) !important; /* 放大且響應式 */
-                color: rgba(0,0,0,0.85) !important;
-                margin: 0.5rem auto 0.75rem auto;
-                display: block;
-            }
-
     /* 讓 hero 內的 svg icon 使用主色（黑灰色階） */
     .hero-copy svg { color: var(--ycc-primary) !important; stroke: currentColor !important; }
 
@@ -168,22 +152,6 @@
     /* override colored gradients to use gray gradients */
     .bg-gradient-to-r.from-indigo-600.to-purple-700 { background: linear-gradient(90deg, var(--ycc-bg), var(--ycc-bg-end)) !important; }
 
-    /* small helpers to keep icon circles consistent - neutral gray */
-    .w-16.h-16.bg-blue-500,
-    .w-16.h-16.bg-green-500,
-    .w-16.h-16.bg-red-500,
-    .w-16.h-16.bg-purple-500 { background: rgba(0,0,0,0.06) !important; }
-
-    /* 限制條件區塊上方三個圓圈：背景 70% 黑，svg 線條/填色為白色 */
-    .limits-grid .w-16.h-16.rounded-full {
-        background-color: rgba(0,0,0,0.7) !important;
-    }
-    .limits-grid .w-16.h-16.rounded-full svg {
-        color: #ffffff !important;
-        stroke: currentColor !important;
-        fill: currentColor !important;
-    }
-
     /* --- 統一所有 SVG icon 樣式 ---
        1) 預設 icon 使用 var(--ycc-primary)
        2) 所有 svg 使用 currentColor 作為 stroke / fill
@@ -200,23 +168,10 @@
     .w-8.h-8.rounded-full svg,
     .w-10.rounded-full svg,
     .w-10.h-10.rounded-full svg,
-    .w-16.rounded-full svg,
-    .w-16.h-16.rounded-full svg,
     .w-20.rounded-full svg,
     .w-20.h-20.rounded-full svg,
     .w-24.rounded-full svg,
     .w-24.h-24.rounded-full svg {
-        color: #ffffff !important;
-        stroke: currentColor !important;
-        fill: currentColor !important;
-    }
-
-    /* 可重用的圓形深色 icon 容器（給特定左側圖示使用） */
-    .icon-circle-dark {
-        background-color: rgba(0,0,0,0.7) !important;
-        color: #ffffff !important;
-    }
-    .icon-circle-dark svg {
         color: #ffffff !important;
         stroke: currentColor !important;
         fill: currentColor !important;
@@ -227,8 +182,7 @@
     .bg-blue-50.rounded-lg,
     .bg-red-50.rounded-lg,
     .bg-purple-50.rounded-lg,
-    .bg-gray-50.rounded-lg,
-    .bg-indigo-100.rounded-lg {
+    .bg-gray-50.rounded-lg {
         border: 1px solid rgba(0,0,0,0.7) !important;
     }
 
@@ -247,8 +201,8 @@
     *[style*="color:"] { color: rgba(0,0,0,0.85) !important; }
 
     /* colored Tailwind utility overrides -> convert to grayscale */
-    .bg-blue-50, .bg-green-50, .bg-red-50, .bg-purple-50, .bg-indigo-100, .bg-green-100 { background-color: #fbfbfb !important; }
-    .text-blue-600, .text-green-600, .text-red-600, .text-purple-600, .text-indigo-600 { color: rgba(0,0,0,0.7) !important; }
+    .bg-blue-50, .bg-green-50, .bg-red-50, .bg-purple-50 { background-color: #fbfbfb !important; }
+    .text-blue-600, .text-green-600, .text-purple-600 { color: rgba(0,0,0,0.7) !important; }
 
     /* 每個區塊間加入 70% 黑 1px 虛線（只在 section 之間顯示，不包含最後一個） */
     main > section:not(:last-child) {
@@ -281,17 +235,12 @@
         text-align: center !important;
         opacity: 0.95 !important;
     }
-    /* 拉近 reminder-declaration 的上方間距，使兩者更貼近 */
-    .reminder-declaration {
-        margin-top: 0.1rem !important;
-    }
     /* 將所有相似的 callout 方框改為 1px dashed 50% 黑色外框，並覆蓋原先的左側粗邊 */
     .bg-purple-50.p-4.rounded-lg,
     .bg-red-50.p-4.rounded-lg,
     .bg-gray-50.p-4.rounded-lg,
     .bg-green-50.p-4.rounded-lg,
-    .bg-blue-50.p-4.rounded-lg,
-    .bg-indigo-100.p-4.rounded-lg {
+    .bg-blue-50.p-4.rounded-lg {
         border: 1px dashed rgba(0,0,0,0.5) !important;
         border-left-width: 1px !important; /* 覆蓋 border-l-4 */
         border-left-color: rgba(0,0,0,0.5) !important;
@@ -748,98 +697,6 @@
         });
     });
 </script>
-    <script>
-        (function neutralizeHostGutter() {
-            const root = document.getElementById('ycc-root');
-            if (!root) return;
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98bd8acfa5b54a69',t:'MTc2MDAwOTM4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 
-            let pending = false;
-
-            function applyAdjustments() {
-                pending = false;
-                if (!root.isConnected) return;
-
-                const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
-                if (!viewportWidth) return;
-
-                const previous = {
-                    marginLeft: root.style.marginLeft,
-                    marginRight: root.style.marginRight,
-                    width: root.style.width,
-                    maxWidth: root.style.maxWidth,
-                    boxSizing: root.style.boxSizing,
-                    marginTop: root.style.marginTop
-                };
-
-                root.style.marginLeft = '';
-                root.style.marginRight = '';
-                root.style.marginTop = '';
-                root.style.width = '';
-                root.style.maxWidth = '';
-                root.style.boxSizing = '';
-
-                const rect = root.getBoundingClientRect();
-                const leftGap = Math.max(0, rect.left);
-                const rightGap = Math.max(0, viewportWidth - rect.right);
-                const topGap = Math.max(0, rect.top);
-                const customNav = document.querySelector('.HD_NAV_site-nav');
-                const navStyle = customNav ? window.getComputedStyle(customNav) : null;
-                const navRect = customNav ? customNav.getBoundingClientRect() : null;
-                const navVisible = !!customNav && navStyle && navStyle.display !== 'none' && navRect && navRect.height > 0;
-                const totalGap = leftGap + rightGap;
-
-                if (totalGap <= 0.5) {
-                    root.style.marginLeft = previous.marginLeft;
-                    root.style.marginRight = previous.marginRight;
-                    root.style.marginTop = previous.marginTop;
-                    root.style.width = previous.width;
-                    root.style.maxWidth = previous.maxWidth;
-                    root.style.boxSizing = previous.boxSizing;
-                } else {
-                    if (leftGap > 0) {
-                        root.style.marginLeft = `${-leftGap}px`;
-                    } else {
-                        root.style.marginLeft = previous.marginLeft;
-                    }
-
-                    if (rightGap > 0) {
-                        root.style.marginRight = `${-rightGap}px`;
-                    } else {
-                        root.style.marginRight = previous.marginRight;
-                    }
-
-                    root.style.width = `calc(100% + ${totalGap}px)`;
-                    root.style.maxWidth = 'none';
-                    root.style.boxSizing = 'border-box';
-                }
-
-                if (!navVisible && topGap > 0.5) {
-                    root.style.marginTop = `${-topGap}px`;
-                } else if (!totalGap || totalGap <= 0.5) {
-                    root.style.marginTop = previous.marginTop;
-                } else {
-                    root.style.marginTop = previous.marginTop;
-                }
-            }
-
-            function scheduleApply() {
-                if (pending) return;
-                pending = true;
-                requestAnimationFrame(applyAdjustments);
-            }
-
-            window.addEventListener('resize', () => {
-                pending = false;
-                scheduleApply();
-            }, { passive: true });
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', scheduleApply, { once: true });
-            } else {
-                scheduleApply();
-            }
-        })();
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98bd8acfa5b54a69',t:'MTc2MDAwOTM4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-
-</html>
+</body>
