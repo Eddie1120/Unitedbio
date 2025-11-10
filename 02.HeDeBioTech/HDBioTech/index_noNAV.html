@@ -2790,20 +2790,9 @@ DHA 到底是啥？
             if (!gallery) return;
             const figures = Array.from(gallery.children);
             if (!figures.length) return;
-            const hostWrapper = wrapper || gallery.parentElement;
-            const perView = Math.max(1, Math.min(getPatentDesktopCardsPerView(), figures.length));
-            const gapValue = (() => {
-                const styles = window.getComputedStyle(gallery);
-                const gap = parseFloat(styles.columnGap || styles.gap);
-                return Number.isFinite(gap) ? gap : 16;
-            })();
-            const containerWidth = (hostWrapper && hostWrapper.clientWidth) || gallery.getBoundingClientRect().width;
-            if (!containerWidth) return;
-            const minCardWidth = 240;
-            const maxCardWidth = 340;
-            const spacingCount = Math.max(perView - 1, 0);
-            const tentativeWidth = (containerWidth - gapValue * spacingCount) / perView;
-            const cardWidth = Math.max(minCardWidth, Math.min(maxCardWidth, tentativeWidth));
+
+            // Fixed card width for consistent scrolling on desktop
+            const cardWidth = 280; // Fixed width instead of responsive
 
             figures.forEach(function(figure) {
                 figure.style.flex = `0 0 ${cardWidth}px`;
@@ -3162,12 +3151,9 @@ DHA 到底是啥？
             let resizeRaf = null;
 
             window.addEventListener('resize', function() {
-                // Only apply resize adjustments on mobile (screen width < 768px)
-                if (window.innerWidth >= 768) return;
-
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
-                    adjustPatent1DesktopCardHeight();
+                    // Only adjust layout on desktop, don't change card heights
                     const shell = document.querySelector('.patent1-desktop-gallery-shell');
                     if (!shell) return;
                     const gallery = shell.querySelector('.patent1-desktop-gallery');
@@ -3431,12 +3417,9 @@ DHA 到底是啥？
             let resizeRaf = null;
 
             window.addEventListener('resize', function() {
-                // Only apply resize adjustments on mobile (screen width < 768px)
-                if (window.innerWidth >= 768) return;
-
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
-                    adjustPatent2DesktopCardHeight();
+                    // Only adjust layout on desktop, don't change card heights
                     const shell = document.querySelector('.patent2-desktop-gallery-shell');
                     if (!shell) return;
                     const gallery = shell.querySelector('.patent2-desktop-gallery');
@@ -3455,12 +3438,9 @@ DHA 到底是啥？
             let resizeRaf = null;
 
             window.addEventListener('resize', function() {
-                // Only apply resize adjustments on mobile (screen width < 768px)
-                if (window.innerWidth >= 768) return;
-
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
-                    adjustPatent3DesktopCardHeight();
+                    // Only adjust layout on desktop, don't change card heights
                     const shell = document.querySelector('.patent3-desktop-gallery-shell');
                     if (!shell) return;
                     const gallery = shell.querySelector('.patent3-desktop-gallery');
@@ -3479,12 +3459,9 @@ DHA 到底是啥？
             let resizeRaf = null;
 
             window.addEventListener('resize', function() {
-                // Only apply resize adjustments on mobile (screen width < 768px)
-                if (window.innerWidth >= 768) return;
-
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
-                    adjustPatent4DesktopCardHeight();
+                    // Only adjust layout on desktop, don't change card heights
                     const shell = document.querySelector('.patent4-desktop-gallery-shell');
                     if (!shell) return;
                     const gallery = shell.querySelector('.patent4-desktop-gallery');
@@ -3503,12 +3480,9 @@ DHA 到底是啥？
             let resizeRaf = null;
 
             window.addEventListener('resize', function() {
-                // Only apply resize adjustments on mobile (screen width < 768px)
-                if (window.innerWidth >= 768) return;
-
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
-                    adjustPatent5DesktopCardHeight();
+                    // Only adjust layout on desktop, don't change card heights
                     const shell = document.querySelector('.patent5-desktop-gallery-shell');
                     if (!shell) return;
                     const gallery = shell.querySelector('.patent5-desktop-gallery');
@@ -3527,12 +3501,9 @@ DHA 到底是啥？
             let resizeRaf = null;
 
             window.addEventListener('resize', function() {
-                // Only apply resize adjustments on mobile (screen width < 768px)
-                if (window.innerWidth >= 768) return;
-
                 if (resizeRaf) cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(function() {
-                    adjustPatent6DesktopCardHeight();
+                    // Only adjust layout on desktop, don't change card heights
                     const shell = document.querySelector('.patent6-desktop-gallery-shell');
                     if (!shell) return;
                     const gallery = shell.querySelector('.patent6-desktop-gallery');
