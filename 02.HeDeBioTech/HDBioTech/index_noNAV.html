@@ -2404,12 +2404,9 @@ DHA 到底是啥？
             const cardWidth = 280; // Fixed width instead of responsive
 
             figures.forEach(function(figure) {
-                figure.style.width = `${cardWidth}px`;
+                figure.style.flex = `0 0 ${cardWidth}px`;
                 figure.style.minWidth = `${cardWidth}px`;
                 figure.style.maxWidth = `${cardWidth}px`;
-                figure.style.flex = `0 0 ${cardWidth}px`;
-                figure.style.flexShrink = '0';
-                figure.style.flexGrow = '0';
             });
         }
 
