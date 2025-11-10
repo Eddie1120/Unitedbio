@@ -2799,8 +2799,11 @@ DHA 到底是啥？
             })();
             const containerWidth = (hostWrapper && hostWrapper.clientWidth) || gallery.getBoundingClientRect().width;
             if (!containerWidth) return;
-            const usableWidth = Math.max(containerWidth - gapValue * (perView - 1), perView * 160);
-            const cardWidth = usableWidth / perView;
+            const minCardWidth = 240;
+            const maxCardWidth = 340;
+            const spacingCount = Math.max(perView - 1, 0);
+            const tentativeWidth = (containerWidth - gapValue * spacingCount) / perView;
+            const cardWidth = Math.max(minCardWidth, Math.min(maxCardWidth, tentativeWidth));
 
             figures.forEach(function(figure) {
                 figure.style.flex = `0 0 ${cardWidth}px`;
