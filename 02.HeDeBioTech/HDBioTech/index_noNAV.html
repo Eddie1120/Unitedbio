@@ -72,11 +72,11 @@
         
         .hero-bg {
             background: linear-gradient(180deg, var(--ycc-bg, #1a1a1a) 0%, var(--ycc-bg-end, #2d2d2d) 100%);
-            /* Hero 緊貼導覽列下緣：使用負 margin-top 來抵消導覽列高度 */
-            margin-top: calc(var(--total-nav-height, 0px) * -1);
-            /* 保持最小高度為視窗高度，但不預留導覽列空間 */
+            /* Hero 緊貼導覽列下緣：設定 margin-top 為 0 */
+            margin-top: 0;
+            /* 保持最小高度為視窗高度 */
             min-height: calc(100vh + var(--hero-extra-height));
-            /* 確保 hero 區域從導覽列下緣開始 */
+            /* 確保 hero 區域從頁面頂部開始，但會被導覽列覆蓋 */
             position: relative;
         }
 
@@ -187,6 +187,8 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+            /* 為導覽列預留空間，讓內容從導覽列下緣開始 */
+            padding-top: var(--total-nav-height, 0px);
             /* 使用 vh 單位以相對視窗高度定位，確保在縮減 hero 高度（90vh）後仍維持相對位置 */
             bottom: 12vh; /* 原本約 120px，改為相對視窗高度 */
             /* 中間寬度維持視窗左右各 10% 的邊距 (中間 80vw)，同時有最小與最大值保護 */
