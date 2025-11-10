@@ -72,11 +72,11 @@
         
         .hero-bg {
             background: linear-gradient(180deg, var(--ycc-bg, #1a1a1a) 0%, var(--ycc-bg-end, #2d2d2d) 100%);
-            /* Hero 緊貼導覽列下緣：設定 margin-top 為 0 */
-            margin-top: 0;
-            /* 保持最小高度為視窗高度 */
+            /* Hero 在導覽列下緣下方10px開始：使用負 margin-top 來抵消導覽列高度並增加間距 */
+            margin-top: calc(var(--total-nav-height, 0px) * -1 + 10px);
+            /* 保持最小高度為視窗高度，但不預留導覽列空間 */
             min-height: calc(100vh + var(--hero-extra-height));
-            /* 確保 hero 區域從頁面頂部開始，但會被導覽列覆蓋 */
+            /* 確保 hero 區域從導覽列下緣開始 */
             position: relative;
         }
 
@@ -187,8 +187,6 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            /* 為導覽列預留空間，讓內容從導覽列下緣開始 */
-            padding-top: var(--total-nav-height, 0px);
             /* 使用 vh 單位以相對視窗高度定位，確保在縮減 hero 高度（90vh）後仍維持相對位置 */
             bottom: 12vh; /* 原本約 120px，改為相對視窗高度 */
             /* 中間寬度維持視窗左右各 10% 的邊距 (中間 80vw)，同時有最小與最大值保護 */
@@ -4868,78 +4866,6 @@ DHA 到底是啥？
             }
         })();
     </script>
-
-    <!-- Detect navigation height for hero positioning -->
-    <script>
-        (function detectNavHeight(){
-            const root = document.documentElement;
-
-            function updateHeroPadding(){
-                try {
-                    // Try to find navigation from HD_Nav.html
-                    const nav = document.querySelector('.HD_NAV_site-nav');
-                    let navHeight = 0;
-
-                    if(nav){
-                        navHeight = Math.max(0, Math.round(nav.getBoundingClientRect().height));
-                        console.log('Found navigation, height:', navHeight);
-                    } else {
-                        // Fallback: check if --total-nav-height is already set
-                        const existingHeight = getComputedStyle(root).getPropertyValue('--total-nav-height');
-                        if(existingHeight && existingHeight !== '0px'){
-                            navHeight = parseInt(existingHeight);
-                            console.log('Using existing --total-nav-height:', navHeight);
-                        } else {
-                            // Default fallback height
-                            navHeight = 50; // Default navigation height
-                            console.log('Using default navigation height:', navHeight);
-                        }
-                    }
-
-                    // Set the CSS variable
-                    root.style.setProperty('--total-nav-height', navHeight + 'px');
-
-                    // Update hero-copy padding immediately
-                    const heroCopy = document.querySelector('.hero-copy');
-                    if(heroCopy){
-                        heroCopy.style.paddingTop = navHeight + 'px';
-                    }
-
-                } catch(e) {
-                    console.error('Error detecting nav height:', e);
-                    root.style.setProperty('--total-nav-height', '50px');
-                }
-            }
-
-            // Run on load and resize
-            window.addEventListener('load', updateHeroPadding);
-            window.addEventListener('resize', updateHeroPadding);
-
-            // Also run immediately in case DOM is already loaded
-            if(document.readyState === 'loading'){
-                document.addEventListener('DOMContentLoaded', updateHeroPadding);
-            } else {
-                updateHeroPadding();
-            }
-
-            // Watch for navigation element if it loads later
-            if(typeof MutationObserver === 'function'){
-                const observer = new MutationObserver(function(mutations){
-                    mutations.forEach(function(mutation){
-                        if(mutation.type === 'childList'){
-                            const nav = document.querySelector('.HD_NAV_site-nav');
-                            if(nav && !nav.dataset.heightDetected){
-                                nav.dataset.heightDetected = 'true';
-                                updateHeroPadding();
-                            }
-                        }
-                    });
-                });
-                observer.observe(document.body, { childList: true, subtree: true });
-            }
-        })();
-    </script>
-
 </div>
     
 </body>
