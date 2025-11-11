@@ -374,8 +374,9 @@
         .patent5-desktop-image,
         .patent6-desktop-image {
             flex: 0 0 auto;
-            min-width: clamp(240px, 26vw, 340px);
-            max-width: clamp(240px, 26vw, 340px);
+            width: auto;
+            min-width: 0;
+            max-width: none;
             background-color: #f9fafb;
             border: 1px solid #e5e7eb;
             border-radius: 12px;
@@ -385,6 +386,8 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            aspect-ratio: 9 / 14;
+            max-height: 420px;
         }
 
         .patent1-desktop-image img,
@@ -394,7 +397,7 @@
         .patent5-desktop-image img,
         .patent6-desktop-image img {
             width: 100%;
-            height: auto;
+            height: 100%;
             object-fit: contain;
         }
 
@@ -480,6 +483,7 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            aspect-ratio: 9 / 14;
         }
 
         .patent1-mobile-image img,
@@ -489,7 +493,7 @@
         .patent5-mobile-image img,
         .patent6-mobile-image img {
             width: 100%;
-            height: auto;
+            height: 100%;
             object-fit: contain;
         }
 
@@ -555,6 +559,46 @@
             transform: scaleY(1.4) scaleX(1.08);
         }
 
+        .patent-mobile-scrollbar {
+            display: none !important;
+        }
+
+        .patent-mobile-instruction {
+            margin-top: 0.75rem;
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+            color: #ea580c;
+        }
+
+        .patent-desktop-gallery-shell {
+            position: relative;
+        }
+
+        .patent-desktop-gallery-loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 1.25rem;
+            border: 1px dashed rgba(17, 24, 39, 0.3);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+            color: rgba(17, 24, 39, 0.8);
+            background-color: rgba(249, 250, 251, 0.85);
+        }
+
+        .patent-desktop-gallery-shell.patent-gallery--pending .patent-desktop-gallery-loading {
+            display: flex;
+        }
+
+        .patent-desktop-gallery-shell.patent-gallery--pending .patent-desktop-gallery-wrapper,
+        .patent-desktop-gallery-shell.patent-gallery--pending .patent-desktop-scrollbar {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
         .patent-gallery-image-indicator {
             position: absolute;
             left: 50%;
@@ -590,6 +634,11 @@
             cursor: pointer;
             border: 1px dashed rgba(17, 24, 39, 0.45);
             transition: border-color 120ms ease;
+        }
+
+        .patent-scrollbar--pending {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .patent1-scrollbar:hover,
@@ -1168,20 +1217,22 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這份專利的核心內容與其對應的美國專利 US9745539B2 與 US11198891B2 基本一致，主要描述一種 「無溶劑、濕式、整合式的一鍋法油脂萃取技術」，專門用於 藻類與類似微生物（如 Thraustochytrium 屬） 的油脂提取。這項技術被廣泛應用於 高純度 DHA、EPA 藻油 的生產領域。</p>
                                 </div>
                          </div>
-                        <div class="patent1-mobile-gallery-shell mt-4 md:hidden">
-                            <div class="patent1-mobile-gallery-wrapper">
-                                <div id="patent1-mobile-gallery" class="patent1-mobile-gallery"></div>
+                        <div class="patent1-mobile-gallery-shell patent-mobile-gallery-shell mt-4 md:hidden">
+                            <div class="patent1-mobile-gallery-wrapper patent-mobile-gallery-wrapper">
+                                <div id="patent1-mobile-gallery" class="patent1-mobile-gallery patent-mobile-gallery"></div>
                             </div>
+                            <p class="patent-mobile-instruction md:hidden" aria-live="polite">請左右滑動觀看專利</p>
                             <div class="patent1-mobile-scrollbar">
                                 <div class="patent1-mobile-scrollbar-thumb"></div>
                             </div>
                         </div>
-                                                                                                <div class="patent1-desktop-gallery-shell hidden md:block">
-                                                                                                    <div class="patent1-desktop-gallery-wrapper">
-                                                                                                        <div id="patent1-desktop-gallery" class="patent1-desktop-gallery"></div>
+                                                                                                <div class="patent1-desktop-gallery-shell patent-desktop-gallery-shell patent-gallery--pending hidden md:block">
+                                                                                                    <div class="patent-desktop-gallery-loading" aria-live="polite">專利圖片準備中</div>
+                                                                                                    <div class="patent1-desktop-gallery-wrapper patent-desktop-gallery-wrapper">
+                                                                                                        <div id="patent1-desktop-gallery" class="patent1-desktop-gallery patent-desktop-gallery"></div>
                                                                                                     </div>
-                                                                                                    <div class="patent1-scrollbar">
-                                                                                                        <div class="patent1-scrollbar-thumb"></div>
+                                                                                                    <div class="patent1-scrollbar patent-desktop-scrollbar">
+                                                                                                        <div class="patent1-scrollbar-thumb patent-desktop-scrollbar-thumb"></div>
                                                                                                     </div>
                                                                                                 </div>
 
@@ -1194,21 +1245,23 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這已經是最新且進一步擴展到：高濃度碳源、多階段補料與低 pH 無菌控制的藻油發酵生產技術。這是 EP3146060B1 的「上游生產技術版本」，著重 如何培養與控制微生物以達高產油量與低污染風險。</p>
                                 </div>
                 </div>
-                                                <div class="patent2-mobile-gallery-shell mt-4 md:hidden">
-                                                        <div class="patent2-mobile-gallery-wrapper">
-                                                                <div id="patent2-mobile-gallery" class="patent2-mobile-gallery"></div>
-                                                        </div>
-                                                        <div class="patent2-mobile-scrollbar">
-                                                                <div class="patent2-mobile-scrollbar-thumb"></div>
-                                                        </div>
+                                                <div class="patent2-mobile-gallery-shell patent-mobile-gallery-shell mt-4 md:hidden">
+                                                    <div class="patent2-mobile-gallery-wrapper patent-mobile-gallery-wrapper">
+                                                        <div id="patent2-mobile-gallery" class="patent2-mobile-gallery patent-mobile-gallery"></div>
+                                                    </div>
+                                                    <p class="patent-mobile-instruction md:hidden" aria-live="polite">請左右滑動觀看專利</p>
+                                                    <div class="patent2-mobile-scrollbar">
+                                                        <div class="patent2-mobile-scrollbar-thumb"></div>
+                                                    </div>
                                                 </div>
-                                                <div class="patent2-desktop-gallery-shell hidden md:block">
-                                                        <div class="patent2-desktop-gallery-wrapper">
-                                                                <div id="patent2-desktop-gallery" class="patent2-desktop-gallery"></div>
-                                                        </div>
-                                                        <div class="patent2-scrollbar">
-                                                                <div class="patent2-scrollbar-thumb"></div>
-                                                        </div>
+                                                <div class="patent2-desktop-gallery-shell patent-desktop-gallery-shell patent-gallery--pending hidden md:block">
+                                                    <div class="patent-desktop-gallery-loading" aria-live="polite">專利圖片準備中</div>
+                                                    <div class="patent2-desktop-gallery-wrapper patent-desktop-gallery-wrapper">
+                                                        <div id="patent2-desktop-gallery" class="patent2-desktop-gallery patent-desktop-gallery"></div>
+                                                    </div>
+                                                    <div class="patent2-scrollbar patent-desktop-scrollbar">
+                                                        <div class="patent2-scrollbar-thumb patent-desktop-scrollbar-thumb"></div>
+                                                    </div>
                                                 </div>
                          <div data-patent-id="3" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -1219,20 +1272,22 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">日本版授權專利，屬於與 EP3146060B1 / EP3626806B1 / US11198891B2 / US11466297B2 同族的延伸授權文件。其內容主要承襲自同族歐洲與美國版本，但根據日本特許廳審查要求，文本更聚焦於「濕式油脂回收法（wet recovery of oils from microorganisms）」的具體操作條件與實驗結果。</p>
                                 </div>
                 </div>
-                                <div class="patent3-mobile-gallery-shell mt-4 md:hidden">
-                                    <div class="patent3-mobile-gallery-wrapper">
-                                        <div id="patent3-mobile-gallery" class="patent3-mobile-gallery"></div>
+                                <div class="patent3-mobile-gallery-shell patent-mobile-gallery-shell mt-4 md:hidden">
+                                    <div class="patent3-mobile-gallery-wrapper patent-mobile-gallery-wrapper">
+                                        <div id="patent3-mobile-gallery" class="patent3-mobile-gallery patent-mobile-gallery"></div>
                                     </div>
+                                    <p class="patent-mobile-instruction md:hidden" aria-live="polite">請左右滑動觀看專利</p>
                                     <div class="patent3-mobile-scrollbar">
                                         <div class="patent3-mobile-scrollbar-thumb"></div>
                                     </div>
                                 </div>
-                                <div class="patent3-desktop-gallery-shell hidden md:block">
-                                    <div class="patent3-desktop-gallery-wrapper">
-                                        <div id="patent3-desktop-gallery" class="patent3-desktop-gallery"></div>
+                                <div class="patent3-desktop-gallery-shell patent-desktop-gallery-shell patent-gallery--pending hidden md:block">
+                                    <div class="patent-desktop-gallery-loading" aria-live="polite">專利圖片準備中</div>
+                                    <div class="patent3-desktop-gallery-wrapper patent-desktop-gallery-wrapper">
+                                        <div id="patent3-desktop-gallery" class="patent3-desktop-gallery patent-desktop-gallery"></div>
                                     </div>
-                                    <div class="patent3-scrollbar">
-                                        <div class="patent3-scrollbar-thumb"></div>
+                                    <div class="patent3-scrollbar patent-desktop-scrollbar">
+                                        <div class="patent3-scrollbar-thumb patent-desktop-scrollbar-thumb"></div>
                                     </div>
                                 </div>
                          <div data-patent-id="4" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
@@ -1244,20 +1299,22 @@
                                     <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">這份專利以「無溶劑濕式酵素破壁法（Solvent-free wet enzymatic extraction of lipids from microorganisms）」為主軸，是業界首批能於發酵液中直接回收 DHA/EPA 藻油的工業級製程。</p>
                                 </div>
                 </div>
-                                <div class="patent4-mobile-gallery-shell mt-4 md:hidden">
-                                    <div class="patent4-mobile-gallery-wrapper">
-                                        <div id="patent4-mobile-gallery" class="patent4-mobile-gallery"></div>
+                                <div class="patent4-mobile-gallery-shell patent-mobile-gallery-shell mt-4 md:hidden">
+                                    <div class="patent4-mobile-gallery-wrapper patent-mobile-gallery-wrapper">
+                                        <div id="patent4-mobile-gallery" class="patent4-mobile-gallery patent-mobile-gallery"></div>
                                     </div>
+                                    <p class="patent-mobile-instruction md:hidden" aria-live="polite">請左右滑動觀看專利</p>
                                     <div class="patent4-mobile-scrollbar">
                                         <div class="patent4-mobile-scrollbar-thumb"></div>
                                     </div>
                                 </div>
-                                <div class="patent4-desktop-gallery-shell hidden md:block">
-                                    <div class="patent4-desktop-gallery-wrapper">
-                                        <div id="patent4-desktop-gallery" class="patent4-desktop-gallery"></div>
+                                <div class="patent4-desktop-gallery-shell patent-desktop-gallery-shell patent-gallery--pending hidden md:block">
+                                    <div class="patent-desktop-gallery-loading" aria-live="polite">專利圖片準備中</div>
+                                    <div class="patent4-desktop-gallery-wrapper patent-desktop-gallery-wrapper">
+                                        <div id="patent4-desktop-gallery" class="patent4-desktop-gallery patent-desktop-gallery"></div>
                                     </div>
-                                    <div class="patent4-scrollbar">
-                                        <div class="patent4-scrollbar-thumb"></div>
+                                    <div class="patent4-scrollbar patent-desktop-scrollbar">
+                                        <div class="patent4-scrollbar-thumb patent-desktop-scrollbar-thumb"></div>
                                     </div>
                                 </div>
                  <div data-patent-id="5" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
@@ -1269,20 +1326,22 @@
               <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">整個「藻油發酵與萃取」專利族群的 工業級整合版。它結合了前代的 US9745539B2（濕式萃取法） 與 EP3626806B1（高糖多段發酵控制），形成完整的「非無菌高產油發酵 + 濕式酵素回收系統」。</p>
             </div>
              </div>
-                                <div class="patent5-mobile-gallery-shell mt-4 md:hidden">
-                                    <div class="patent5-mobile-gallery-wrapper">
-                                        <div id="patent5-mobile-gallery" class="patent5-mobile-gallery"></div>
+                                <div class="patent5-mobile-gallery-shell patent-mobile-gallery-shell mt-4 md:hidden">
+                                    <div class="patent5-mobile-gallery-wrapper patent-mobile-gallery-wrapper">
+                                        <div id="patent5-mobile-gallery" class="patent5-mobile-gallery patent-mobile-gallery"></div>
                                     </div>
+                                    <p class="patent-mobile-instruction md:hidden" aria-live="polite">請左右滑動觀看專利</p>
                                     <div class="patent5-mobile-scrollbar">
                                         <div class="patent5-mobile-scrollbar-thumb"></div>
                                     </div>
                                 </div>
-                                <div class="patent5-desktop-gallery-shell hidden md:block">
-                                    <div class="patent5-desktop-gallery-wrapper">
-                                        <div id="patent5-desktop-gallery" class="patent5-desktop-gallery"></div>
+                                <div class="patent5-desktop-gallery-shell patent-desktop-gallery-shell patent-gallery--pending hidden md:block">
+                                    <div class="patent-desktop-gallery-loading" aria-live="polite">專利圖片準備中</div>
+                                    <div class="patent5-desktop-gallery-wrapper patent-desktop-gallery-wrapper">
+                                        <div id="patent5-desktop-gallery" class="patent5-desktop-gallery patent-desktop-gallery"></div>
                                     </div>
-                                    <div class="patent5-scrollbar">
-                                        <div class="patent5-scrollbar-thumb"></div>
+                                    <div class="patent5-scrollbar patent-desktop-scrollbar">
+                                        <div class="patent5-scrollbar-thumb patent-desktop-scrollbar-thumb"></div>
                                     </div>
                                 </div>
                                  <div data-patent-id="6" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
@@ -1294,20 +1353,22 @@
                                             <p class="text-gray-600 text-sm" style="margin:0.25rem 0 0 0;">於 US11198891B2（非無菌高糖發酵） 的延伸升級版本。重點在於導入 「自動補料與過程控制系統（Automated Feed and Control System）」，使整個發酵 → 油脂生成 → 酵素破壁 → 萃取流程能在工業規模下全自動運作。</p>
                                         </div>
                                         </div>
-                                <div class="patent6-mobile-gallery-shell mt-4 md:hidden">
-                                    <div class="patent6-mobile-gallery-wrapper">
-                                        <div id="patent6-mobile-gallery" class="patent6-mobile-gallery"></div>
+                                <div class="patent6-mobile-gallery-shell patent-mobile-gallery-shell mt-4 md:hidden">
+                                    <div class="patent6-mobile-gallery-wrapper patent-mobile-gallery-wrapper">
+                                        <div id="patent6-mobile-gallery" class="patent6-mobile-gallery patent-mobile-gallery"></div>
                                     </div>
+                                    <p class="patent-mobile-instruction md:hidden" aria-live="polite">請左右滑動觀看專利</p>
                                     <div class="patent6-mobile-scrollbar">
                                         <div class="patent6-mobile-scrollbar-thumb"></div>
                                     </div>
                                 </div>
-                                <div class="patent6-desktop-gallery-shell hidden md:block">
-                                    <div class="patent6-desktop-gallery-wrapper">
-                                        <div id="patent6-desktop-gallery" class="patent6-desktop-gallery"></div>
+                                <div class="patent6-desktop-gallery-shell patent-desktop-gallery-shell patent-gallery--pending hidden md:block">
+                                    <div class="patent-desktop-gallery-loading" aria-live="polite">專利圖片準備中</div>
+                                    <div class="patent6-desktop-gallery-wrapper patent-desktop-gallery-wrapper">
+                                        <div id="patent6-desktop-gallery" class="patent6-desktop-gallery patent-desktop-gallery"></div>
                                     </div>
-                                    <div class="patent6-scrollbar">
-                                        <div class="patent6-scrollbar-thumb"></div>
+                                    <div class="patent6-scrollbar patent-desktop-scrollbar">
+                                        <div class="patent6-scrollbar-thumb patent-desktop-scrollbar-thumb"></div>
                                     </div>
                                 </div>
                         
@@ -1505,68 +1566,65 @@
    <div class="container mx-auto px-6 max-w-6xl">
     <h2 id="product-title" class="text-3xl md:text-4xl font-light text-center mb-20 text-gray-900 tracking-tight">本月熱賣破萬商品</h2>
     <div class="grid md:grid-cols-3 gap-12">
-     <div class="bg-white border border-gray-200 overflow-hidden card-hover group rounded-xl flex flex-col">
-      <div class="h-64 bg-gray-100 flex items-center justify-center">
-       <svg class="w-16 h-16 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
-       </svg>
+         <div class="bg-white border border-gray-200 overflow-hidden card-hover group rounded-xl flex flex-col">
+            <div class="h-64 bg-gray-100 flex items-center justify-center">
+             <img src="https://image.bvshop.tw/3552/product/3552_68e8b33250d7a.jpg.webp" alt="智醫佳產品圖" class="w-full h-full object-cover" loading="lazy">
       </div>
       <div class="p-8 flex flex-col flex-1">
-       <h3 class="text-lg font-medium mb-4 text-gray-900">綜合維他命</h3>
+       <h3 class="text-lg font-medium mb-4 text-gray-900">智醫佳</h3>
        <div class="flex-1 mb-6">
-        <p class="text-gray-600 text-sm leading-relaxed">全方位營養補充，含有20種必需維生素與礦物質</p>
+        <p class="text-gray-600 text-sm leading-relaxed">✔ 75% 高濃度 DHA，比一般魚油更純淨有效<br>✔ 全素可食，純植物來源，素食者安心補充<br>✔ 無重金屬污染，來自藻類直接萃取，拒絕食物鏈污染<br>✔ 不含人工添加，無魚腥味、無化學溶劑殘留</p>
        </div>
        <div class="mt-auto">
         <div class="text-orange-500 text-xs mb-2 leading-tight text-center h-8 flex items-center justify-center">
          目前有活動折扣中<br>
           點擊進入來去看看折扣吧
         </div>
-        <div class="text-center mb-4 h-8 flex items-center justify-center"><span class="text-xl font-light text-gray-900">NT$ 1,280</span>
+        <div class="text-center mb-4 h-8 flex items-center justify-center"><span class="text-xl font-light text-gray-900">NT$ 2,390</span>
         </div>
-        <div class="text-center h-12 flex items-center justify-center"><button onclick="window.open('https://unitedbio.com.tw/product/multivitamin', '_blank', 'noopener,noreferrer')" class="apple-button border-4 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white px-6 py-2 text-sm font-medium whitespace-nowrap"> 來去看看 ▶ </button>
+        <div class="text-center h-12 flex items-center justify-center"><button onclick="window.open('https://unitedbio.com.tw/item/DHA%E8%97%BB%E6%B2%B9', '_blank', 'noopener,noreferrer')" class="apple-button border-4 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white px-6 py-2 text-sm font-medium whitespace-nowrap"> 來去看看 ▶ </button>
         </div>
        </div>
       </div>
      </div>
-     <div class="bg-white border border-gray-200 overflow-hidden card-hover group rounded-xl flex flex-col">
-      <div class="h-64 bg-gray-100 flex items-center justify-center">
-       <svg class="w-16 h-16 text-gray-400 group-hover:text-green-600 transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-       </svg>
+         <div class="bg-white border border-gray-200 overflow-hidden card-hover group rounded-xl flex flex-col">
+            <div class="h-64 bg-gray-100 flex items-center justify-center">
+             <img src="https://image.bvshop.tw/3552/product/3552_68e8b3f2ba9e9.jpg.webp" alt="芯藻順產品圖" class="w-full h-full object-cover" loading="lazy">
       </div>
       <div class="p-8 flex flex-col flex-1">
-       <h3 class="text-lg font-medium mb-4 text-gray-900">深海魚油</h3>
+       <h3 class="text-lg font-medium mb-4 text-gray-900">芯藻順</h3>
        <div class="flex-1 mb-6">
-        <p class="text-gray-600 text-sm leading-relaxed">高純度Omega-3，支持心血管與大腦健康</p>
+        <p class="text-gray-600 text-sm leading-relaxed">✔ 48% 高濃度 EPA，助力循環順暢，調節健康機能<br>✔ 獨家 CNA 三大活力配方，支持身體運作，維持動能<br>✔ 來自生態系頂端的純淨源頭，無重金屬污染，更安心<br>✔ 沒有任何一條魚需要為我們的營養被補獲，純素可食</p>
        </div>
        <div class="mt-auto">
         <div class="text-orange-500 text-xs mb-2 leading-tight text-center h-8 flex items-center justify-center">
          目前有活動折扣中<br>
           點擊進入來去看看折扣吧
         </div>
-        <div class="text-center mb-4 h-8 flex items-center justify-center"><span class="text-xl font-light text-gray-900">NT$ 1,580</span>
+        <div class="text-center mb-4 h-8 flex items-center justify-center"><span class="text-xl font-light text-gray-900">NT$ 2,280</span>
         </div>
-        <div class="text-center h-12 flex items-center justify-center"><button onclick="window.open('https://unitedbio.com.tw/product/fish-oil', '_blank', 'noopener,noreferrer')" class="apple-button border-4 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white px-6 py-2 text-sm font-medium whitespace-nowrap"> 來去看看 ▶ </button>
+        <div class="text-center h-12 flex items-center justify-center"><button onclick="window.open('https://unitedbio.com.tw/item/%E8%8A%AF%E8%97%BB%E9%A0%86', '_blank', 'noopener,noreferrer')" class="apple-button border-4 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white px-6 py-2 text-sm font-medium whitespace-nowrap"> 來去看看 ▶ </button>
         </div>
        </div>
       </div>
      </div>
-     <div class="bg-white border border-gray-200 overflow-hidden card-hover group rounded-xl flex flex-col">
-      <div class="h-64 bg-gray-100 flex items-center justify-center">
-       <svg class="w-16 h-16 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-       </svg>
+         <div class="bg-white border border-gray-200 overflow-hidden card-hover group rounded-xl flex flex-col">
+            <div class="h-64 bg-gray-100 flex items-center justify-center">
+             <img src="https://image.bvshop.tw/3552/product/3552_68e8b35c62426.jpg.webp" alt="視科學產品圖" class="w-full h-full object-cover" loading="lazy">
       </div>
       <div class="p-8 flex flex-col flex-1">
-       <h3 class="text-lg font-medium mb-4 text-gray-900">益生菌膠囊</h3>
+       <h3 class="text-lg font-medium mb-4 text-gray-900">視科學</h3>
        <div class="flex-1 mb-6">
-        <p class="text-gray-600 text-sm leading-relaxed">10億活菌數，改善腸道健康與消化功能</p>
+        <p class="text-gray-600 text-sm leading-relaxed">✔ 最高認證游離葉黃素 &amp; 游離玉米黃素，小分子易吸收<br>✔ 高單位抗氧化藻紅素，強化對抗自由基傷害<br>✔ 75% DHA 高濃度藻油，支持眼腦協同運作<br>✔ 無人工與非自然添加，純淨來源，無負擔</p>
        </div>
        <div class="mt-auto">
         <div class="text-orange-500 text-xs mb-2 leading-tight text-center h-8 flex items-center justify-center">
          目前有活動折扣中<br>
           點擊進入來去看看折扣吧
         </div>
-        <div class="text-center mb-4 h-8 flex items-center justify-center"><span class="text-xl font-light text-gray-900">NT$ 980</span>
+        <div class="text-center mb-4 h-8 flex items-center justify-center"><span class="text-xl font-light text-gray-900">NT$ 1,360</span>
         </div>
-        <div class="text-center h-12 flex items-center justify-center"><button onclick="window.open('https://unitedbio.com.tw/product/probiotics', '_blank', 'noopener,noreferrer')" class="apple-button border-4 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white px-6 py-2 text-sm font-medium whitespace-nowrap"> 來去看看 ▶ </button>
+        <div class="text-center h-12 flex items-center justify-center"><button onclick="window.open('https://unitedbio.com.tw/item/PD67a9a2a2d612c', '_blank', 'noopener,noreferrer')" class="apple-button border-4 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white px-6 py-2 text-sm font-medium whitespace-nowrap"> 來去看看 ▶ </button>
         </div>
        </div>
       </div>
@@ -2387,26 +2445,100 @@ DHA 到底是啥？
             ]  // Patent 6 images
         };
 
-        function getPatentDesktopCardsPerView() {
-            const width = window.innerWidth;
-            if (width >= 1600) return 4;
-            if (width >= 1280) return 3;
-            if (width >= 1024) return 2;
-            return 1;
-        }
+        const PATENT_CARD_HEIGHT_RATIO = 14 / 9;
+    const PATENT_DESKTOP_MAX_HEIGHT = 420;
+    const PATENT_DESKTOP_MAX_WIDTH = PATENT_DESKTOP_MAX_HEIGHT / PATENT_CARD_HEIGHT_RATIO;
 
         function applyPatentDesktopLayout(gallery, wrapper) {
-            if (!gallery) return;
+            if (!gallery || !wrapper) return;
             const figures = Array.from(gallery.children);
             if (!figures.length) return;
 
-            // Fixed card width for consistent scrolling on desktop
-            const cardWidth = 280; // Fixed width instead of responsive
+            const computedStyles = window.getComputedStyle(gallery);
+            const gapRaw = computedStyles.columnGap || computedStyles.gap || '0';
+            const gapValue = Number.parseFloat(gapRaw) || 0;
+            const cardsPerView = 3;
+            const totalGap = gapValue * (cardsPerView - 1);
+            const wrapperWidth = wrapper.clientWidth || 0;
+            if (wrapperWidth <= 0) return;
+
+            const baseWidth = Math.max((wrapperWidth - totalGap) / cardsPerView, 0);
+            const cardWidth = Math.min(baseWidth, PATENT_DESKTOP_MAX_WIDTH);
 
             figures.forEach(function(figure) {
                 figure.style.flex = `0 0 ${cardWidth}px`;
                 figure.style.minWidth = `${cardWidth}px`;
                 figure.style.maxWidth = `${cardWidth}px`;
+            });
+        }
+
+        function setPatentScrollbarPending(shell, scrollbarSelector, isPending) {
+            if (!shell) return null;
+            shell.classList.toggle('patent-gallery--pending', !!isPending);
+            const track = shell.querySelector(scrollbarSelector);
+            if (!track) return null;
+            if (isPending) {
+                track.classList.add('patent-scrollbar--pending');
+            } else {
+                track.classList.remove('patent-scrollbar--pending');
+            }
+            return track;
+        }
+
+        function initializePatentDesktopAfterImages(options) {
+            if (!options) return;
+            const {
+                gallery,
+                shell,
+                wrapper,
+                scrollbarSelector,
+                adjustCardHeight,
+                ensureResizeListener,
+                initScroller
+            } = options;
+
+            if (!gallery || !shell || !wrapper || typeof initScroller !== 'function') return;
+
+            const maxAttempts = 6;
+            let attempts = 0;
+
+            setPatentScrollbarPending(shell, scrollbarSelector, true);
+
+            if (typeof ensureResizeListener === 'function') {
+                ensureResizeListener();
+            }
+
+            function attemptInitialization() {
+                attempts += 1;
+
+                if (typeof adjustCardHeight === 'function') {
+                    adjustCardHeight();
+                }
+
+                applyPatentDesktopLayout(gallery, wrapper);
+
+                // Ensure scrollLeft stays within bounds after layout adjustments
+                const maxScroll = Math.max(wrapper.scrollWidth - wrapper.clientWidth, 0);
+                if (wrapper.scrollLeft > maxScroll) {
+                    wrapper.scrollLeft = maxScroll;
+                }
+
+                initScroller();
+
+                const isScrollable = wrapper.scrollWidth > (wrapper.clientWidth + 1);
+
+                if (!isScrollable && attempts < maxAttempts) {
+                    requestAnimationFrame(attemptInitialization);
+                    return;
+                }
+
+                setPatentScrollbarPending(shell, scrollbarSelector, false);
+                // Final sync to ensure thumb reflects the latest dimensions
+                initScroller();
+            }
+
+            requestAnimationFrame(function() {
+                requestAnimationFrame(attemptInitialization);
             });
         }
 
@@ -2421,7 +2553,7 @@ DHA 到底是啥？
 
             images.forEach((imageUrl, index) => {
                 const figure = document.createElement('figure');
-                figure.className = 'patent1-desktop-image';
+                figure.className = 'patent1-desktop-image patent-desktop-image';
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
@@ -2440,19 +2572,21 @@ DHA 到底是啥？
             const loadPromises = imageElements.map(waitForImage);
 
             Promise.all(loadPromises).then(function() {
-                adjustPatent1DesktopCardHeight();
-                applyPatentDesktopLayout(gallery, wrapper);
-                ensurePatent1DesktopResizeListener();
-
-                requestAnimationFrame(function() {
-                    adjustPatent1DesktopCardHeight();
-                    applyPatentDesktopLayout(gallery, wrapper);
-                    initPatent1Scroller(
-                        '.patent1-desktop-gallery-shell',
-                        '.patent1-desktop-gallery-wrapper',
-                        '.patent1-scrollbar',
-                        '.patent1-scrollbar-thumb'
-                    );
+                initializePatentDesktopAfterImages({
+                    gallery,
+                    shell,
+                    wrapper,
+                    scrollbarSelector: '.patent1-scrollbar',
+                    adjustCardHeight: adjustPatent1DesktopCardHeight,
+                    ensureResizeListener: ensurePatent1DesktopResizeListener,
+                    initScroller: function() {
+                        initPatent1Scroller(
+                            '.patent1-desktop-gallery-shell',
+                            '.patent1-desktop-gallery-wrapper',
+                            '.patent1-scrollbar',
+                            '.patent1-scrollbar-thumb'
+                        );
+                    }
                 });
             });
         }
@@ -2468,7 +2602,7 @@ DHA 到底是啥？
 
             images.forEach((imageUrl, index) => {
                 const figure = document.createElement('figure');
-                figure.className = 'patent2-desktop-image';
+                figure.className = 'patent2-desktop-image patent-desktop-image';
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
@@ -2487,19 +2621,21 @@ DHA 到底是啥？
             const loadPromises = imageElements.map(waitForImage);
 
             Promise.all(loadPromises).then(function() {
-                adjustPatent2DesktopCardHeight();
-                applyPatentDesktopLayout(gallery, wrapper);
-                ensurePatent2DesktopResizeListener();
-
-                requestAnimationFrame(function() {
-                    adjustPatent2DesktopCardHeight();
-                    applyPatentDesktopLayout(gallery, wrapper);
-                    initPatent2Scroller(
-                        '.patent2-desktop-gallery-shell',
-                        '.patent2-desktop-gallery-wrapper',
-                        '.patent2-scrollbar',
-                        '.patent2-scrollbar-thumb'
-                    );
+                initializePatentDesktopAfterImages({
+                    gallery,
+                    shell,
+                    wrapper,
+                    scrollbarSelector: '.patent2-scrollbar',
+                    adjustCardHeight: adjustPatent2DesktopCardHeight,
+                    ensureResizeListener: ensurePatent2DesktopResizeListener,
+                    initScroller: function() {
+                        initPatent2Scroller(
+                            '.patent2-desktop-gallery-shell',
+                            '.patent2-desktop-gallery-wrapper',
+                            '.patent2-scrollbar',
+                            '.patent2-scrollbar-thumb'
+                        );
+                    }
                 });
             });
         }
@@ -2515,7 +2651,7 @@ DHA 到底是啥？
 
             images.forEach((imageUrl, index) => {
                 const figure = document.createElement('figure');
-                figure.className = 'patent3-desktop-image';
+                figure.className = 'patent3-desktop-image patent-desktop-image';
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
@@ -2534,19 +2670,21 @@ DHA 到底是啥？
             const loadPromises = imageElements.map(waitForImage);
 
             Promise.all(loadPromises).then(function() {
-                adjustPatent3DesktopCardHeight();
-                applyPatentDesktopLayout(gallery, wrapper);
-                ensurePatent3DesktopResizeListener();
-
-                requestAnimationFrame(function() {
-                    adjustPatent3DesktopCardHeight();
-                    applyPatentDesktopLayout(gallery, wrapper);
-                    initPatent3Scroller(
-                        '.patent3-desktop-gallery-shell',
-                        '.patent3-desktop-gallery-wrapper',
-                        '.patent3-scrollbar',
-                        '.patent3-scrollbar-thumb'
-                    );
+                initializePatentDesktopAfterImages({
+                    gallery,
+                    shell,
+                    wrapper,
+                    scrollbarSelector: '.patent3-scrollbar',
+                    adjustCardHeight: adjustPatent3DesktopCardHeight,
+                    ensureResizeListener: ensurePatent3DesktopResizeListener,
+                    initScroller: function() {
+                        initPatent3Scroller(
+                            '.patent3-desktop-gallery-shell',
+                            '.patent3-desktop-gallery-wrapper',
+                            '.patent3-scrollbar',
+                            '.patent3-scrollbar-thumb'
+                        );
+                    }
                 });
             });
         }
@@ -2562,7 +2700,7 @@ DHA 到底是啥？
 
             images.forEach((imageUrl, index) => {
                 const figure = document.createElement('figure');
-                figure.className = 'patent4-desktop-image';
+                figure.className = 'patent4-desktop-image patent-desktop-image';
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
@@ -2581,19 +2719,21 @@ DHA 到底是啥？
             const loadPromises = imageElements.map(waitForImage);
 
             Promise.all(loadPromises).then(function() {
-                adjustPatent4DesktopCardHeight();
-                applyPatentDesktopLayout(gallery, wrapper);
-                ensurePatent4DesktopResizeListener();
-
-                requestAnimationFrame(function() {
-                    adjustPatent4DesktopCardHeight();
-                    applyPatentDesktopLayout(gallery, wrapper);
-                    initPatent4Scroller(
-                        '.patent4-desktop-gallery-shell',
-                        '.patent4-desktop-gallery-wrapper',
-                        '.patent4-scrollbar',
-                        '.patent4-scrollbar-thumb'
-                    );
+                initializePatentDesktopAfterImages({
+                    gallery,
+                    shell,
+                    wrapper,
+                    scrollbarSelector: '.patent4-scrollbar',
+                    adjustCardHeight: adjustPatent4DesktopCardHeight,
+                    ensureResizeListener: ensurePatent4DesktopResizeListener,
+                    initScroller: function() {
+                        initPatent4Scroller(
+                            '.patent4-desktop-gallery-shell',
+                            '.patent4-desktop-gallery-wrapper',
+                            '.patent4-scrollbar',
+                            '.patent4-scrollbar-thumb'
+                        );
+                    }
                 });
             });
         }
@@ -2609,7 +2749,7 @@ DHA 到底是啥？
 
             images.forEach((imageUrl, index) => {
                 const figure = document.createElement('figure');
-                figure.className = 'patent5-desktop-image';
+                figure.className = 'patent5-desktop-image patent-desktop-image';
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
@@ -2628,19 +2768,21 @@ DHA 到底是啥？
             const loadPromises = imageElements.map(waitForImage);
 
             Promise.all(loadPromises).then(function() {
-                adjustPatent5DesktopCardHeight();
-                applyPatentDesktopLayout(gallery, wrapper);
-                ensurePatent5DesktopResizeListener();
-
-                requestAnimationFrame(function() {
-                    adjustPatent5DesktopCardHeight();
-                    applyPatentDesktopLayout(gallery, wrapper);
-                    initPatent5Scroller(
-                        '.patent5-desktop-gallery-shell',
-                        '.patent5-desktop-gallery-wrapper',
-                        '.patent5-scrollbar',
-                        '.patent5-scrollbar-thumb'
-                    );
+                initializePatentDesktopAfterImages({
+                    gallery,
+                    shell,
+                    wrapper,
+                    scrollbarSelector: '.patent5-scrollbar',
+                    adjustCardHeight: adjustPatent5DesktopCardHeight,
+                    ensureResizeListener: ensurePatent5DesktopResizeListener,
+                    initScroller: function() {
+                        initPatent5Scroller(
+                            '.patent5-desktop-gallery-shell',
+                            '.patent5-desktop-gallery-wrapper',
+                            '.patent5-scrollbar',
+                            '.patent5-scrollbar-thumb'
+                        );
+                    }
                 });
             });
         }
@@ -2656,7 +2798,7 @@ DHA 到底是啥？
 
             images.forEach((imageUrl, index) => {
                 const figure = document.createElement('figure');
-                figure.className = 'patent6-desktop-image';
+                figure.className = 'patent6-desktop-image patent-desktop-image';
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
@@ -2675,19 +2817,21 @@ DHA 到底是啥？
             const loadPromises = imageElements.map(waitForImage);
 
             Promise.all(loadPromises).then(function() {
-                adjustPatent6DesktopCardHeight();
-                applyPatentDesktopLayout(gallery, wrapper);
-                ensurePatent6DesktopResizeListener();
-
-                requestAnimationFrame(function() {
-                    adjustPatent6DesktopCardHeight();
-                    applyPatentDesktopLayout(gallery, wrapper);
-                    initPatent6Scroller(
-                        '.patent6-desktop-gallery-shell',
-                        '.patent6-desktop-gallery-wrapper',
-                        '.patent6-scrollbar',
-                        '.patent6-scrollbar-thumb'
-                    );
+                initializePatentDesktopAfterImages({
+                    gallery,
+                    shell,
+                    wrapper,
+                    scrollbarSelector: '.patent6-scrollbar',
+                    adjustCardHeight: adjustPatent6DesktopCardHeight,
+                    ensureResizeListener: ensurePatent6DesktopResizeListener,
+                    initScroller: function() {
+                        initPatent6Scroller(
+                            '.patent6-desktop-gallery-shell',
+                            '.patent6-desktop-gallery-wrapper',
+                            '.patent6-scrollbar',
+                            '.patent6-scrollbar-thumb'
+                        );
+                    }
                 });
             });
         }
@@ -2712,27 +2856,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent1-desktop-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -2743,7 +2866,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = Math.min(usableWidth * PATENT_CARD_HEIGHT_RATIO, PATENT_DESKTOP_MAX_HEIGHT);
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -2782,27 +2905,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent2-desktop-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -2813,7 +2915,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = Math.min(usableWidth * PATENT_CARD_HEIGHT_RATIO, PATENT_DESKTOP_MAX_HEIGHT);
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -2831,27 +2933,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent3-desktop-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -2862,7 +2943,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = Math.min(usableWidth * PATENT_CARD_HEIGHT_RATIO, PATENT_DESKTOP_MAX_HEIGHT);
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -2880,27 +2961,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent4-desktop-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -2911,7 +2971,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = Math.min(usableWidth * PATENT_CARD_HEIGHT_RATIO, PATENT_DESKTOP_MAX_HEIGHT);
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -2929,27 +2989,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent5-desktop-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -2960,7 +2999,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = Math.min(usableWidth * PATENT_CARD_HEIGHT_RATIO, PATENT_DESKTOP_MAX_HEIGHT);
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -2978,27 +3017,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent6-desktop-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3009,7 +3027,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = Math.min(usableWidth * PATENT_CARD_HEIGHT_RATIO, PATENT_DESKTOP_MAX_HEIGHT);
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3131,7 +3149,7 @@ DHA 到底是啥？
 
             images.forEach((imageUrl, index) => {
                 const figure = document.createElement('figure');
-                figure.className = 'patent1-mobile-image';
+                figure.className = 'patent1-mobile-image patent-mobile-image';
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
@@ -3176,7 +3194,7 @@ DHA 到底是啥？
 
             images.forEach((imageUrl, index) => {
                 const figure = document.createElement('figure');
-                figure.className = 'patent2-mobile-image';
+                figure.className = 'patent2-mobile-image patent-mobile-image';
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
@@ -3221,7 +3239,7 @@ DHA 到底是啥？
 
             images.forEach((imageUrl, index) => {
                 const figure = document.createElement('figure');
-                figure.className = 'patent3-mobile-image';
+                figure.className = 'patent3-mobile-image patent-mobile-image';
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
@@ -3266,7 +3284,7 @@ DHA 到底是啥？
 
             images.forEach((imageUrl, index) => {
                 const figure = document.createElement('figure');
-                figure.className = 'patent4-mobile-image';
+                figure.className = 'patent4-mobile-image patent-mobile-image';
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
@@ -3311,7 +3329,7 @@ DHA 到底是啥？
 
             images.forEach((imageUrl, index) => {
                 const figure = document.createElement('figure');
-                figure.className = 'patent5-mobile-image';
+                figure.className = 'patent5-mobile-image patent-mobile-image';
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
@@ -3356,7 +3374,7 @@ DHA 到底是啥？
 
             images.forEach((imageUrl, index) => {
                 const figure = document.createElement('figure');
-                figure.className = 'patent6-mobile-image';
+                figure.className = 'patent6-mobile-image patent-mobile-image';
 
                 const img = document.createElement('img');
                 img.src = imageUrl;
@@ -3636,27 +3654,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent1-mobile-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3667,7 +3664,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = usableWidth * PATENT_CARD_HEIGHT_RATIO;
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3685,27 +3682,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent2-mobile-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3716,7 +3692,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = usableWidth * PATENT_CARD_HEIGHT_RATIO;
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3734,27 +3710,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent3-mobile-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3765,7 +3720,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = usableWidth * PATENT_CARD_HEIGHT_RATIO;
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3783,27 +3738,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent4-mobile-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3814,7 +3748,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = usableWidth * PATENT_CARD_HEIGHT_RATIO;
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3832,27 +3766,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent5-mobile-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3863,7 +3776,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = usableWidth * PATENT_CARD_HEIGHT_RATIO;
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3881,27 +3794,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent6-mobile-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3912,7 +3804,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = usableWidth * PATENT_CARD_HEIGHT_RATIO;
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
