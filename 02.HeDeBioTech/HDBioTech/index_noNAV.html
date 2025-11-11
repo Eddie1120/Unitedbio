@@ -11,10 +11,23 @@
           function fitFamilyVideo() {
               const video = document.getElementById('family-video');
               const wrapper = document.querySelector('.family-video-wrapper');
+              const inner = document.querySelector('.family-video-inner');
               const right = document.querySelector('.family-right');
               if (!video || !wrapper || !right) return;
 
               const applySizing = function() {
+                  const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+                  if (viewportWidth < 768) {
+                      wrapper.style.width = '';
+                      wrapper.style.height = '';
+                      if (inner) {
+                          inner.style.width = '';
+                          inner.style.height = '';
+                      }
+                      video.style.width = '';
+                      video.style.height = '';
+                      return;
+                  }
                   const videoWidth = video.videoWidth || video.clientWidth;
                   const videoHeight = video.videoHeight || video.clientHeight;
                   const targetWidth = right.clientWidth || wrapper.clientWidth;
@@ -26,6 +39,10 @@
 
                   wrapper.style.width = `${targetWidth}px`;
                   wrapper.style.height = `${computedHeight}px`;
+                  if (inner) {
+                      inner.style.width = `${targetWidth}px`;
+                      inner.style.height = `${computedHeight}px`;
+                  }
               };
 
               const scheduleSizing = function() {
@@ -69,12 +86,13 @@
         
         .hero-bg {
             background: linear-gradient(180deg, var(--ycc-bg, #1a1a1a) 0%, var(--ycc-bg-end, #2d2d2d) 100%);
-            /* Hero 在導覽列下緣下方10px開始：使用負 margin-top 來抵消導覽列高度並增加間距 */
-            margin-top: calc(var(--total-nav-height, 0px) * -1 + 10px);
-            /* 保持最小高度為視窗高度，但不預留導覽列空間 */
             min-height: calc(100vh + var(--hero-extra-height));
-            /* 確保 hero 區域從導覽列下緣開始 */
             position: relative;
+        }
+        @media (min-width: 1024px) {
+            .hero-bg {
+                display: none !important;
+            }
         }
 
         /* Site navigation styles removed because the header/nav HTML was removed.
@@ -581,6 +599,54 @@
             color: #ea580c;
         }
 
+        .team-video-container {
+            position: relative;
+            display: inline-block;
+            width: min(100%, 28rem);
+            aspect-ratio: 1 / 1;
+            line-height: 0;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: transparent;
+        }
+
+        .team-video-frame {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            overflow: hidden;
+        }
+
+        .team-video-frame::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: calc(24px - 8px);
+            border: 2px dashed rgba(31, 41, 55, 0.65);
+            pointer-events: none;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+
+        .team-video-media {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            background-color: transparent;
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+
+        @media (max-width: 767px) {
+            .team-video-container {
+                width: 100%;
+                max-width: none;
+            }
+        }
+
         .patent-desktop-gallery-shell {
             position: relative;
         }
@@ -731,6 +797,30 @@
         @media (min-width: 1024px) {
             .hero-title { font-size: 3.8rem !important; line-height: 1.04; }
             .hero-copy { width: clamp(20rem, 60vw, 60rem); }
+        }
+        @media (max-width: 767px) {
+            .family-video-wrapper {
+                width: 100% !important;
+                max-width: 420px !important;
+                margin-left: auto;
+                margin-right: auto;
+                border: 1px dashed rgba(0,0,0,0.12);
+                border-radius: 20px;
+                overflow: hidden;
+            }
+            .family-video-inner {
+                position: relative;
+                width: 100%;
+                padding-top: 100%;
+            }
+            .family-video-inner > video {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
         }
         @media (min-width: 1400px) {
             .hero-title { font-size: 4.6rem !important; line-height: 1.03; }
@@ -1428,12 +1518,14 @@
         賀得生醫博士團隊堅持「數據先於宣傳，實證高於行銷」的原則。每項產品皆遵循國際食品安全體系（FSSC、HACCP、ISO 22000）規範，並以第三方檢測（COA／IFOS 檢驗報告）驗證原料品質。從原料挑選、製程控制到最終產品檢驗，團隊以實驗數據為依據，建立出透明可信的生技品質標準。
     </p>   
     <div class="my-8 flex justify-center">
-    <div class="inline-block rounded-3xl bg-transparent" style="line-height: 0; width: min(100%, 28rem); aspect-ratio: 1 / 1; box-shadow: 0 20px 40px rgba(0,0,0,0.3); padding: 8px; background-image: linear-gradient(transparent, transparent);"><div class="w-full h-full rounded-2xl overflow-hidden border-2 border-dashed" style="border-color: rgba(31, 41, 55, 0.65);">
-            <video class="w-full h-full object-cover" style="background-color: transparent;" autoplay loop muted playsinline>
-                <source src="https://image.bvshop.tw/3552/home/3552_6911ce5a1cb15.mp4" type="video/mp4">
-                您的瀏覽器不支援影片播放。
-            </video>
-        </div></div>
+        <div class="team-video-container">
+            <div class="team-video-frame">
+                <video class="team-video-media" autoplay loop muted playsinline>
+                    <source src="https://image.bvshop.tw/3552/home/3552_6911ce5a1cb15.mp4" type="video/mp4">
+                    您的瀏覽器不支援影片播放。
+                </video>
+            </div>
+        </div>
     </div>
 <p class="text-sm md:text-base text-gray-700 leading-relaxed text-center max-w-4xl mx-auto px-4 mb-10" style="margin: 10px auto 3rem;">
     博士團隊不僅追求理論與實驗的突破，更重視產品在人體的實際效益。他們以「以人體科學為起點、以日常健康為終點」為設計思維，持續投入植物性 Omega-3（DHA、EPA、DPA）、葉黃素、玉米黃素、藻紅素等營養素的應用研究，並以嚴謹態度推動保健食品的科學化與國際化。
@@ -1499,12 +1591,14 @@
     <p class="text-sm text-gray-500 text-center" style="margin: 0 auto 2.5rem;">Empowering Every Family with Better Health</p>
     <div class="grid md:grid-cols-2 gap-12 items-center family-split">
     <div class="text-center family-left">
-         <div class="family-video-wrapper bg-gray-100 mx-auto mb-8 flex items-center justify-center rounded-2xl overflow-hidden" style="max-width:100%;">
+        <div class="family-video-wrapper bg-gray-100 mx-auto mb-8 flex items-center justify-center rounded-2xl overflow-hidden">
+         <div class="family-video-inner">
           <video id="family-video" class="w-full h-full object-cover" muted loop playsinline preload="metadata" data-autoplay="visible">
            <source src="https://image.bvshop.tw/3552/home/3552_690cc07dac0fe.mp4" type="video/mp4">
-          您的瀏覽器不支持影片播放。
+           您的瀏覽器不支持影片播放。
           </video>
          </div>
+        </div>
         </div>
     <div class="family-right">
         <div class="space-y-10">
@@ -4385,10 +4479,8 @@ DHA 到底是啥？
                     root.style.boxSizing = 'border-box';
                 }
 
-                if (!navVisible && topGap > 0.5) {
+                if (navVisible && topGap > 0.5) {
                     root.style.marginTop = `${-topGap}px`;
-                } else if (!totalGap || totalGap <= 0.5) {
-                    root.style.marginTop = previous.marginTop;
                 } else {
                     root.style.marginTop = previous.marginTop;
                 }
@@ -4415,3 +4507,16 @@ DHA 到底是啥？
 </div>
     
 </body>
+                  if (viewportWidth < 768) {
+                      const targetWidth = (window.innerWidth || document.documentElement.clientWidth || wrapper.clientWidth);
+                      const videoWidth = video.videoWidth || targetWidth;
+                      const videoHeight = video.videoHeight || targetWidth;
+                      if (!videoWidth || !videoHeight || !targetWidth) return;
+                      const aspectRatio = videoHeight / videoWidth || 1;
+                      const computedHeight = targetWidth * aspectRatio;
+                      wrapper.style.width = `${targetWidth}px`;
+                      wrapper.style.height = `${computedHeight}px`;
+                      video.style.width = '100%';
+                      video.style.height = '100%';
+                      return;
+                  }

@@ -69,11 +69,7 @@
         
         .hero-bg {
             background: linear-gradient(180deg, var(--ycc-bg, #1a1a1a) 0%, var(--ycc-bg-end, #2d2d2d) 100%);
-            /* Hero 在導覽列下緣下方10px開始：使用負 margin-top 來抵消導覽列高度並增加間距 */
-            margin-top: calc(var(--total-nav-height, 0px) * -1 + 10px);
-            /* 保持最小高度為視窗高度，但不預留導覽列空間 */
             min-height: calc(100vh + var(--hero-extra-height));
-            /* 確保 hero 區域從導覽列下緣開始 */
             position: relative;
         }
 
@@ -377,7 +373,7 @@
             width: auto;
             min-width: 0;
             max-width: none;
-            background-color: #f9fafb;
+            background-color: white;
             border: 1px solid #e5e7eb;
             border-radius: 12px;
             padding: 0.75rem;
@@ -386,7 +382,9 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
-            aspect-ratio: 6 / 19;
+            aspect-ratio: 9 / 14;
+            max-height: 420px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .patent1-desktop-image img,
@@ -473,7 +471,7 @@
             min-width: var(--patent-mobile-card-width);
             max-width: var(--patent-mobile-card-width);
             margin: 0;
-            background-color: #f9fafb;
+            background-color: white;
             border: 1px solid #e5e7eb;
             border-radius: 12px;
             padding: 0.5rem;
@@ -482,7 +480,8 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
-            aspect-ratio: 6 / 19;
+            aspect-ratio: 9 / 14;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .patent1-mobile-image img,
@@ -563,6 +562,14 @@
         }
 
         .patent-mobile-instruction {
+            margin-top: 0.75rem;
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+            color: #ea580c;
+        }
+
+        .patent-desktop-instruction {
             margin-top: 0.75rem;
             text-align: center;
             font-size: 0.85rem;
@@ -1233,6 +1240,7 @@
                                                                                                     <div class="patent1-scrollbar patent-desktop-scrollbar">
                                                                                                         <div class="patent1-scrollbar-thumb patent-desktop-scrollbar-thumb"></div>
                                                                                                     </div>
+                                                                                                    <p class="patent-desktop-instruction hidden md:block" aria-live="polite">請左右滑動觀看專利</p>
                                                                                                 </div>
 
                          <div data-patent-id="2" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
@@ -1261,6 +1269,7 @@
                                                     <div class="patent2-scrollbar patent-desktop-scrollbar">
                                                         <div class="patent2-scrollbar-thumb patent-desktop-scrollbar-thumb"></div>
                                                     </div>
+                                                    <p class="patent-desktop-instruction hidden md:block" aria-live="polite">請左右滑動觀看專利</p>
                                                 </div>
                          <div data-patent-id="3" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -1288,6 +1297,7 @@
                                     <div class="patent3-scrollbar patent-desktop-scrollbar">
                                         <div class="patent3-scrollbar-thumb patent-desktop-scrollbar-thumb"></div>
                                     </div>
+                                    <p class="patent-desktop-instruction hidden md:block" aria-live="polite">請左右滑動觀看專利</p>
                                 </div>
                          <div data-patent-id="4" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -1315,6 +1325,7 @@
                                     <div class="patent4-scrollbar patent-desktop-scrollbar">
                                         <div class="patent4-scrollbar-thumb patent-desktop-scrollbar-thumb"></div>
                                     </div>
+                                    <p class="patent-desktop-instruction hidden md:block" aria-live="polite">請左右滑動觀看專利</p>
                                 </div>
                  <div data-patent-id="5" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                             <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -1342,6 +1353,7 @@
                                     <div class="patent5-scrollbar patent-desktop-scrollbar">
                                         <div class="patent5-scrollbar-thumb patent-desktop-scrollbar-thumb"></div>
                                     </div>
+                                    <p class="patent-desktop-instruction hidden md:block" aria-live="polite">請左右滑動觀看專利</p>
                                 </div>
                                  <div data-patent-id="6" style="display:flex;align-items:flex-start;gap:0.75rem;width:100%;">
                                                                 <div style="width:24px;height:24px;min-width:24px;min-height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -1369,6 +1381,7 @@
                                     <div class="patent6-scrollbar patent-desktop-scrollbar">
                                         <div class="patent6-scrollbar-thumb patent-desktop-scrollbar-thumb"></div>
                                     </div>
+                                    <p class="patent-desktop-instruction hidden md:block" aria-live="polite">請左右滑動觀看專利</p>
                                 </div>
                         
         </div>
@@ -2401,6 +2414,7 @@ DHA 到底是啥？
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b2da4bb71.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b2f030fb4.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b2f9cf7ce.webp',
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909b2f9cf7ce.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b30caf396.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b31ca65c0.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b326a618c.webp',
@@ -2420,8 +2434,7 @@ DHA 到底是啥？
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b3c17acc3.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b3cabd80a.webp',
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b3db094f5.webp',
-                'https://unitedbio.com.tw/upload/3552/home/3552_6909b3e6df99d.webp',
-                'https://unitedbio.com.tw/upload/3552/home/3552_6909b3db094f5.webp'
+                'https://unitedbio.com.tw/upload/3552/home/3552_6909b3e6df99d.webp'
             ], // Patent 5 images
             '6': [
                 'https://unitedbio.com.tw/upload/3552/home/3552_6909b5292771c.webp',
@@ -2444,6 +2457,11 @@ DHA 到底是啥？
             ]  // Patent 6 images
         };
 
+        const PATENT_CARD_HEIGHT_RATIO = 14 / 9;
+    const PATENT_DESKTOP_MAX_HEIGHT = 420;
+    const PATENT_DESKTOP_MAX_WIDTH = PATENT_DESKTOP_MAX_HEIGHT / PATENT_CARD_HEIGHT_RATIO;
+    const PATENT_INITIAL_BATCH_COUNT = 6;
+
         function applyPatentDesktopLayout(gallery, wrapper) {
             if (!gallery || !wrapper) return;
             const figures = Array.from(gallery.children);
@@ -2457,7 +2475,8 @@ DHA 到底是啥？
             const wrapperWidth = wrapper.clientWidth || 0;
             if (wrapperWidth <= 0) return;
 
-            const cardWidth = Math.max((wrapperWidth - totalGap) / cardsPerView, 0);
+            const baseWidth = Math.max((wrapperWidth - totalGap) / cardsPerView, 0);
+            const cardWidth = Math.min(baseWidth, PATENT_DESKTOP_MAX_WIDTH);
 
             figures.forEach(function(figure) {
                 figure.style.flex = `0 0 ${cardWidth}px`;
@@ -2748,7 +2767,7 @@ DHA 到底是啥？
                 const img = document.createElement('img');
                 img.src = imageUrl;
                 img.alt = `專利5圖片 ${index + 1}`;
-                img.loading = 'lazy';
+                img.loading = index < PATENT_INITIAL_BATCH_COUNT ? 'eager' : 'lazy';
 
                 figure.appendChild(img);
                 const indicator = document.createElement('span');
@@ -2759,9 +2778,12 @@ DHA 到底是啥？
             });
 
             const imageElements = Array.from(gallery.querySelectorAll('img'));
-            const loadPromises = imageElements.map(waitForImage);
+            const initialBatchCount = Math.min(PATENT_INITIAL_BATCH_COUNT, imageElements.length);
+            const initialImageElements = imageElements.slice(0, initialBatchCount);
+            const deferredImageElements = imageElements.slice(initialBatchCount);
+            const initialLoadPromises = initialImageElements.map(waitForImage);
 
-            Promise.all(loadPromises).then(function() {
+            Promise.all(initialLoadPromises).then(function() {
                 initializePatentDesktopAfterImages({
                     gallery,
                     shell,
@@ -2778,6 +2800,12 @@ DHA 到底是啥？
                         );
                     }
                 });
+
+                if (deferredImageElements.length) {
+                    deferredImageElements.forEach(function(img) {
+                        waitForImage(img).then(schedulePatent5DesktopSync);
+                    });
+                }
             });
         }
 
@@ -2850,27 +2878,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent1-desktop-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -2881,7 +2888,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = Math.min(usableWidth * PATENT_CARD_HEIGHT_RATIO, PATENT_DESKTOP_MAX_HEIGHT);
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -2920,27 +2927,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent2-desktop-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -2951,7 +2937,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = Math.min(usableWidth * PATENT_CARD_HEIGHT_RATIO, PATENT_DESKTOP_MAX_HEIGHT);
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -2969,27 +2955,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent3-desktop-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3000,7 +2965,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = Math.min(usableWidth * PATENT_CARD_HEIGHT_RATIO, PATENT_DESKTOP_MAX_HEIGHT);
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3018,27 +2983,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent4-desktop-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3049,7 +2993,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = Math.min(usableWidth * PATENT_CARD_HEIGHT_RATIO, PATENT_DESKTOP_MAX_HEIGHT);
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3067,27 +3011,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent5-desktop-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3098,7 +3021,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = Math.min(usableWidth * PATENT_CARD_HEIGHT_RATIO, PATENT_DESKTOP_MAX_HEIGHT);
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3116,27 +3039,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent6-desktop-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3147,7 +3049,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = Math.min(usableWidth * PATENT_CARD_HEIGHT_RATIO, PATENT_DESKTOP_MAX_HEIGHT);
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3236,6 +3138,28 @@ DHA 到底是啥？
                     const wrapper = shell.querySelector('.patent5-desktop-gallery-wrapper');
                     applyPatentDesktopLayout(gallery, wrapper);
                 });
+            });
+        }
+
+        function schedulePatent5DesktopSync() {
+            requestAnimationFrame(function() {
+                const shell = document.querySelector('.patent5-desktop-gallery-shell');
+                if (!shell) return;
+                const gallery = shell.querySelector('.patent5-desktop-gallery');
+                const wrapper = shell.querySelector('.patent5-desktop-gallery-wrapper');
+                if (!gallery || !wrapper) return;
+
+                if (typeof adjustPatent5DesktopCardHeight === 'function') {
+                    adjustPatent5DesktopCardHeight();
+                }
+
+                applyPatentDesktopLayout(gallery, wrapper);
+                initPatent5Scroller(
+                    '.patent5-desktop-gallery-shell',
+                    '.patent5-desktop-gallery-wrapper',
+                    '.patent5-scrollbar',
+                    '.patent5-scrollbar-thumb'
+                );
             });
         }
 
@@ -3454,7 +3378,7 @@ DHA 到底是啥？
                 const img = document.createElement('img');
                 img.src = imageUrl;
                 img.alt = `專利5圖片 ${index + 1}`;
-                img.loading = 'lazy';
+                img.loading = index < PATENT_INITIAL_BATCH_COUNT ? 'eager' : 'lazy';
 
                 figure.appendChild(img);
                 const indicator = document.createElement('span');
@@ -3465,9 +3389,12 @@ DHA 到底是啥？
             });
 
             const imageElements = Array.from(gallery.querySelectorAll('img'));
-            const loadPromises = imageElements.map(waitForImage);
+            const initialBatchCount = Math.min(PATENT_INITIAL_BATCH_COUNT, imageElements.length);
+            const initialImageElements = imageElements.slice(0, initialBatchCount);
+            const deferredImageElements = imageElements.slice(initialBatchCount);
+            const initialLoadPromises = initialImageElements.map(waitForImage);
 
-            Promise.all(loadPromises).then(function() {
+            Promise.all(initialLoadPromises).then(function() {
                 adjustPatent5MobileCardWidth();
                 adjustPatent5MobileCardHeight();
                 ensurePatent5MobileResizeListener();
@@ -3482,6 +3409,12 @@ DHA 到底是啥？
                         '.patent5-mobile-scrollbar-thumb'
                     );
                 });
+
+                if (deferredImageElements.length) {
+                    deferredImageElements.forEach(function(img) {
+                        waitForImage(img).then(schedulePatent5MobileSync);
+                    });
+                }
             });
         }
 
@@ -3747,6 +3680,19 @@ DHA 到底是啥？
             });
         }
 
+        function schedulePatent5MobileSync() {
+            requestAnimationFrame(function() {
+                adjustPatent5MobileCardWidth();
+                adjustPatent5MobileCardHeight();
+                initPatent5Scroller(
+                    '.patent5-mobile-gallery-shell',
+                    '.patent5-mobile-gallery-wrapper',
+                    '.patent5-mobile-scrollbar',
+                    '.patent5-mobile-scrollbar-thumb'
+                );
+            });
+        }
+
         let patent6MobileResizeListenerAttached = false;
 
         function ensurePatent6MobileResizeListener() {
@@ -3774,27 +3720,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent1-mobile-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3805,7 +3730,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = usableWidth * PATENT_CARD_HEIGHT_RATIO;
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3823,27 +3748,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent2-mobile-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3854,7 +3758,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = usableWidth * PATENT_CARD_HEIGHT_RATIO;
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3872,27 +3776,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent3-mobile-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3903,7 +3786,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = usableWidth * PATENT_CARD_HEIGHT_RATIO;
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3921,27 +3804,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent4-mobile-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -3952,7 +3814,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = usableWidth * PATENT_CARD_HEIGHT_RATIO;
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -3970,27 +3832,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent5-mobile-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -4001,7 +3842,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = usableWidth * PATENT_CARD_HEIGHT_RATIO;
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -4019,27 +3860,6 @@ DHA 到底是啥？
             const figures = Array.from(gallery.querySelectorAll('.patent6-mobile-image'));
             if (!figures.length) return;
 
-            const images = figures
-                .map(function(figure) { return figure.querySelector('img'); })
-                .filter(function(img) { return !!img; });
-
-            if (!images.length) return;
-
-            let maxRatio = 0;
-            images.forEach(function(img) {
-                const naturalWidth = img.naturalWidth || img.width;
-                const naturalHeight = img.naturalHeight || img.height;
-
-                if (naturalWidth > 0 && naturalHeight > 0) {
-                    const ratio = naturalHeight / naturalWidth;
-                    if (ratio > maxRatio) {
-                        maxRatio = ratio;
-                    }
-                }
-            });
-
-            if (maxRatio === 0) return;
-
             const sampleFigure = figures[0];
             const figureStyles = window.getComputedStyle(sampleFigure);
             const paddingTop = Number.parseFloat(figureStyles.paddingTop) || 0;
@@ -4050,7 +3870,7 @@ DHA 到底是啥？
 
             if (usableWidth <= 0) return;
 
-            const imageHeight = usableWidth * maxRatio;
+            const imageHeight = usableWidth * PATENT_CARD_HEIGHT_RATIO;
             const totalHeight = imageHeight + paddingTop + paddingBottom;
 
             figures.forEach(function(figure) {
@@ -4561,10 +4381,8 @@ DHA 到底是啥？
                     root.style.boxSizing = 'border-box';
                 }
 
-                if (!navVisible && topGap > 0.5) {
+                if (navVisible && topGap > 0.5) {
                     root.style.marginTop = `${-topGap}px`;
-                } else if (!totalGap || totalGap <= 0.5) {
-                    root.style.marginTop = previous.marginTop;
                 } else {
                     root.style.marginTop = previous.marginTop;
                 }
