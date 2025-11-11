@@ -4476,16 +4476,3 @@ DHA 到底是啥？
 </div>
     
 </body>
-                  if (viewportWidth < 768) {
-                      const targetWidth = (window.innerWidth || document.documentElement.clientWidth || wrapper.clientWidth);
-                      const videoWidth = video.videoWidth || targetWidth;
-                      const videoHeight = video.videoHeight || targetWidth;
-                      if (!videoWidth || !videoHeight || !targetWidth) return;
-                      const aspectRatio = videoHeight / videoWidth || 1;
-                      const computedHeight = targetWidth * aspectRatio;
-                      wrapper.style.width = `${targetWidth}px`;
-                      wrapper.style.height = `${computedHeight}px`;
-                      video.style.width = '100%';
-                      video.style.height = '100%';
-                      return;
-                  }
